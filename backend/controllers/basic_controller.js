@@ -2,7 +2,7 @@ require('dotenv').config();
 
 // welcome to root page
 const basic = (req, res) => {
-    res.json('Hi, welcome to the backend root page!!!');
+    res.json('Hi, welcome to Shanfu Curriculum Management Platform (backend root page) !!!');
 };
 
 // healthcheck: OK
