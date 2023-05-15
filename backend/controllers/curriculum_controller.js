@@ -13,6 +13,12 @@ const getCurriculumWithType = async (req, res) => {
     res.json(data);
 };
 
+const getCurriculumOfUser = async (req, res) => {
+    const id = req.query.uid;
+    const data = await Curriculum.getCurriculumByUserId(id);
+    res.json(data);
+};
+
 // insert data into db
 const postCurriculum = async (req, res) => {
     res.json('TBC...')
@@ -21,5 +27,6 @@ const postCurriculum = async (req, res) => {
 module.exports = {
     getCurriculum,
     getCurriculumWithType,
+    getCurriculumOfUser,
     postCurriculum
 };

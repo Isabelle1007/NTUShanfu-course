@@ -12,8 +12,11 @@ app.use(express.json())
 const basicRouter = require('./routes/basic_route');
 app.use('/', basicRouter);
 
-const CurriculumRouter = require('./routes/curriculum_route');
-app.use('/curriculum', CurriculumRouter);
+const curriculumRouter = require('./routes/curriculum_route');
+app.use('/curriculum', curriculumRouter);
+
+const userRouter = require('./routes/user_route');
+app.use('/user', userRouter);
 
 // Listen on server port
 const port = PORT || 4001;
