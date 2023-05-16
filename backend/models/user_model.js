@@ -90,10 +90,42 @@ const getInfoOfAllUsers = async () => {
     }catch(err){
         return err
     }
-
 }
+
+const getIdByUserName = async (name_list) => {
+    let ids = []
+    for(var i = 0; i < name_list.length; i++){
+        const query = `SELECT id FROM users WHERE users.u_name = '${name_list[i]}'`
+        const [result] = await pool.execute(query);
+        try{
+            if(result.length === 1){
+                ids.push(result[0].id)
+            }else if(result.length === 0){
+                return {
+                    "message": "Invalid User Name",
+                    "code": "001"
+                }
+            }else{
+                return {
+                    "message": "Server Response Error",
+                    "code": "500"
+                }
+            }
+        }catch(err){
+            return err
+        }
+    }
+    return {
+        "message": "Success",
+        "code": "000",
+        "data": {
+            "id": ids
+        }
+    }
+};
 
 module.exports = {
     getInfoByUserId,
-    getInfoOfAllUsers
+    getInfoOfAllUsers,
+    getIdByUserName
 };

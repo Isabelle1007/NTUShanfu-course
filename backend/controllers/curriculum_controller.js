@@ -1,5 +1,8 @@
 require('dotenv').config();
 const Curriculum = require('../models/curriculum_model');
+const User = require('../models/user_model');
+const Home = require('../models/home_model');
+const Type = require('../models/type_model');
 
 // get data from db
 const getCurricula = async (req, res) => {
@@ -33,7 +36,41 @@ const getCurriculumByKeyword = async (req, res) => {
 
 // insert data into db
 const postCurriculum = async (req, res) => {
-    res.json('TBC...')
+
+    const body = req.body;
+
+    let authors_id;
+    const getUserID = await User.getIdByUserName(body.author);
+    if(getUserID.code != '000')
+        return res.json(getUserID)
+    else
+        authors_id = getUserID.data.id
+
+    let homeID;
+    const getHomeID = await Home.getIdByHomeName(body.home);
+    if(getHomeID.code != '000')
+        return res.json(getHomeID)
+    else
+        homeID = getHomeID.data.id
+
+    let typeID;
+    const getTypeID = await Type.getIdByTypeName(body.type);
+    if(getTypeID.code != '000')
+        return res.json(getTypeID)
+    else
+        typeID = getTypeID.data.id
+
+    const curriculum = {
+        title: body.title,
+        author_id_list: authors_id,
+        semester: body.semester,
+        home_id: homeID,
+        type_id: typeID,
+        file_url: body.file ? body.file : null
+    }
+
+    const createNewCurriculum = await Curriculum.createCurriculum(curriculum);
+    res.json(createNewCurriculum)
 };
 
 module.exports = {
@@ -41,6 +78,6 @@ module.exports = {
     getCurriculumByHome,
     getCurriculumByType,
     getCurriculumByUser,
-    postCurriculum,
-    getCurriculumByKeyword
+    getCurriculumByKeyword,
+    postCurriculum
 };

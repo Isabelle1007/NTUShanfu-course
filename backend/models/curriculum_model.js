@@ -239,10 +239,57 @@ const getCurriculumByKeyWord = async (kw) => {
     }
 };
 
+const createCurriculum = async(c) => {
+
+    let newFile_id = -1;
+    let curriculum = {
+        title: c.title,
+        semester: c.semester,
+        home_id: c.home_id,
+        type_id: c.type_id
+    }
+    const conn = await pool.getConnection();
+    try {
+        await conn.query('START TRANSACTION');
+        if(c.file_url != null){
+            const [result_f] = await conn.query('INSERT INTO files (url) VALUES ?', [c.file_url]);
+            newFile_id = result_f.insertId
+            curriculum.file_id = newFile_id
+        }
+        const [result_c] = await conn.query('INSERT INTO curricula SET ?', curriculum);
+        let newCurriID = result_c.insertId
+        if(newCurriID != -1){
+            for(var i = 0; i < c.author_id_list.length; i++){
+                await conn.query('INSERT INTO user_curriculum(uid, cid) VALUES (?, ?)', [c.author_id_list[i], result_c.insertId]);
+            }
+        }else{
+            return {
+                "message": 'Curriculum Creation Failed',
+                "code": "500"
+            }
+        }
+        await conn.query('COMMIT');
+        return {
+            "message": 'Success',
+            "code": "000",
+            "data": {
+                "id": newCurriID,
+            }
+        }
+    } catch (error) {
+        await conn.query('ROLLBACK');
+        console.log(error);
+        return -1;
+    } finally {
+        await conn.release();
+    }
+};
+
 module.exports = {
     getCurricula,
     getCurriculumByHome,
     getCurriculumByType,
     getCurriculumByUserId,
-    getCurriculumByKeyWord
+    getCurriculumByKeyWord,
+    createCurriculum
 };
