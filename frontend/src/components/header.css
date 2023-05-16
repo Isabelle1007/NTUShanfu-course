@@ -1,0 +1,126 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100px;
+    width: 100%;
+    padding: 0 54px 0 60px;
+    border-bottom: 40px solid #FF8702;
+    z-index: 99;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    font-family: PingFangTC;
+}
+
+.header__logo {
+    width: 300px;
+    height: 64px;
+    background-image: url(../images/NTUShanfu_black.png);
+    background-size: contain;
+    cursor: pointer;
+}
+ .menu__home,
+ .menu__type {
+    position: fixed;
+    top: 0;
+    left: 20px;
+    background-color: #e6dace;
+ }
+
+.header__search-input {
+    position: absolute;
+    right: 220px;
+    height: 40px;
+    width: 300px;
+    border: none;
+    outline: none;
+    
+    border-radius: 20px;
+    padding: 6px 45px 6px 20px;
+    border: solid 1px #979797;
+    background-image: url(../images/search.png);
+    background-size: 44px;
+    background-position: 300px center;
+    background-repeat: no-repeat;
+    font-size: 20px;
+    line-height: 24px;
+    color: #B19A82;
+}
+
+.header__links {
+    position: absolute;
+    right: 150px;
+    display: flex;
+}
+
+.header__link-icon-profile {
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    background-image: url(../images/member.png);
+    background-size: contain;
+    position: relative;
+}
+
+.header__link-icon-member-level {
+    position: absolute;
+    bottom: 0;
+    right: -5px;
+    width: 24px;
+    height: 24px;
+    background-color: #8b572a;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 10px;
+    line-height: 24px;
+}
+
+@media screen and (max-width: 600px) {
+    .header {
+        height: 52px;
+        padding: 0;
+        padding-right: 0;
+        border: none;
+        justify-content: center;
+    }
+
+    .header__logo {
+        width: 129px;
+        height: 24px;
+    }
+
+    .header__search-input {
+        width: 0;
+        border: none;
+        position: fixed;
+        right: 16px;
+        background-size: 32px;
+        background-position: right center;
+    }
+
+    .header__links {
+        width: 100%;
+        margin-left: 0;
+        height: 60px;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        background-color: #313538;
+    }
+
+    .header__link {
+        width: 50%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .header__link-text {
+        display: block;
+        color: white;
+    }
+}
