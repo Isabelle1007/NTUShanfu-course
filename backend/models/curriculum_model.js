@@ -1,5 +1,6 @@
 require('dotenv').config();
 const pool = require('../db')
+const { changeDataFormat } = require('../utils/util')
 
 const getAllCurriculum = async () => {
     let curr = []
@@ -12,6 +13,7 @@ const getAllCurriculum = async () => {
     try{
         if(result.length > 0){
             for(var i = 0; i < result.length; i++){
+                let date = changeDataFormat(result[i].created_at)
                 let curriculum = {
                     "id": result[i].id,
                     "title": result[i].title,
@@ -20,7 +22,7 @@ const getAllCurriculum = async () => {
                     "home": result[i].h_name,
                     "type": result[i].t_name,
                     "file": result[i].url,
-                    "created": result[i].created_at
+                    "created": date
                 }
                 curr.push(curriculum)
             }
@@ -54,6 +56,7 @@ const getCurriculumWithType = async (type) => {
     try{
         if(result.length > 0){
             for(var i = 0; i < result.length; i++){
+                let date = changeDataFormat(result[i].created_at)                
                 let curriculum = {
                     "id": result[i].id,
                     "title": result[i].title,
@@ -62,7 +65,7 @@ const getCurriculumWithType = async (type) => {
                     "home": result[i].h_name,
                     "type": result[i].t_name,
                     "file": result[i].url,
-                    "created": result[i].created_at
+                    "created": date
                 }
                 curr.push(curriculum)
             }
@@ -96,6 +99,7 @@ const getCurriculumByUserId = async (id) => {
     try{
         if(result.length > 0){
             for(var i = 0; i < result.length; i++){
+                let date = changeDataFormat(result[i].created_at)
                 let curriculum = {
                     "id": result[i].id,
                     "title": result[i].title,
@@ -104,7 +108,7 @@ const getCurriculumByUserId = async (id) => {
                     "home": result[i].h_name,
                     "type": result[i].t_name,
                     "file": result[i].url,
-                    "created": result[i].created_at
+                    "created": date
                 }
                 curr.push(curriculum)
             }
