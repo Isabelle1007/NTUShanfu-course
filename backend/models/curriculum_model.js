@@ -39,7 +39,7 @@ const getAllCurriculum = async () => {
             };
         } else {
             return {
-                "message": "No Curriculum",
+                "message": "No Curricula in database",
                 "code": "001"
             };
         }
@@ -87,7 +87,7 @@ const getCurriculumWithType = async (type) => {
             }
         }else{
             return {
-                "message": "No Currirula",
+                "message": `No Currirula of type '${type}'`,
                 "code": "001"
             }
         }
@@ -134,7 +134,7 @@ const getCurriculumByUserId = async (id) => {
             };
         } else {
             return {
-                "message": "No Curriculum",
+                "message": `No Curricula written by user ${id} `,
                 "code": "001"
             };
         }

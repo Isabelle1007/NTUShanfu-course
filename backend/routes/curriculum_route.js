@@ -6,7 +6,7 @@ const { getCurriculum, postCurriculum, getCurriculumWithType, getCurriculumOfUse
 
 router.route('/all').get(wrapAsync(getCurriculum))
 router.route('/:type').get(wrapAsync(getCurriculumWithType))
-router.route('/').get(wrapAsync(getCurriculumOfUser))
+router.route('/user/:id').get(wrapAsync(getCurriculumOfUser))
 
 router.route('/upload').post(wrapAsync(postCurriculum))
 

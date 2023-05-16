@@ -14,8 +14,8 @@ const getCurriculumWithType = async (req, res) => {
 };
 
 const getCurriculumOfUser = async (req, res) => {
-    const id = req.query.uid;
-    const data = await Curriculum.getCurriculumByUserId(id);
+    const userId = req.params.id;
+    const data = await Curriculum.getCurriculumByUserId(userId);
     res.json(data);
 };
 
