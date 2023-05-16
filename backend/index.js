@@ -1,5 +1,7 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+app.use(cors())
 
 const path = require('path')
 const dotenv = require('dotenv');
@@ -17,6 +19,12 @@ app.use('/curriculum', curriculumRouter);
 
 const userRouter = require('./routes/user_route');
 app.use('/user', userRouter);
+
+const typeRouter = require('./routes/type_route');
+app.use('/type', typeRouter);
+
+const homeRouter = require('./routes/home_route');
+app.use('/home', homeRouter);
 
 // Listen on server port
 const port = PORT || 4001;
