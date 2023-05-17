@@ -9,7 +9,7 @@ import { FilterContext } from "../App";
 // import searchIcon from '../images/search.png';
 // import memberIcon from '../images/member.png'
 
-import { getAllHomes, getAllTypes } from '../axios'
+import { api } from '../utils/api'
 
 import './header.css' 
 
@@ -17,8 +17,9 @@ const Header = () => {
 
     const { colors } = useContext(FilterContext);
 
-    const [homes, setHomes] = useState(["加拿", "新武", "霧鹿", "利稻", "電光"]);
-    const [types, setTypes] = useState(["自然", "社會", "藝文", "英文", "晨讀", "數學", "國文", "文健站", "綜合", "活動", "線上課輔", "其他"]);
+    const [homes, setHomes] = useState([]);
+    const [types, setTypes] = useState([]);
+
     const [inputValue, setInputValue] = useState('');
     const [isLogin, setIsLogin] = useState(false);
 
@@ -34,9 +35,9 @@ const Header = () => {
 
     const getHomes = async () => {
         try {
-            let response = getAllHomes();
-            console.log(response)
-            setHomes(response.home_name_list)
+            api.getAllHomes().then((json) => {
+                setHomes(json.data.home_name_list);
+            })
         } catch (err) {
             console.log(err)
         }
@@ -44,19 +45,19 @@ const Header = () => {
 
     const getTypes = async () => {
         try {
-            let response = getAllTypes();
-            console.log(response)
-            setTypes(response.type_name_list)
+            api.getAllTypes().then((json) => {
+                setTypes(json.data.type_name_list);
+            })
         } catch (err) {
             console.log(err)
         }
     }
 
-    // useEffect(() => {
-    //     getHomes();
-    //     getTypes();
-    //     }, []
-    // );
+    useEffect(() => {
+        getHomes();
+        getTypes();
+        }, []
+    );
 
     return (
         <div className="header">
@@ -64,7 +65,7 @@ const Header = () => {
             <Menu mode="horizontal">
                 <Menu.SubMenu key="SubMenu1" title="依家別尋找" className='menu__home'>
                     {
-                        homes.map((h, id) => (
+                        homes?.map((h, id) => (
                             <>
                             <Menu.Item key={`home${id}`}>
                                 {h}
@@ -75,7 +76,7 @@ const Header = () => {
                 </Menu.SubMenu>
                 <Menu.SubMenu key="SubMenu2" title="依類別尋找" className='menu__type'>
                     {
-                        types.map((t, id) => (
+                        types?.map((t, id) => (
                             <>
                             <Menu.Item key={`type${id}`}>
                                 {t}

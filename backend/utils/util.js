@@ -22,7 +22,6 @@ const changeDataFormat = (response) => {
 
     // Create the formatted date string
     const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
-    console.log(formattedDate); // Output: 2023-05-15 03:19
     return formattedDate
 };
 
