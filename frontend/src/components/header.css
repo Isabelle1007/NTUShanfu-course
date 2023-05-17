@@ -4,35 +4,46 @@
     left: 0;
     height: 100px;
     width: 100%;
-    padding: 0 54px 0 60px;
     border-bottom: 40px solid #FF8702;
-    z-index: 99;
     background-color: #ffffff;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     font-family: PingFangTC;
 }
 
 .header__logo {
+    margin: 0px 20px;
     width: 300px;
     height: 64px;
     background-image: url(../images/NTUShanfu_black.png);
-    background-size: contain;
+    background-size: 100% 100%;
     cursor: pointer;
+
 }
- .menu__home,
- .menu__type,
- .menu__semester {
-    position: fixed;
-    top: 0;
-    left: 20px;
+
+.left_div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+}
+
+.right_div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+}
+  
+ .menu {
+    color: #C48E67;
     margin: 10px;
-    background-color: #e6dace;
+    font-size: 18px;
  }
 
 .header__search-input {
-    position: absolute;
-    right: 220px;
+    margin: 0px 20px;
     height: 40px;
     width: 300px;
     border: none;
@@ -51,8 +62,7 @@
 }
 
 .header__links {
-    position: absolute;
-    right: 150px;
+    margin: 0px 20px;
     display: flex;
 }
 
