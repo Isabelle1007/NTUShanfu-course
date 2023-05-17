@@ -2,7 +2,8 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Menu } from 'antd';
-import { HomeOutlined, TagsOutlined, FieldTimeOutlined } from '@ant-design/icons';
+import { HomeOutlined, TagsOutlined, FieldTimeOutlined, UserOutlined } from '@ant-design/icons';
+import { Input, Button } from 'antd';
 
 import { FilterContext } from "../App";
 
@@ -84,7 +85,8 @@ const Header = () => {
         {
           label: '依家別尋找',
           key: 'home',
-          icon: <HomeOutlined />,
+          icon: <HomeOutlined/>,
+          
           children: homes
         },
         {
@@ -103,18 +105,23 @@ const Header = () => {
 
     const navigate = useNavigate();
 
+    const navToOtherPage = (path) => {
+        navigate(path); 
+    }
+
     const refresh = () => {
         navigate('/'); 
     }
-
-    // const navTo = (path) => {
-    //     navigate(path);
-    // }
 
     const onClick = (e) => {
         console.log('click ', e);
         setCurrent(e.key);
     };
+
+    const { Search } = Input;
+    const onSearch = (value) => {
+        navigate(`/curricula/search/${inputValue}`) 
+    }
 
     return (
         <div className="header">
@@ -123,21 +130,33 @@ const Header = () => {
                 <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} className='menu'/>
             </div>
             <div className='right_div'>
-                <input
-                    className="header__search-input"
+                <Search
+                    placeholder="請輸入關鍵字..."
+                    allowClear
+                    size="large"
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onSearch={onSearch}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
-                            navigate('/search');
+                            onSearch();
                         }
                     }}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    value={inputValue}
+                    style={{
+                        width: 300,
+                        color: colors.colorLightOrange,
+                        margin: '0px 20px'
+                    }}
                 />
-                <div className="header__links">
-                    <a className="header__link" onClick={ isLogin ? () => navToOtherPage('/profile') : () => navToOtherPage('/login')}>
-                        <div className="header__link-icon-profile"/>
-                    </a>
-                </div>
+                <Button 
+                    shape="circle" 
+                    icon={<UserOutlined />} 
+                    size="large"
+                    style={{
+                        color: colors.colorLightOrange,
+                        margin: '0px 20px 0px 0px'
+                    }}
+                    onClick={ isLogin ? () => navToOtherPage('/profile') : () => navToOtherPage('/login')}
+                />
             </div>
         </div>
         
