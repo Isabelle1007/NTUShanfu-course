@@ -21,10 +21,12 @@
     cursor: pointer;
 }
  .menu__home,
- .menu__type {
+ .menu__type,
+ .menu__semester {
     position: fixed;
     top: 0;
     left: 20px;
+    margin: 10px;
     background-color: #e6dace;
  }
 

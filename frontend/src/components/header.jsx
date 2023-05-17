@@ -19,6 +19,8 @@ const Header = () => {
 
     const [homes, setHomes] = useState([]);
     const [types, setTypes] = useState([]);
+    const semester = ["18冬", "18夏", "19冬", "19夏", "20冬", "20夏", "21冬", "21夏", "22冬", "22夏", "23冬", "23夏"]
+    semester.reverse()
 
     const [inputValue, setInputValue] = useState('');
     const [isLogin, setIsLogin] = useState(false);
@@ -80,6 +82,17 @@ const Header = () => {
                             <>
                             <Menu.Item key={`type${id}`}>
                                 {t}
+                            </Menu.Item>
+                            </>
+                        ))
+                    }
+                </Menu.SubMenu>
+                <Menu.SubMenu key="SubMenu3" title="依期數尋找" className='menu__semester'>
+                    {
+                        semester?.map((s, id) => (
+                            <>
+                            <Menu.Item key={`semester${id}`}>
+                                {s}
                             </Menu.Item>
                             </>
                         ))

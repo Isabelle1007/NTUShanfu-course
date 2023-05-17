@@ -4,7 +4,6 @@ export const api = {
     getAllHomes() {
         return fetch(`${this.hostname}/home/all`).then(response => response.json());
     },
-    
     getAllTypes() {
         return fetch(`${this.hostname}/type/all`).then(response => response.json());
     },
