@@ -119,7 +119,7 @@ const Header = () => {
     };
 
     const { Search } = Input;
-    const onSearch = (value) => {
+    const onSearch = () => {
         navigate(`/curricula/search/${inputValue}`) 
     }
 
@@ -131,7 +131,7 @@ const Header = () => {
             </div>
             <div className='right_div'>
                 <Search
-                    placeholder="請輸入關鍵字..."
+                    placeholder="請輸入教案關鍵字..."
                     allowClear
                     size="large"
                     onChange={(e) => setInputValue(e.target.value)}
