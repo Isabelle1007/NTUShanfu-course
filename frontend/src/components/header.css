@@ -4,6 +4,7 @@
     left: 0;
     height: 100px;
     width: 100%;
+    z-index: 1;
     border-bottom: 30px solid #FF8702;
     background-color: #ffffff;
     display: flex;
@@ -13,7 +14,7 @@
 }
 
 .header__logo {
-    margin: 0px 20px;
+    margin: 0px 30px;
     width: 300px;
     height: 64px;
     background-image: url(../images/NTUShanfu_black.png);
@@ -42,34 +43,6 @@
     font-size: 18px;
  }
 
-.header__links {
-    margin: 0px 20px;
-    display: flex;
-}
-
-.header__link-icon-profile {
-    width: 56px;
-    height: 56px;
-    cursor: pointer;
-    background-image: url(../images/member.png);
-    background-size: contain;
-    position: relative;
-}
-
-.header__link-icon-member-level {
-    position: absolute;
-    bottom: 0;
-    right: -5px;
-    width: 24px;
-    height: 24px;
-    background-color: #8b572a;
-    color: white;
-    border-radius: 50%;
-    text-align: center;
-    font-size: 10px;
-    line-height: 24px;
-}
-
 @media screen and (max-width: 600px) {
     .header {
         height: 52px;
@@ -82,38 +55,5 @@
     .header__logo {
         width: 129px;
         height: 24px;
-    }
-
-    .header__search-input {
-        width: 0;
-        border: none;
-        position: fixed;
-        right: 16px;
-        background-size: 32px;
-        background-position: right center;
-    }
-
-    .header__links {
-        width: 100%;
-        margin-left: 0;
-        height: 60px;
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        background-color: #313538;
-    }
-
-    .header__link {
-        width: 50%;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-    }
-
-    .header__link-text {
-        display: block;
-        color: white;
     }
 }

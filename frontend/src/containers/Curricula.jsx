@@ -3,6 +3,10 @@ import { FilterContext } from "../App";
 import Header from "../components/header";
 import Footer from "../components/footer";
 
+import { Avatar, Card } from 'antd';
+const { Meta } = Card;
+import { HeartOutlined, EllipsisOutlined } from '@ant-design/icons';
+
 import { api } from '../utils/api'
 
 import './Curricula.css'
@@ -52,29 +56,56 @@ function ShowCurrirula() {
     });
     intersectionObserver.observe(document.querySelector('.waypoint'));
   }, []);
+  
+  const AvatarWithText = ({ src, text, count }) => (
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+       <div style={{display: 'flex', alignItems: 'center'}}>
+        {[...Array(count)].map((_, index) => (
+          <Avatar key={index} src={src} style={{ marginLeft: '8px', marginRight: '8px' }} />
+        ))}
+       </div>
+      <span>{text}</span>
+    </div>
+  );
 
   return (
     <>
-      <div className="curricula">
-        {
-          curricula.length === 0 ? (
-            <p>尚無教案紙</p>
-          ):(
-              curricula.map((curriculum) => (
-                <a
-                  className="curriculum"
-                  key={curriculum.id}
-                  href={`${api.hostname_fe}/curriculum?id=${curriculum.id}`}
-                >
-                  {/* <img src={curriculum.xxx} className="product__image" /> */}
-                  <div className="curriculum__title">{curriculum.title}</div>
-                  <div className="curriculum__price">期數：{curriculum.semester}</div>
-                  <div className="curriculum__price">家別：{curriculum.home}</div>
-                  <div className="curriculum__price">類別：{curriculum.type}</div>
-                </a>
-              ))
-          )
-        }
+      <div className="curricula__container">
+        <div className="curricula">
+          {
+            curricula.length === 0 ? (
+              <p>尚無教案紙</p>
+            ):(
+                curricula.map((curriculum) => (
+                    <a
+                      className="curriculum"
+                      key={curriculum.id}
+                      href={`${api.hostname_fe}/curriculum?id=${curriculum.id}`}
+                    >
+                      <Card
+                        cover={
+                          <img
+                              alt="picture_example"
+                              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                          />
+                        }
+                        actions={[
+                            <HeartOutlined key="favorite"/>,
+                            <EllipsisOutlined key="ellipsis" />
+                        ]}
+                    >
+                        <Meta
+                            avatar={<AvatarWithText src="https://xsgames.co/randomusers/avatar.php?g=pixel" text={curriculum.author.join(' ')} count={curriculum.author.length}/>}
+                            title={curriculum.title}
+                            description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
+                        />
+                        
+                    </Card>
+                    </a>
+                ))
+            )
+          }
+        </div>
       </div>
       <div className="waypoint"></div>
       </>
@@ -87,9 +118,9 @@ const Curricula = () => {
   
   return (
     <>
-      <Header />
+      <Header/>
       <ShowCurrirula />
-      <Footer />
+      <Footer/>
     </>
   );
 };
