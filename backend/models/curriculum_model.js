@@ -142,6 +142,53 @@ const getCurriculumByType = async (type) => {
     }
 };
 
+const getCurriculumBySemester = async (semester) => {
+    let curr = []
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, t.t_name, f.url, c.created_at
+                   FROM curricula c 
+                   JOIN user_curriculum u_c ON c.id = u_c.cid 
+                   JOIN users u ON u_c.uid = u.id 
+                   JOIN homes h ON c.home_id = h.id 
+                   JOIN types t ON c.type_id = t.id 
+                   LEFT JOIN files f ON c.file_id = f.id
+                   WHERE c.semester = '${semester}'
+                   GROUP BY c.id, c.title, c.semester, h.h_name, t.t_name, f.url, c.created_at`
+    const [result] = await pool.execute(query);
+    try{
+        if(result.length > 0){
+            for(var i = 0; i < result.length; i++){
+                let date = changeDataFormat(result[i].created_at) 
+                let authors = result[i].authors.split(","); // Split the authors string into an array               
+                let curriculum = {
+                    "id": result[i].id,
+                    "title": result[i].title,
+                    "author": authors,
+                    "semester": result[i].semester,
+                    "home": result[i].h_name,
+                    "type": result[i].t_name,
+                    "file": result[i].url,
+                    "created": date
+                }
+                curr.push(curriculum)
+            }
+        }
+        if(curr.length > 0){
+            return {
+                "message": "Success",
+                "code": "000",
+                "data": curr
+            }
+        }else{
+            return {
+                "message": `No Currirula of semester '${semester}'`,
+                "code": "001"
+            }
+        }
+    }catch(err){
+        return err
+    }
+};
+
 const getCurriculumByUserId = async (id) => {
     let curr = [];
     const query = `SELECT c.id, c.title, 
@@ -289,7 +336,8 @@ module.exports = {
     getCurricula,
     getCurriculumByHome,
     getCurriculumByType,
-    getCurriculumByUserId,
+    getCurriculumBySemester,
     getCurriculumByKeyWord,
+    getCurriculumByUserId,
     createCurriculum
 };

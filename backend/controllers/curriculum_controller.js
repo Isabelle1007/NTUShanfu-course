@@ -22,6 +22,12 @@ const getCurriculumByType = async (req, res) => {
     res.json(data);
 };
 
+const getCurriculumBySemester = async (req, res) => {
+    const semester = req.params.semester;
+    const data = await Curriculum.getCurriculumBySemester(semester);
+    res.json(data);
+};
+
 const getCurriculumByUser = async (req, res) => {
     const userId = req.params.id;
     const data = await Curriculum.getCurriculumByUserId(userId);
@@ -77,7 +83,8 @@ module.exports = {
     getCurricula,
     getCurriculumByHome,
     getCurriculumByType,
-    getCurriculumByUser,
+    getCurriculumBySemester,
     getCurriculumByKeyword,
+    getCurriculumByUser,
     postCurriculum
 };
