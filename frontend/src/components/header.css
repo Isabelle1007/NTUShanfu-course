@@ -4,12 +4,12 @@
     left: 0;
     height: 100px;
     width: 100%;
-    border-bottom: 40px solid #FF8702;
+    border-bottom: 30px solid #FF8702;
     background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: PingFangTC;
+    font-family: Arial;
 }
 
 .header__logo {

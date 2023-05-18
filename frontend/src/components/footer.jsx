@@ -16,19 +16,21 @@ const Footer = () => {
 
     return (
         <div className='footer'>
-            <Button 
-                shape="square" 
-                icon={<FacebookOutlined />} 
-                size="large"
-                style={{
-                    color: colors.colorWhite,
-                    backgroundColor: colors.colorPrimary,
-                    border: 'solid 1px colors.colorWhite', 
-                    margin: '0px 10px' // u r d l
-                }}
-                onClick={handleFacebookButtonClick}
-            />
-            <p style = {{ margin: '0px 10px' }}>© Copyright NTU SHANFU. All Rights Reserved</p>
+            <div className='footer__container'>
+                <Button 
+                    shape="square" 
+                    icon={<FacebookOutlined />} 
+                    size="large"
+                    style={{
+                        color: colors.colorWhite,
+                        backgroundColor: '#000000',
+                        border: 'solid 1px colors.colorWhite', 
+                        margin: '0px 10px' // u r d l
+                    }}
+                    onClick={handleFacebookButtonClick}
+                />
+                <p style = {{ margin: '0px 10px' }}>© Copyright NTU SHANFU. All Rights Reserved</p>
+            </div>
         </div>
     );
 }

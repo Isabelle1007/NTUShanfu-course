@@ -28,7 +28,7 @@ const Header = () => {
                 const list = json.data.home_name_list;
                 const transformedHomes = list.map((home) => ({
                     label: (
-                        <a href={`${api.hostname_fe}/curricula/home/${home}`} target="_self" rel="noreferrer">{home}</a>
+                        <a href={`${api.hostname_fe}/curricula?home=${home}`} target="_self" rel="noreferrer">{home}</a>
                     ),
                     key: `${home}`
                 }));
@@ -45,7 +45,7 @@ const Header = () => {
                 const list = json.data.type_name_list;
                 const transformedTypes = list.map((type) => ({
                     label: (
-                        <a href={`${api.hostname_fe}/curricula/type/${type}`} target="_self" rel="noreferrer">{type}</a>
+                        <a href={`${api.hostname_fe}/curricula?type=${type}`} target="_self" rel="noreferrer">{type}</a>
                     ),
                     key: `${type}`
                 }));
@@ -66,7 +66,7 @@ const Header = () => {
         }
         const transformedSemesters = list.map((s) => ({
             label: (
-                <a href={`${api.hostname_fe}/curricula/semester/${s}`} target="_self" rel="noreferrer">{s}</a>
+                <a href={`${api.hostname_fe}/curricula?semester=${s}`} target="_self" rel="noreferrer">{s}</a>
             ),
             key: `${s}`
         }));
@@ -106,6 +106,7 @@ const Header = () => {
     const navigate = useNavigate();
     const navTo = (path) => {
         navigate(path); 
+        window.location.reload();
     }
 
     const refresh = () => {
@@ -119,13 +120,24 @@ const Header = () => {
 
     const { Search } = Input;
     const onSearch = () => {
-        navigate(`/curricula/search/${inputValue}`) 
+        navigate(`/curricula?keyword=${inputValue}`);
+        window.location.reload();
     }
 
     return (
         <div className="header">
             <div className='left_div'>
                 <a className="header__logo" onClick={() => refresh()} />
+                <Button 
+                    shape="square" 
+                    size="large"
+                    style={{
+                        color: colors.colorLightOrange,
+                        border: 'solid 1px colors.colorWhite', 
+                        margin: '0px 10px' // u r d l
+                    }}
+                    onClick={ () => navTo('/curricula/all')}
+                >所有教案紙</Button>
                 <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} className='menu'/>
             </div>
             <div className='right_div'>
@@ -158,7 +170,6 @@ const Header = () => {
                 />
             </div>
         </div>
-        
     );
 }
 export default Header;

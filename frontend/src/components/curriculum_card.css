@@ -1,7 +1,6 @@
 .curriculum{
-    height: 300px;
-    min-width: 250px;
-    border: solid 1px black;
+    height: 290px;
+    width: 250px;
     margin: 20px;
     display: flex;
     align-items: start;

@@ -3,11 +3,16 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    height: 100px;
     width: 100%;
-    background-color: #FF8702;
+    background-color: #000000;
+    font-family: Arial;
+}
+
+.footer__container {
+    max-width: 1200px;
+    height: 80px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: Arial;
-}
+  }
