@@ -1,0 +1,10 @@
+.curriculum{
+    height: 300px;
+    min-width: 250px;
+    border: solid 1px black;
+    margin: 20px;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    font-family: Arial;
+}

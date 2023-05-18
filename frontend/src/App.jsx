@@ -38,6 +38,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Home/>} />
+          <Route exact path="/curricula" element={<Main/>} />
           <Route exact path="/curricula/home/:home" element={<Main/>} />
           <Route exact path="/curricula/type/:type" element={<Main/>} />
           <Route exact path="/curricula/semester/:semester" element={<Main/>} />

@@ -104,8 +104,7 @@ const Header = () => {
     ]
 
     const navigate = useNavigate();
-
-    const navToOtherPage = (path) => {
+    const navTo = (path) => {
         navigate(path); 
     }
 
@@ -155,7 +154,7 @@ const Header = () => {
                         color: colors.colorLightOrange,
                         margin: '0px 20px 0px 0px'
                     }}
-                    onClick={ isLogin ? () => navToOtherPage('/profile') : () => navToOtherPage('/login')}
+                    onClick={ isLogin ? () => navTo('/profile') : () => navTo('/login')}
                 />
             </div>
         </div>
