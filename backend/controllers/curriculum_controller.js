@@ -78,7 +78,8 @@ const postCurriculum = async (req, res) => {
         semester: body.semester,
         home_id: homeID,
         type_id: typeID,
-        file_url: body.file ? body.file : null
+        file_url: body.file ? body.file : null,
+        last_update: body.last_update
     }
 
     const createNewCurriculum = await Curriculum.createCurriculum(curriculum);

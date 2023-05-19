@@ -25,6 +25,11 @@ export const api = {
     },
     getCurriculumByID(id){
         return fetch(`${this.hostname_be}/api/curriculum/id/${id}`).then(response => response.json());
-    }
-
+    },
+    postCurriculum(data){
+        return fetch(`${this.hostname_be}/api/curriculum/upload`, {
+            body: JSON.stringify(data),
+            method: 'POST',
+          }).then(response => response.json());
+    },
 };
