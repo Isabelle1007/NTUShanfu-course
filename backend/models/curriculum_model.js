@@ -286,6 +286,52 @@ const getCurriculumByKeyWord = async (kw) => {
     }
 };
 
+const getCurriculumByID = async (id) => {
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, t.t_name, f.url, c.created_at
+                   FROM curricula c 
+                   JOIN user_curriculum u_c ON c.id = u_c.cid 
+                   JOIN users u ON u_c.uid = u.id 
+                   JOIN homes h ON c.home_id = h.id 
+                   JOIN types t ON c.type_id = t.id 
+                   LEFT JOIN files f ON c.file_id = f.id
+                   WHERE c.id = ${id}
+                   GROUP BY c.id, c.title, c.semester, h.h_name, t.t_name, f.url, c.created_at`
+    const [result] = await pool.execute(query);
+    try{
+        if(result.length === 1){
+            let date = changeDataFormat(result[0].created_at) 
+            let authors = result[0].authors.split(","); // Split the authors string into an array               
+            let curriculum = {
+                "id": result[0].id,
+                "title": result[0].title,
+                "author": authors,
+                "semester": result[0].semester,
+                "home": result[0].h_name,
+                "type": result[0].t_name,
+                "file": result[0].url,
+                "created": date
+            }
+            return {
+                "message": "Success",
+                "code": "000",
+                "data": curriculum
+            }
+        }
+        if(result.length === 0){
+            return {
+                "message": `No Currirula of id '${id}'`,
+                "code": "001"
+            }
+        }
+        return {
+            "message": 'Server Response Error',
+            "code": "999"
+        }
+    }catch(err){
+        return err
+    }
+};
+
 const createCurriculum = async(c) => {
 
     let newFile_id = -1;
@@ -339,5 +385,6 @@ module.exports = {
     getCurriculumBySemester,
     getCurriculumByKeyWord,
     getCurriculumByUserId,
+    getCurriculumByID,
     createCurriculum
 };

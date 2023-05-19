@@ -40,6 +40,12 @@ const getCurriculumByKeyword = async (req, res) => {
     res.json(data);
 };
 
+const getCurriculumByID = async (req, res) => {
+    const id = req.params.id;
+    const data = await Curriculum.getCurriculumByID(id);
+    res.json(data);
+};
+
 // insert data into db
 const postCurriculum = async (req, res) => {
 
@@ -85,6 +91,7 @@ module.exports = {
     getCurriculumByType,
     getCurriculumBySemester,
     getCurriculumByKeyword,
+    getCurriculumByID,
     getCurriculumByUser,
     postCurriculum
 };

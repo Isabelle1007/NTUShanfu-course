@@ -23,5 +23,8 @@ export const api = {
     getCurriculaByKeyword(keyword){
         return fetch(`${this.hostname_be}/api/curriculum/search/${keyword}`).then(response => response.json());
     },
+    getCurriculumByID(id){
+        return fetch(`${this.hostname_be}/api/curriculum/id/${id}`).then(response => response.json());
+    }
 
 };
