@@ -1,0 +1,9 @@
+.curriculum__container{
+  width: 1200px;
+  /* min-height: 100vh; */
+  margin: 0px auto;
+  padding: 80px 0 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}

@@ -18,7 +18,6 @@ function ShowCurrirula() {
   useEffect(() => {
 
     let isFetching = false;
-
     const intersectionObserver = new IntersectionObserver((entries) => {
       if (entries[0].intersectionRatio <= 0) return;
 
@@ -70,8 +69,7 @@ function ShowCurrirula() {
 
   return (
     <>
-      <div className="curricula__container">
-        <div className="curricula">
+        <div className="curricula__container">
           {
             curricula.length === 0 ? (
               <p>尚無教案紙</p>
@@ -93,20 +91,19 @@ function ShowCurrirula() {
                             <HeartOutlined key="favorite"/>,
                             <EllipsisOutlined key="ellipsis" />
                         ]}
-                    >
-                        <Meta
-                            avatar={<AvatarWithText src="https://xsgames.co/randomusers/avatar.php?g=pixel" text={curriculum.author.join(' ')} count={curriculum.author.length}/>}
-                            title={curriculum.title}
-                            description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
-                        />
-                        
-                    </Card>
+                      >
+                          <Meta
+                              avatar={<AvatarWithText src="https://xsgames.co/randomusers/avatar.php?g=pixel" text={curriculum.author.join(' ')} count={curriculum.author.length}/>}
+                              title={curriculum.title}
+                              description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
+                          />
+                          
+                      </Card>
                     </a>
                 ))
             )
           }
         </div>
-      </div>
       <div className="waypoint"></div>
       </>
   );

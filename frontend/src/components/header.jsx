@@ -59,9 +59,9 @@ const Header = () => {
     const getSemester = () => {
         const list = []
         for(var i = 23; i > 17; i--){
-            const s1 = `${i}冬`
+            const s1 = `${i}夏`
             list.push(s1)
-            const s2 = `${i}夏`
+            const s2 = `${i}冬`
             list.push(s2)
         }
         const transformedSemesters = list.map((s) => ({
