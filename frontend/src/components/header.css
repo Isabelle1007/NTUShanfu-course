@@ -23,14 +23,14 @@
 
 }
 
-.left_div {
+.left__div {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: start;
 }
 
-.right_div {
+.right__div {
     display: flex;
     flex-direction: row;
     align-items: center;

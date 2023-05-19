@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './containers/Home'
 import Curricula from './containers/Curricula'
 import Curriculum from './containers/Curriculum'
+import UploadCurriculum from './containers/UploadCurriculum'
 import Profile from './containers/Profile'
 import LogIn from './containers/LogIn'
 
@@ -24,6 +25,9 @@ export const FilterContext = React.createContext();
 function App() {
 
   const [loading, setLoading] = useState(false)
+  const [homes, setHomes] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [semesters, setSemesters] = useState([]);
 
   useEffect(() => {
     // console.log('useEffect in App.jsx')
@@ -32,7 +36,7 @@ function App() {
   return (
     <FilterContext.Provider 
       value={{
-        loading, setLoading, colors
+        loading, setLoading, colors, homes, setHomes, types, setTypes, semesters, setSemesters
       }}
     > 
       <BrowserRouter>
@@ -41,6 +45,7 @@ function App() {
           <Route exact path="/curricula/all" element={<Curricula/>} />
           <Route exact path="/curricula/*" element={<Curricula/>} />
           <Route exact path="/curriculum/*" element={<Curriculum />} />
+          <Route exact path="/curriculum/upload" element={<UploadCurriculum />} />
           <Route exact path="/profile" element={<Profile/>} />
           <Route exact path="/login" element={<LogIn/>} />
         </Routes>

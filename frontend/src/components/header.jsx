@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Menu } from 'antd';
-import { HomeOutlined, TagsOutlined, FieldTimeOutlined, UserOutlined } from '@ant-design/icons';
+import { FileTextOutlined, HomeOutlined, TagsOutlined, FieldTimeOutlined, UserOutlined } from '@ant-design/icons';
 import { Input, Button } from 'antd';
 
 import { FilterContext } from "../App";
@@ -13,11 +13,7 @@ import './header.css'
 
 const Header = () => {
 
-    const { colors } = useContext(FilterContext);
-
-    const [homes, setHomes] = useState([]);
-    const [types, setTypes] = useState([]);
-    const [semesters, setSemesters] = useState([]);
+    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters } = useContext(FilterContext);
 
     const [inputValue, setInputValue] = useState('');
     const [isLogin, setIsLogin] = useState(false);
@@ -83,20 +79,26 @@ const Header = () => {
     const [current, setCurrent] = useState();
     const items = [
         {
-          label: '依家別尋找',
+          label: (
+            <a href={`${api.hostname_fe}/curricula/all`} target="_self" rel="noreferrer">所有教案紙</a>
+          ),
+          key: 'all',
+          icon: <FileTextOutlined/>,
+        },
+        {
+          label: '家別',
           key: 'home',
           icon: <HomeOutlined/>,
-          
           children: homes
         },
         {
-            label: '依類別尋找',
+            label: '科別',
             key: 'type',
             icon: <TagsOutlined />,
             children: types
         },
         {
-            label: '依期數尋找',
+            label: '期數',
             key: 'semester',
             icon: <FieldTimeOutlined />,
             children: semesters
@@ -114,7 +116,6 @@ const Header = () => {
     }
 
     const onClick = (e) => {
-        console.log('click ', e);
         setCurrent(e.key);
     };
 
@@ -126,23 +127,11 @@ const Header = () => {
 
     return (
         <div className="header">
-            <div className='left_div'>
+            <div className='left__div'>
                 <a className="header__logo" onClick={() => refresh()} />
-                <Button 
-                    shape="square" 
-                    size="large"
-                    style={{
-                        color: colors.colorLightOrange,
-                        border: 'solid 1px colors.colorWhite', 
-                        margin: '0px 10px' // u r d l
-                    }}
-                    onClick={ () => navTo('/curricula/all')}
-                >所有教案紙</Button>
                 <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} className='menu'/>
-            </div>
-            <div className='right_div'>
                 <Search
-                    placeholder="請輸入教案關鍵字..."
+                    placeholder="請輸入關鍵字搜尋..."
                     allowClear
                     size="large"
                     onChange={(e) => setInputValue(e.target.value)}
@@ -158,6 +147,18 @@ const Header = () => {
                         margin: '0px 20px'
                     }}
                 />
+            </div>
+            <div className='right__div'>
+                <Button 
+                    shape="square" 
+                    size="large"
+                    style={{
+                        color: colors.colorLightOrange,
+                        border: 'solid 1px colors.colorWhite', 
+                        margin: '0px 10px' // u r d l
+                    }}
+                    onClick={ () => navTo('/curriculum/upload')}
+                >上傳教案紙</Button>
                 <Button 
                     shape="circle" 
                     icon={<UserOutlined />} 
