@@ -26,6 +26,9 @@ app.use('/api/type', typeRouter);
 const homeRouter = require('./routes/home_route');
 app.use('/api/home', homeRouter);
 
+const fileRouter = require('./routes/file_route');
+app.use('/api/file', fileRouter);
+
 // Listen on server port
 const port = PORT || 4001;
 app.listen(port, (req, res) => {
