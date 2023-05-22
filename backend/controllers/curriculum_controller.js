@@ -50,7 +50,6 @@ const getCurriculumByID = async (req, res) => {
 const postCurriculum = async (req, res) => {
 
     const body = req.body;
-
     let authors_id;
     const getUserID = await User.getIdByUserName(body.author);
     if(getUserID.code != '000')

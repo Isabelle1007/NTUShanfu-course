@@ -1,8 +1,8 @@
 export const api = {
-    hostname_be: 'http://18.182.163.170:4000',
-    hostname_fe: 'http://18.182.163.170:3000',
-    // hostname_be: 'http://localhost:4000',
-    // hostname_fe: 'http://localhost:3000',
+    // hostname_be: 'http://18.182.163.170:4000',
+    // hostname_fe: 'http://18.182.163.170:3000',
+    hostname_be: 'http://localhost:4000',
+    hostname_fe: 'http://localhost:3000',
    
     getAllHomes() {
         return fetch(`${this.hostname_be}/home/all`).then(response => response.json());
@@ -28,9 +28,15 @@ export const api = {
     getCurriculumByID(id){
         return fetch(`${this.hostname_be}/curriculum/id/${id}`).then(response => response.json());
     },
+    getAllUsers(){
+        return fetch(`${this.hostname_be}/user/all`).then(response => response.json());
+    },
     postCurriculum(data){
         return fetch(`${this.hostname_be}/curriculum/upload`, {
             body: JSON.stringify(data),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+            }),
             method: 'POST',
           }).then(response => response.json());
     },
