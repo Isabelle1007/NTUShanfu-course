@@ -212,7 +212,7 @@ const UploadCurriculum = () => {
           >
             <div style={{marginLeft: '500px', marginTop: '-160px', width: '240px'}}>
               <Upload 
-                action={`${api.hostname_be}/api/file/upload`} 
+                action={`${api.hostname}/api/file/upload`} 
                 accept=".doc,.docx"
                 listType="picture-card" 
                 fileList={fileList}

@@ -4,31 +4,31 @@ export const api = {
     // hostname_fe: 'http://localhost:3000',
    
     getAllHomes() {
-        return fetch(`${this.hostname_be}/api/home/all`).then(response => response.json());
+        return fetch(`${this.hostname}/api/home/all`).then(response => response.json());
     },
     getAllTypes() {
-        return fetch(`${this.hostname_be}/api/type/all`).then(response => response.json());
+        return fetch(`${this.hostname}/api/type/all`).then(response => response.json());
     },
     getAllCurricula() {
-        return fetch(`${this.hostname_be}/api/curriculum/all`).then(response => response.json());
+        return fetch(`${this.hostname}/api/curriculum/all`).then(response => response.json());
     },
     getCurriculaByHome(home){
-        return fetch(`${this.hostname_be}/api/curriculum/home/${home}`).then(response => response.json());
+        return fetch(`${this.hostname}/api/curriculum/home/${home}`).then(response => response.json());
     },
     getCurriculaByType(type){
-        return fetch(`${this.hostname_be}/api/curriculum/type/${type}`).then(response => response.json());
+        return fetch(`${this.hostname}/api/curriculum/type/${type}`).then(response => response.json());
     },
     getCurriculaBySemester(semester){
-        return fetch(`${this.hostname_be}/api/curriculum/semester/${semester}`).then(response => response.json());
+        return fetch(`${this.hostname}/api/curriculum/semester/${semester}`).then(response => response.json());
     },
     getCurriculaByKeyword(keyword){
-        return fetch(`${this.hostname_be}/api/curriculum/search/${keyword}`).then(response => response.json());
+        return fetch(`${this.hostname}/api/curriculum/search/${keyword}`).then(response => response.json());
     },
     getCurriculumByID(id){
-        return fetch(`${this.hostname_be}/api/curriculum/id/${id}`).then(response => response.json());
+        return fetch(`${this.hostname}/api/curriculum/id/${id}`).then(response => response.json());
     },
     postCurriculum(data){
-        return fetch(`${this.hostname_be}/api/curriculum/upload`, {
+        return fetch(`${this.hostname}/api/curriculum/upload`, {
             body: JSON.stringify(data),
             method: 'POST',
           }).then(response => response.json());
