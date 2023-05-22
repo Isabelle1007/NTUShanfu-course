@@ -12,22 +12,22 @@ app.use(express.json())
 
 // Router
 const basicRouter = require('./routes/basic_route');
-app.use('/api', basicRouter);
+app.use('/', basicRouter);
 
 const curriculumRouter = require('./routes/curriculum_route');
-app.use('/api/curriculum', curriculumRouter);
+app.use('/curriculum', curriculumRouter);
 
 const userRouter = require('./routes/user_route');
-app.use('/api/user', userRouter);
+app.use('/user', userRouter);
 
 const typeRouter = require('./routes/type_route');
-app.use('/api/type', typeRouter);
+app.use('/type', typeRouter);
 
 const homeRouter = require('./routes/home_route');
-app.use('/api/home', homeRouter);
+app.use('/home', homeRouter);
 
 const fileRouter = require('./routes/file_route');
-app.use('/api/file', fileRouter);
+app.use('/file', fileRouter);
 
 // Listen on server port
 const port = PORT || 4001;
