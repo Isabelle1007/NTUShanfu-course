@@ -1,17 +1,14 @@
-FROM node:alpine as BUILD_IMAGE
+FROM node
+
 WORKDIR /app
-COPY package.json package-lock.json ./
+
+COPY package.json .
+
 # install dependencies
 RUN npm install
-COPY . .
-# build
-RUN npm run build
 
-FROM node:alpine
-WORKDIR /app
-# copy from build image
-COPY --from=BUILD_IMAGE /app/package.json ./package.json
-COPY --from=BUILD_IMAGE /app/node_modules ./node_modules
-COPY --from=BUILD_IMAGE /app/public ./public
-EXPOSE 5173
+COPY . .
+
+EXPOSE 3000
+
 CMD ["npm", "run", "dev"]

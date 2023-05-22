@@ -20,7 +20,7 @@ services:
     restart: always
     container_name: shanfu-backend
     ports:
-      - "4002:4002"
+      - "4000:4000"
     networks:
       shanfu-network:
 
@@ -29,7 +29,7 @@ services:
     restart: always
     container_name: shanfu-frontend
     ports:
-      - "5173:5173"
+      - "3000:3000"
     networks:
       shanfu-network:
 
