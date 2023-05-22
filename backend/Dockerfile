@@ -1,6 +1,6 @@
 FROM node:16-alpine
 
-WORKDIR /usr/src/app/backend
+WORKDIR /index
 
 COPY ["package.json", "package-lock.json*", "./"]
 

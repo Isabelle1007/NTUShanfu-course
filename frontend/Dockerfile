@@ -1,13 +1,15 @@
 FROM node
 
-WORKDIR /app
+WORKDIR /index
 
-COPY package.json .
+COPY ["package.json", "package-lock.json*", "./"]
 
 # install dependencies
 RUN npm install
 
 COPY . .
+
+RUN npm run build
 
 EXPOSE 3000
 
