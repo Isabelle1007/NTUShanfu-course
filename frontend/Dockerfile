@@ -13,5 +13,5 @@ WORKDIR /app
 COPY --from=BUILD_IMAGE /app/package.json ./package.json
 COPY --from=BUILD_IMAGE /app/node_modules ./node_modules
 COPY --from=BUILD_IMAGE /app/public ./public
-EXPOSE 3001
+EXPOSE 5173
 CMD ["npm", "run", "dev"]
