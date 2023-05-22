@@ -1,7 +1,9 @@
 export const api = {
-    // hostname: 'http://18.182.163.170',
-    hostname_be: 'http://localhost:4000',
-    hostname_fe: 'http://localhost:3000',
+    hostname_be: 'http://18.182.163.170:4000',
+    // hostname_be: 'http://localhost:4000',
+    hostname_fe: 'http://18.182.163.170:3000',
+    // hostname_fe: 'http://localhost:3000',
+   
     getAllHomes() {
         return fetch(`${this.hostname_be}/api/home/all`).then(response => response.json());
     },
