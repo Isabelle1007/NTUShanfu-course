@@ -13,6 +13,7 @@
     "@ant-design/icons": "^5.0.1",
     "antd": "^5.5.0",
     "react": "^18.2.0",
+    "react-doc-viewer": "^0.1.5",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.1"
   },

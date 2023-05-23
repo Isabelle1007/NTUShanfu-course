@@ -5,16 +5,8 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { api } from '../utils/api'
 
-import { Card, Cascader, DatePicker, Form, Input, InputNumber, Radio, Select, Upload, } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-
-const { TextArea } = Input;
-const normFile = (e) => {
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e?.fileList;
-};
+import { Card, Form } from 'antd';
+import DocViewer from 'react-doc-viewer';
 
 const Curriculum = () => {
 
@@ -24,83 +16,10 @@ const Curriculum = () => {
   const [displayDate, setDisplayDate] = useState('');
   const id = new URLSearchParams(location.search).get('id');
 
-  const fake_names_list = [
-    {
-    value: '加拿',
-    label: '加拿',
-    children: [
-      {
-        value: '劉宥廷',
-        label: '劉宥廷'
-      },
-      {
-        value: '陳彥廷',
-        label: '陳彥廷'
-      },
-      {
-        value: '李浩然',
-        label: '李浩然'
-      }
-    ]
-  },
-  {
-    value: '新武',
-    label: '新武',
-    children: [
-      {
-        value: '陳涵',
-        label: '陳涵'
-      },
-      {
-        value: '何安婕',
-        label: '何安婕'
-      },
-      {
-        value: '陳建宇',
-        label: '陳建宇'
-      },
-      {
-        value: '許祐嘉',
-        label: '許祐嘉'
-      }
-    ]
-  },
-  {
-    value: '霧鹿',
-    label: '霧鹿',
-    children: [
-      {
-        value: '江嶸',
-        label: '江嶸'
-      },
-      {
-        value: '戴悅鈴',
-        label: '戴悅鈴'
-      },
-      {
-        value: '黃喬柔',
-        label: '黃喬柔'
-      }
-    ]
-  },
-  {
-    value: '利稻',
-    label: '利稻',
-    children: [
-      {
-        value: '陳忠峻',
-        label: '陳忠峻'
-      },
-      {
-        value: '王宇彤',
-        label: '王宇彤'
-      },
-      {
-        value: '陳則宇',
-        label: '陳則宇'
-      }
-    ]
-  }]
+  const docs = [
+    { uri: 'https://doc-file-uploads.s3.ap-northeast-1.amazonaws.com/2023%E5%8F%B0%E5%A4%A7%E5%B1%B1%E6%9C%8D%E5%86%AC%E4%BB%A4%E7%87%9F_%E6%96%B0%E6%AD%A6%E5%AE%B6_%E7%B6%9C%E5%90%88_%E7%84%A1%E6%95%B5%E7%A0%B4%E5%A3%9E%E7%8E%8B2_%E4%BB%BB%E9%87%87%E8%93%81_20230120.docx'},
+    { uri : 'https://www.flaticon.com/free-icon/paper_2541979?term=paper&page=1&position=2&origin=search&related_id=2541979'},
+  ]
 
   useEffect(() => {
     api.getCurriculumByID(id).then((json) => {
@@ -152,9 +71,9 @@ const Curriculum = () => {
           <Form.Item label="檔案">
             <div className='input' >TBC...</div>
           </Form.Item>
-          
         </Form>
       </Card>
+      {/* <DocViewer documents={docs}/> */}
     </div>
     <Footer/>
     </>
