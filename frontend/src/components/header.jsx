@@ -143,7 +143,7 @@ const Header = () => {
                     }}
                     style={{
                         width: 300,
-                        color: colors.colorLightOrange,
+                        color: colors.colorDarkOrange,
                         margin: '0px 20px'
                     }}
                 />
@@ -153,7 +153,7 @@ const Header = () => {
                     shape="square" 
                     size="large"
                     style={{
-                        color: colors.colorLightOrange,
+                        color: colors.colorDarkOrange,
                         border: 'solid 1px colors.colorWhite', 
                         margin: '0px 10px' // u r d l
                     }}
@@ -164,7 +164,7 @@ const Header = () => {
                     icon={<UserOutlined />} 
                     size="large"
                     style={{
-                        color: colors.colorLightOrange,
+                        color: colors.colorDarkOrange,
                         margin: '0px 20px 0px 0px'
                     }}
                     onClick={ isLogin ? () => navTo('/profile') : () => navTo('/login')}

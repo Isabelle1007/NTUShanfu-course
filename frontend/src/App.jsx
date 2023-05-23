@@ -11,13 +11,14 @@ import LogIn from './containers/LogIn'
 import './App.css'
 
 const colors = {
-  colorPrimary: '#FF8702',  //orange
+  colorPrimary: '#FAAC58', // Orange
+  colorSecondary: '#F7BE81', // Light Orange
+  colorDarkOrange: '#C48E67',
   colorGray: '#979797', 
   colorGreen: '#A2B8B1',
   colorBrown: '#B19A82',
-  colorLightOrange: '#C48E67',
   colorCoralRed: '#BA8B80',
-  colorWhite: '#FFFFFF'
+  colorWhite: '#FFFFFF',
 }
 
 export const FilterContext = React.createContext();
