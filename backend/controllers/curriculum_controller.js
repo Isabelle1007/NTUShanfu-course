@@ -48,39 +48,38 @@ const getCurriculumByID = async (req, res) => {
 
 // insert data into db
 const postCurriculum = async (req, res) => {
-
-    const body = req.body;
+    const { title, author, semester, home, type, last_update, file } = req.body
     let authors_id;
-    const getUserID = await User.getIdByUserName(body.author);
+    const getUserID = await User.getIdByUserName(author);
     if(getUserID.code != '000')
         return res.json(getUserID)
     else
         authors_id = getUserID.data.id
 
     let homeID;
-    const getHomeID = await Home.getIdByHomeName(body.home);
+    const getHomeID = await Home.getIdByHomeName(home);
     if(getHomeID.code != '000')
         return res.json(getHomeID)
     else
         homeID = getHomeID.data.id
 
     let typeID;
-    const getTypeID = await Type.getIdByTypeName(body.type);
+    const getTypeID = await Type.getIdByTypeName(type);
     if(getTypeID.code != '000')
         return res.json(getTypeID)
     else
         typeID = getTypeID.data.id
 
     const curriculum = {
-        title: body.title,
+        title: title,
         author_id_list: authors_id,
-        semester: body.semester,
+        semester: semester,
         home_id: homeID,
         type_id: typeID,
-        file_url: body.file ? body.file : null,
-        last_update: body.last_update
+        file_url: file ? file : null,
+        last_update: last_update
     }
-
+    
     const createNewCurriculum = await Curriculum.createCurriculum(curriculum);
     res.json(createNewCurriculum)
 };

@@ -354,13 +354,13 @@ const createCurriculum = async(c) => {
         semester: c.semester,
         home_id: c.home_id,
         type_id: c.type_id,
-        last_update: c.last_update
+        last_update: c.last_update,
     }
     const conn = await pool.getConnection();
     try {
         await conn.query('START TRANSACTION');
         if(c.file_url != null){
-            const [result_f] = await conn.query('INSERT INTO files (url) VALUES ?', [c.file_url]);
+            const [result_f] = await conn.query('INSERT INTO files (url) VALUES (?)', [c.file_url]);
             newFile_id = result_f.insertId
             curriculum.file_id = newFile_id
         }
@@ -372,7 +372,7 @@ const createCurriculum = async(c) => {
             }
         }else{
             return {
-                "message": 'Curriculum Creation Failed',
+                "message": 'Server Response Error',
                 "code": "500"
             }
         }
@@ -382,6 +382,7 @@ const createCurriculum = async(c) => {
             "code": "000",
             "data": {
                 "id": newCurriID,
+                "title": curriculum.title
             }
         }
     } catch (error) {

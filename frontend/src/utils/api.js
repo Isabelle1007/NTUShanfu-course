@@ -31,6 +31,12 @@ export const api = {
     getAllUsers(){
         return fetch(`${this.hostname_be}/user/all`).then(response => response.json());
     },
+    postFile(formdata){
+        return fetch(`${this.hostname_be}/file/upload`, {
+            body: formdata,
+            method: 'POST',
+          }).then(response => response.json());
+    },
     postCurriculum(data){
         return fetch(`${this.hostname_be}/curriculum/upload`, {
             body: JSON.stringify(data),

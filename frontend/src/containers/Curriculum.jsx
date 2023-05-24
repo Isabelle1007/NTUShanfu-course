@@ -69,7 +69,7 @@ const Curriculum = () => {
             <div className='input' >{displayDate}</div>
           </Form.Item>
           <Form.Item label="檔案">
-            <div className='input' >TBC...</div>
+            <div className='input' >{curriculum.file}</div>
           </Form.Item>
         </Form>
       </Card>

@@ -26,7 +26,13 @@ const postFile = async (req, res) => {
             } else {
                 // Upload to S3
                 const result = await s3Uploadv2(req.file);
-                res.json(result);
+                res.json({
+                    "message": "Success",
+                    "code": "000",
+                    "data": {
+                        "file_info": result
+                    }
+                });
             }
         });
     } catch (err) {

@@ -6,13 +6,16 @@ import Footer from "../components/footer";
 import { api } from '../utils/api'
 
 import { Card, Button, DatePicker, Form, Input, Radio, Select, Upload, message } from 'antd';
-import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, SnippetsOutlined } from '@ant-design/icons';
+
+import Swal from 'sweetalert2'
 
 const UploadCurriculum = () => {
 
   const { colors, semesters, types } = useContext(FilterContext);
-  const [ curriculum, setCurriculum ] = useState([]);
-  const [ nameList, setNameList ] = useState([])
+  const [ nameList, setNameList ] = useState([]);
+  const [ fileData, setFileData ] = useState([]);
+  const [ uploadDone, setUploadDone ] = useState(false);
   const [ formValues, setFormValues ] = useState({
     'title': '',
     'author': [],
@@ -68,58 +71,96 @@ const UploadCurriculum = () => {
     }));
   };
 
-  const handleBeforeUpload = (file) => {
-    // console.log(file)
-    handleInputChange('file', file)
+  const handleBeforeUpload = (e) => {
+    setFileData(e)
     return false; // Prevent automatic upload
   };
 
   const uploadClick = async () => {
-    // const { file } = formValues.file;
-    // const formData = new FormData();
-    // formData.append('file', formValues.file);
-    // fetch(`${api.hostname_be}/file/upload`, {
-    //   method: 'POST',
-    //   body: formData,
-    // })
-    //   .then((response) => {
-    //     if (response.code === "000") {
-    //       // File upload successful
-    //       message.success(`${file.name} uploaded successfully.`);
-    //     } else {
-    //       // File upload failed
-    //       message.error('Upload failed');
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     // Handle any error that occurred during the upload
-    //     console.error('File upload error:', error);
-    //     message.error('An error occurred during file upload.');
-    //   });
 
-    setCurriculum(formValues);
+    // input data check
+    let isFormValuesComplete = true;
+    const keys = Object.keys(formValues);
 
-    api.postCurriculum(curriculum)
-      .then((json) => {
-        if(json.code === '000'){
-          console.log(json.data)
+    for (let i = 0; i < keys.length - 1; i++) {
+      const key = keys[i];
+      const value = formValues[key];
+
+      if (key != 'author') {
+        if (value === '') {
+          isFormValuesComplete = false;
+          break;
         }
-        else console.log(json.message)
-      })
-      .catch((err) => console.log(err))
-  };
+      } else {
+        if (value.length === 0) {
+          isFormValuesComplete = false;
+          break;
+        }
+      }
+    }
 
+    if(!isFormValuesComplete || fileData.length === 0){
+      Swal.fire({
+        title: 'Error!',
+        text: '請填入教案紙完整資訊',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false 
+      })
+      return
+    }
+
+    // upload file
+    let formdata = new FormData();
+    formdata.append('file', fileData);
+    formdata.append('name', 'test_file_name')
+  
+    let url;
+    try {
+      const fileUploadResponse = await api.postFile(formdata);
+      if (fileUploadResponse.code === '000') {
+        url = fileUploadResponse.data.file_info.Location;
+        handleInputChange('file', url);
+        setUploadDone(true)
+      } else {
+        console.log(fileUploadResponse.message);
+        setUploadDone(false)
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      setUploadDone(false)
+      return;
+    }
+  }
+  
   useEffect(() => {
     getUsers();
     }, []
   );
+
+  useEffect(() => {
+    // create new curriculum
+    if(uploadDone === true){
+      api.postCurriculum(formValues)
+      .then((json2) => {
+        if (json2.code != '000'){
+          console.log(json2.message);
+          message.error('教案新增失敗')
+        }else{
+          message.success('教案新增成功') 
+        }
+      })
+      .catch((err) => console.log(err));
+    }  
+  }, [uploadDone]);
 
   return (
     <>
       <Header/>
       <div className='upload__container'>
       <Card
-        title="上傳教案紙"
+        title="新教案紙"
         bordered={true}
         style={{
           width: 900
@@ -131,6 +172,7 @@ const UploadCurriculum = () => {
           layout="horizontal"
           style={{
             maxWidth: 600,
+            height: 370
           }}
         >
           <Form.Item label="教案名稱">
@@ -194,16 +236,20 @@ const UploadCurriculum = () => {
             <DatePicker 
               style={{marginLeft: '-170px', width: '240px'}} 
               onChange={handleDatePickerChange}
+              placeholder='請選擇日期'
             />
           </Form.Item>
           <Form.Item>
             <div style={{ marginLeft: '500px', marginTop: '-170px', width: '240px'}}>
               <Upload
-                action={`${api.hostname_be}/file/upload`}
                 accept=".doc, .docx"
                 listType="picture"
                 maxCount={1}
-                beforeUpload={ handleBeforeUpload }
+                beforeUpload={(e) => handleBeforeUpload(e)}
+                onRemove={() => {
+                  setFileData([]);
+                  setUploadDone(false)
+                }}
               >
                 <Button icon={<UploadOutlined />}>上傳教案紙</Button>
               </Upload>
@@ -212,12 +258,12 @@ const UploadCurriculum = () => {
         </Form>
         <Button 
           type="dashed" 
-          icon={<UploadOutlined />} 
+          icon={<SnippetsOutlined />} 
           size='large' 
-          style={{ width: '850px' }}
+          style={{ width: '850px', marginTop: '-20px'}}
           onClick={ uploadClick } 
         >
-          上傳教案紙
+           新增教案
         </Button>
       </Card>
       </div>
