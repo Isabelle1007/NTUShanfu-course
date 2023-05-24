@@ -124,8 +124,39 @@ const getIdByUserName = async (name_list) => {
     }
 };
 
+const postAnUser = async (req, homeID) => {
+    const { name, email, password, role_id, gender } = req.body
+    const conn = await pool.getConnection();
+    try{
+        const [result] = await conn.query('INSERT INTO users (u_name, email, password, role_id, home_id, gender ) VALUES (?,?,?,?,?,?)', [name, email, password, role_id, homeID, gender]);
+        let newUserID = result.insertId
+        if(newUserID != -1){
+            console.log(result)
+            return {
+                "message": "Success",
+                "code": "000",
+                "data":{
+                    "id": newUserID,
+                    "name": name,
+                    "email": email,
+                    "home": req.body.home,
+                    "gender": gender
+                }
+            }
+        }else{
+            return {
+                "message": "Server Response Error",
+                "code": "500"
+            }
+        }
+    }catch(err){
+        return err
+    }
+};
+
 module.exports = {
     getInfoByUserId,
     getInfoOfAllUsers,
-    getIdByUserName
+    getIdByUserName,
+    postAnUser
 };
