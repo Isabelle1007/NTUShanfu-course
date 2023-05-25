@@ -1,25 +1,64 @@
 import './Curriculum.css';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { FilterContext } from "../App";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import { api } from '../utils/api'
 
-import { Card, Form } from 'antd';
-import DocViewer from 'react-doc-viewer';
+import { Card, Form, Button} from 'antd';
+import { EyeOutlined, EyeInvisibleOutlined, DownloadOutlined } from '@ant-design/icons';
+
+import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import FileViewer from 'react-file-viewer-fix';
 
 const Curriculum = () => {
 
   const { colors } = useContext(FilterContext);
   const [ curriculum, setCurriculum ] = useState([]);
-  const [displayName, setDisplayName] = useState('');
-  const [displayDate, setDisplayDate] = useState('');
+  const [ displayName, setDisplayName ] = useState('');
+  const [ displayDate, setDisplayDate ] = useState('');
+  const [ openView, setOpenView ] = useState(false); 
   const id = new URLSearchParams(location.search).get('id');
 
-  const docs = [
-    { uri: 'https://doc-file-uploads.s3.ap-northeast-1.amazonaws.com/2023%E5%8F%B0%E5%A4%A7%E5%B1%B1%E6%9C%8D%E5%86%AC%E4%BB%A4%E7%87%9F_%E6%96%B0%E6%AD%A6%E5%AE%B6_%E7%B6%9C%E5%90%88_%E7%84%A1%E6%95%B5%E7%A0%B4%E5%A3%9E%E7%8E%8B2_%E4%BB%BB%E9%87%87%E8%93%81_20230120.docx'},
-    { uri : 'https://www.flaticon.com/free-icon/paper_2541979?term=paper&page=1&position=2&origin=search&related_id=2541979'},
-  ]
+  const [downloadedFile, setDownloadedFile] = useState(null);
+
+  const client = new S3Client({ 
+    region: 'ap-northeast-1',
+    credentials: {
+      accessKeyId: "AKIA4HQT7FC5HWVKMB7E",
+      secretAccessKey: "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",
+    }
+  })
+
+  const linkRef = useRef(null);
+
+  const downloadClick = async () => {
+      linkRef.current.click();
+  }
+
+  const viewFileClick = async () => {
+
+    setOpenView(!openView)
+    const command = new GetObjectCommand({
+      Bucket: "doc-file-uploads",
+      Key: `test/${curriculum.title}.pdf`
+    });
+
+    try {
+      const response = await client.send(command);
+      const reader = response.Body.getReader();
+      const chunks = [];
+      let chunk;
+      while (!(chunk = await reader.read()).done) {
+        chunks.push(chunk.value);
+      }
+      const fileBlob = new Blob(chunks, { type: 'application/octet-stream' });
+      const fileUrl = URL.createObjectURL(fileBlob);
+      setDownloadedFile(fileUrl);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   useEffect(() => {
     api.getCurriculumByID(id).then((json) => {
@@ -28,52 +67,81 @@ const Curriculum = () => {
         setDisplayName(json.data.author.join(', '));
         setDisplayDate(json.data.last_update.split(' ')[0]);
       }
-    }, []);
-  })
+    });
+  },[]);
 
   return (
     <>
       <Header/>
       <div className='curriculum__container'>
-      <Card
-        title={`教案紙 #${id}`}
-        bordered={true}
-        style={{
-          width: 900,
-        }}
-      >
-        <Form
-           labelCol={{ span: 6 }}
-           wrapperCol={{ span: 24 }}
-           layout="horizontal"
-           style={{
-             maxWidth: 600,
-           }}
+        <Card
+          title={`教案紙 #${id}`}
+          bordered={true}
+          style={{
+            width: 900,
+          }}
         >
-          <Form.Item label="教案名稱" >
-            <div className='input' >{curriculum.title}</div>
-          </Form.Item>
-          <Form.Item label="作者">
-            <div className='input'>{displayName}</div>
-          </Form.Item>
-          <Form.Item label="家別">
-            <div className='input' >{curriculum.home}</div>
-          </Form.Item>
-          <Form.Item label="期數">
-            <div className='input' >{curriculum.semester}</div>
-          </Form.Item>
-          <Form.Item label="科別">
-            <div className='input' >{curriculum.type}</div>
-          </Form.Item>
-          <Form.Item label="最後編輯日">
-            <div className='input' >{displayDate}</div>
-          </Form.Item>
-          <Form.Item label="檔案">
-            <div className='input' >{curriculum.file}</div>
-          </Form.Item>
-        </Form>
-      </Card>
-      {/* <DocViewer documents={docs}/> */}
+          <Form
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 24 }}
+            layout="horizontal"
+            style={{
+              maxWidth: 600,
+            }}
+          >
+            <Form.Item label="教案名稱" >
+              <div className='input' >{curriculum.title}</div>
+            </Form.Item>
+            <Form.Item label="作者">
+              <div className='input'>{displayName}</div>
+            </Form.Item>
+            <Form.Item label="家別">
+              <div className='input' >{curriculum.home}</div>
+            </Form.Item>
+            <Form.Item label="期數">
+              <div className='input' >{curriculum.semester}</div>
+            </Form.Item>
+            <Form.Item label="科別">
+              <div className='input' >{curriculum.type}</div>
+            </Form.Item>
+            <Form.Item label="最後編輯日">
+              <div className='input' >{displayDate}</div>
+            </Form.Item>
+            {/* <Form.Item label="檔案">
+              <div className='input' >{curriculum.file}</div>
+            </Form.Item> */}
+          </Form>
+        </Card>
+        <div style={{display: 'flex', justifyContent:'space-between', alignItems: 'center', marginTop: '10px'}}>
+          <Button 
+            type="dashed" 
+            icon={<DownloadOutlined />} 
+            size='large' 
+            style={{ width: '440px'}}
+            onClick={ downloadClick } 
+          >
+            下載教案紙
+          </Button>
+          <Button 
+            type="dashed" 
+            icon={ openView ? <EyeInvisibleOutlined /> : <EyeOutlined /> } 
+            size='large' 
+            style={{ width: '440px'}}
+            onClick={ viewFileClick } 
+          >
+            { openView ? '收起預覽教案紙': '預覽教案紙'}
+          </Button>
+        </div>
+        { downloadedFile && openView &&(
+          <div style={{ width: '900px'}}>
+            <FileViewer
+              fileType='pdf'
+              filePath={downloadedFile}
+              onError={console.error}
+            />
+          </div>
+        )}
+        <a ref={linkRef} href={curriculum.file_pdf} target="_blank" rel="noopener noreferrer" style={{ display: 'none' }}/>
     </div>
     <Footer/>
     </>

@@ -13,9 +13,15 @@ import Swal from 'sweetalert2'
 const UploadCurriculum = () => {
 
   const { colors, semesters, types } = useContext(FilterContext);
+
   const [ nameList, setNameList ] = useState([]);
-  const [ fileData, setFileData ] = useState([]);
-  const [ uploadDone, setUploadDone ] = useState(false);
+
+  const [ wordFileData, setWordFileData ] = useState([]);
+  const [ pdfFileData, setPdfFileData ] = useState([]);
+
+  const [ wordUploadDone, setWordUploadDone ] = useState(false);
+  const [ pdfUploadDone, setPdfUploadDone ] = useState(false);
+
   const [ formValues, setFormValues ] = useState({
     'title': '',
     'author': [],
@@ -23,7 +29,8 @@ const UploadCurriculum = () => {
     'home': '',
     'type': '',
     'last_update': '',
-    'file': ''
+    'file_word': '',
+    'file_pdf': ''
   });
 
   const getUsers = () => {
@@ -71,8 +78,11 @@ const UploadCurriculum = () => {
     }));
   };
 
-  const handleBeforeUpload = (e) => {
-    setFileData(e)
+  const handleBeforeUpload = (e, type) => {
+    if(type === 'w')
+      setWordFileData(e)
+    else
+      setPdfFileData(e)
     return false; // Prevent automatic upload
   };
 
@@ -82,7 +92,7 @@ const UploadCurriculum = () => {
     let isFormValuesComplete = true;
     const keys = Object.keys(formValues);
 
-    for (let i = 0; i < keys.length - 1; i++) {
+    for (let i = 0; i < keys.length - 2; i++) {
       const key = keys[i];
       const value = formValues[key];
 
@@ -99,7 +109,7 @@ const UploadCurriculum = () => {
       }
     }
 
-    if(!isFormValuesComplete || fileData.length === 0){
+    if(!isFormValuesComplete || wordFileData.length === 0 || pdfFileData.length === 0){
       Swal.fire({
         title: 'Error!',
         text: '請填入教案紙完整資訊',
@@ -111,25 +121,35 @@ const UploadCurriculum = () => {
     }
 
     // upload file
-    let formdata = new FormData();
-    formdata.append('file', fileData);
-    formdata.append('name', 'test_file_name')
+    let formdata_word = new FormData();
+    let formdata_pdf = new FormData();
+    formdata_word.append('file', wordFileData);
+    formdata_pdf.append('file', pdfFileData);
+    formdata_word.append('name', formValues.title)
+    formdata_pdf.append('name', formValues.title)
   
-    let url;
+    let url1, url2;
     try {
-      const fileUploadResponse = await api.postFile(formdata);
-      if (fileUploadResponse.code === '000') {
-        url = fileUploadResponse.data.file_info.Location;
-        handleInputChange('file', url);
-        setUploadDone(true)
+      const fileUploadResponse_word = await api.postFile(formdata_word, 'w');
+      const fileUploadResponse_pdf = await api.postFile(formdata_pdf, 'p');
+      if (fileUploadResponse_word.code === '000' && fileUploadResponse_pdf.code === '000') {
+        url1 = fileUploadResponse_word.data.file_info.Location;
+        url2 = fileUploadResponse_pdf.data.file_info.Location;
+        handleInputChange('file_word', url1);
+        handleInputChange('file_pdf', url2);
+        setWordUploadDone(true)
+        setPdfUploadDone(true)
       } else {
-        console.log(fileUploadResponse.message);
-        setUploadDone(false)
+        console.log(fileUploadResponse_word.message);
+        console.log(fileUploadResponse_pdf.message);
+        setWordUploadDone(false)
+        setPdfUploadDone(false)
         return;
       }
     } catch (error) {
       console.log(error);
-      setUploadDone(false)
+      setWordUploadDone(false)
+      setPdfUploadDone(false)
       return;
     }
   }
@@ -141,7 +161,7 @@ const UploadCurriculum = () => {
 
   useEffect(() => {
     // create new curriculum
-    if(uploadDone === true){
+    if(wordUploadDone === true && pdfUploadDone === true){
       api.postCurriculum(formValues)
       .then((json2) => {
         if (json2.code != '000'){
@@ -153,7 +173,7 @@ const UploadCurriculum = () => {
       })
       .catch((err) => console.log(err));
     }  
-  }, [uploadDone]);
+  }, [wordUploadDone, pdfUploadDone]);
 
   return (
     <>
@@ -172,7 +192,6 @@ const UploadCurriculum = () => {
           layout="horizontal"
           style={{
             maxWidth: 600,
-            height: 370
           }}
         >
           <Form.Item label="教案名稱">
@@ -240,31 +259,45 @@ const UploadCurriculum = () => {
             />
           </Form.Item>
           <Form.Item>
-            <div style={{ marginLeft: '500px', marginTop: '-170px', width: '240px'}}>
+            <div style={{ marginLeft: '500px', marginTop: '-185px', width: '240px'}}>
               <Upload
                 accept=".doc, .docx"
                 listType="picture"
                 maxCount={1}
-                beforeUpload={(e) => handleBeforeUpload(e)}
+                beforeUpload={(e) => handleBeforeUpload(e, 'w')}
                 onRemove={() => {
-                  setFileData([]);
-                  setUploadDone(false)
+                  setWordFileData([]);
+                  setWordUploadDone(false)
                 }}
               >
-                <Button icon={<UploadOutlined />}>上傳教案紙</Button>
+                <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳教案紙 word</Button>
+              </Upload>
+            </div>
+            <div style={{ marginLeft: '500px', marginTop: '25px', width: '240px'}}>
+              <Upload
+                accept=".pdf"
+                listType="picture"
+                maxCount={1}
+                beforeUpload={(e) => handleBeforeUpload(e, 'p')}
+                onRemove={() => {
+                  setPdfFileData([]);
+                  setPdfUploadDone(false)
+                }}
+              >
+                <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳教案紙 pdf</Button>
               </Upload>
             </div>
           </Form.Item>
         </Form>
         <Button 
-          type="dashed" 
-          icon={<SnippetsOutlined />} 
-          size='large' 
-          style={{ width: '850px', marginTop: '-20px'}}
-          onClick={ uploadClick } 
-        >
-           新增教案
-        </Button>
+            type="dashed" 
+            icon={<SnippetsOutlined />} 
+            size='large' 
+            style={{ width: '850px', marginTop: '10px'}}
+            onClick={ uploadClick } 
+          >
+            新增教案
+          </Button>
       </Card>
       </div>
       <Footer/>

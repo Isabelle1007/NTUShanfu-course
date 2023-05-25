@@ -31,11 +31,18 @@ export const api = {
     getAllUsers(){
         return fetch(`${this.hostname_be}/user/all`).then(response => response.json());
     },
-    postFile(formdata){
-        return fetch(`${this.hostname_be}/file/upload`, {
-            body: formdata,
-            method: 'POST',
-          }).then(response => response.json());
+    postFile(formdata, type){
+        if(type === 'w'){
+            return fetch(`${this.hostname_be}/file/upload/type/word`, {
+                body: formdata,
+                method: 'POST',
+              }).then(response => response.json());
+        }else{
+            return fetch(`${this.hostname_be}/file/upload/type/pdf`, {
+                body: formdata,
+                method: 'POST',
+              }).then(response => response.json());
+        }
     },
     postCurriculum(data){
         return fetch(`${this.hostname_be}/curriculum/upload`, {
@@ -46,4 +53,7 @@ export const api = {
             method: 'POST',
           }).then(response => response.json());
     },
+    // getFileUrlByID(id){
+    //     return fetch(`${this.hostname_be}/file/id/${id}`).then(response => response.json());
+    // },
 };

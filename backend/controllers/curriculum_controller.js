@@ -48,7 +48,7 @@ const getCurriculumByID = async (req, res) => {
 
 // insert data into db
 const postCurriculum = async (req, res) => {
-    const { title, author, semester, home, type, last_update, file } = req.body
+    const { title, author, semester, home, type, last_update, file_word, file_pdf } = req.body
     let authors_id;
     const getUserID = await User.getIdByUserName(author);
     if(getUserID.code != '000')
@@ -76,7 +76,8 @@ const postCurriculum = async (req, res) => {
         semester: semester,
         home_id: homeID,
         type_id: typeID,
-        file_url: file ? file : null,
+        file_url_word: file_word ? file_word : null,
+        file_url_pdf: file_pdf ? file_pdf : null,
         last_update: last_update
     }
     
