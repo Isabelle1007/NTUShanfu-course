@@ -53,6 +53,9 @@ export const api = {
             method: 'POST',
           }).then(response => response.json());
     },
+    insertContent(cid){
+        return fetch(`${this.hostname_be}/curriculum/fileContent/id/${cid}`).then(response => response.json());
+    }
     // getFileUrlByID(id){
     //     return fetch(`${this.hostname_be}/file/id/${id}`).then(response => response.json());
     // },

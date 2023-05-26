@@ -9,6 +9,7 @@ import { Card, Button, DatePicker, Form, Input, Radio, Select, Upload, Spin } fr
 import { UploadOutlined, SnippetsOutlined, LoadingOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2'
+import Curriculum from './Curriculum';
 
 const antIcon = (
   <LoadingOutlined
@@ -255,7 +256,6 @@ const UploadCurriculum = () => {
       setLoading(true)
       api.postCurriculum(formValues)
       .then((json) => {
-        setLoading(false);
         if (json.code != '000'){
           console.log(json.message);
           Swal.fire({
@@ -273,6 +273,7 @@ const UploadCurriculum = () => {
             confirmButtonText: 'OK',
             allowOutsideClick: false 
           })
+          setLoading(false)
         }
       })
       .catch((err) => console.log(err));

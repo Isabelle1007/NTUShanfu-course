@@ -4,14 +4,14 @@ const { changeDataFormat } = require('../utils/util')
 
 const getCurricula = async () => {
     let curr = [];
-    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content
                    FROM curricula c 
                    JOIN user_curriculum u_c ON c.id = u_c.cid 
                    JOIN users u ON u_c.uid = u.id 
                    JOIN homes h ON c.home_id = h.id 
                    JOIN types t ON c.type_id = t.id 
                    LEFT JOIN files f ON c.file_id = f.id
-                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at`;
+                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at, c.content`;
     const [result] = await pool.execute(query);
     try {
         if (result.length > 0) {
@@ -29,7 +29,8 @@ const getCurricula = async () => {
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
-                    "created": date_create
+                    "created": date_create,
+                    "content": result[i].content
                 };
                 curr.push(curriculum);
             }
@@ -79,7 +80,8 @@ const getCurriculumByHome = async (home) => {
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
-                    "created": date_create
+                    "created": date_create,
+                    "content": result[i].content
                 }
                 curr.push(curriculum)
             }
@@ -129,7 +131,8 @@ const getCurriculumByType = async (type) => {
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
-                    "created": date_create
+                    "created": date_create,
+                    "content": result[i].content
                 }
                 curr.push(curriculum)
             }
@@ -179,7 +182,8 @@ const getCurriculumBySemester = async (semester) => {
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
-                    "created": date_create
+                    "created": date_create,
+                    "content": result[i].content
                 }
                 curr.push(curriculum)
             }
@@ -229,7 +233,8 @@ const getCurriculumByUserId = async (id) => {
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
-                    "created": date_create
+                    "created": date_create,
+                    "content": result[i].content
                 };
                 curr.push(curriculum);
             }
@@ -255,16 +260,16 @@ const getCurriculumByKeyWord = async (kw) => {
     let curr = [];
     const query = `SELECT c.id, c.title, 
                   (SELECT GROUP_CONCAT(u_name) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id)) AS authors,
-                   c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at
+                   c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content
                    FROM curricula c 
                    JOIN homes h ON c.home_id = h.id 
                    JOIN types t ON c.type_id = t.id 
                    LEFT JOIN files f ON c.file_id = f.id
                    WHERE CONCAT(
-                    c.title, c.semester, h.h_name, t.t_name, 
+                    c.title, c.semester, h.h_name, t.t_name, c.content,
                     (SELECT GROUP_CONCAT(u_name) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id))
                    ) LIKE '%${kw}%' 
-                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at`;
+                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at, c.content`;
     const [result] = await pool.execute(query);
     try {
         if (result.length > 0) {
@@ -282,7 +287,8 @@ const getCurriculumByKeyWord = async (kw) => {
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
-                    "created": date_create
+                    "created": date_create,
+                    "content": result[i].content
                 };
                 curr.push(curriculum);
             }
@@ -330,7 +336,8 @@ const getCurriculumByID = async (id) => {
                 "last_update": date_last,
                 "file_word": result[0].url_word,
                 "file_pdf": result[0].url_pdf,
-                "created": date_create
+                "created": date_create,
+                    "content": result[0].content
             }
             return {
                 "message": "Success",
@@ -401,6 +408,52 @@ const createCurriculum = async(c) => {
     }
 };
 
+const updateCurriculum = async (cid, key, value) => {
+    if(key === 'content'){
+        const query = `UPDATE curricula SET content = '${value}' WHERE id = ${cid}`;
+        const [result] = await pool.execute(query);
+        console.log(result)
+        try{
+            if(result.affectedRows > 0){
+                // let date_last = changeDataFormat(result[0].last_update);
+                // let date_create = changeDataFormat(result[0].created_at);
+                // let authors = result[0].authors.split(","); // Split the authors string into an array               
+                // let curriculum = {
+                //     "id": result[0].id,
+                //     "title": result[0].title,
+                //     "author": authors,
+                //     "semester": result[0].semester,
+                //     "home": result[0].h_name,
+                //     "type": result[0].t_name,
+                //     "last_update": date_last,
+                //     "file_word": result[0].url_word,
+                //     "file_pdf": result[0].url_pdf,
+                //     "created": date_create,
+                //     "content": result[0].content
+                // }
+                return {
+                    "message": "Success",
+                    "code": "000",
+                    // "data": curriculum
+                }
+            }else{
+                return {
+                    "message": 'Server Response Error',
+                    "code": "999"
+                }
+            }
+        }catch(err){
+            return err
+        }
+    }else{
+        return {
+            "message": "TBC",
+            "code": "001",
+        }
+    }
+
+}
+
 module.exports = {
     getCurricula,
     getCurriculumByHome,
@@ -409,5 +462,6 @@ module.exports = {
     getCurriculumByKeyWord,
     getCurriculumByUserId,
     getCurriculumByID,
-    createCurriculum
+    createCurriculum,
+    updateCurriculum
 };

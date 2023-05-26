@@ -86,6 +86,15 @@ const postCurriculum = async (req, res) => {
     }
     
     const createNewCurriculum = await Curriculum.createCurriculum(curriculum);
+    if(createNewCurriculum.code === '000'){
+        const cid = createNewCurriculum.data.id
+        const filePath = `test/${createNewCurriculum.data.title}.docx`
+        const fileContent = await readFileFromS3(filePath);
+        if(fileContent.code === '000'){
+            await Curriculum.updateCurriculum(cid, 'content', fileContent.data.content);
+            createNewCurriculum.data.content = fileContent.data.content
+        }
+    }
     res.json(createNewCurriculum)
 };
 
@@ -95,7 +104,10 @@ const getFileContentByID = async (req, res) => {
     if(data.data){
         const filePath = `test/${data.data.title}.docx`
         const fileContent = await readFileFromS3(filePath);
-        res.json(fileContent)
+        if(fileContent.code === '000'){
+            const updateCurriculum = await Curriculum.updateCurriculum(id, 'content', fileContent.data.content);
+            res.json(updateCurriculum)
+        }
     }else{
         res.json({
             "message": 'Server Response Error',
@@ -103,6 +115,13 @@ const getFileContentByID = async (req, res) => {
         })
     }
 };
+
+const putCurriculum = async (req, res) => {
+    const { key, value } = req.body;
+    const cid = req.params.id;
+    const data = await Curriculum.updateCurriculum(cid, key, value);
+    res.json(data);
+}
 
 module.exports = {
     getCurricula,
@@ -113,5 +132,6 @@ module.exports = {
     getCurriculumByID,
     getCurriculumByUser,
     postCurriculum,
-    getFileContentByID
+    getFileContentByID,
+    putCurriculum
 };
