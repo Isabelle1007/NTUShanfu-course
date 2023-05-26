@@ -39,7 +39,7 @@ const Curriculum = () => {
     if(curriculum.file_pdf === null){
       Swal.fire({
         title: 'Oops!',
-        text: '該教案尚未上傳教案紙',
+        text: '該教案目前無提供檔案',
         icon: 'error',
         confirmButtonText: 'OK',
         allowOutsideClick: false 
@@ -55,7 +55,7 @@ const Curriculum = () => {
     if(curriculum.file_pdf === null){
       Swal.fire({
         title: 'Error!',
-        text: '該教案並無上傳教案紙',
+        text: '該教案目前無提供檔案',
         icon: 'error',
         confirmButtonText: 'OK',
         allowOutsideClick: false 

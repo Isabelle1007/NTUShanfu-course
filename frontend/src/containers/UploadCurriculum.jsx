@@ -5,10 +5,19 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { api } from '../utils/api'
 
-import { Card, Button, DatePicker, Form, Input, Radio, Select, Upload } from 'antd';
-import { UploadOutlined, SnippetsOutlined } from '@ant-design/icons';
+import { Card, Button, DatePicker, Form, Input, Radio, Select, Upload, Spin } from 'antd';
+import { UploadOutlined, SnippetsOutlined, LoadingOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2'
+
+const antIcon = (
+  <LoadingOutlined
+    style={{
+      fontSize: 48,
+    }}
+    spin
+  />
+);
 
 const UploadCurriculum = () => {
 
@@ -21,6 +30,8 @@ const UploadCurriculum = () => {
 
   const [ wordUploadDone, setWordUploadDone ] = useState(false);
   const [ pdfUploadDone, setPdfUploadDone ] = useState(false);
+
+  const [ loading, setLoading ] = useState(false);
 
   // const [ click, setClick ] = useState(false);
 
@@ -97,6 +108,7 @@ const UploadCurriculum = () => {
   const uploadClick = async () => {
 
     // setClick(true)
+    setLoading(true)
 
     // input data check
     let isFormValuesComplete = true;
@@ -127,6 +139,7 @@ const UploadCurriculum = () => {
         confirmButtonText: 'OK',
         allowOutsideClick: false 
       })
+      setLoading(false)
       return
     }
 
@@ -138,6 +151,7 @@ const UploadCurriculum = () => {
         confirmButtonText: 'OK',
         allowOutsideClick: false 
       })
+      setLoading(false)
       return
     }
 
@@ -238,8 +252,10 @@ const UploadCurriculum = () => {
   useEffect(() => {
     // create new curriculum
     if( wordUploadDone && pdfUploadDone ){
+      setLoading(true)
       api.postCurriculum(formValues)
       .then((json) => {
+        setLoading(false);
         if (json.code != '000'){
           console.log(json.message);
           Swal.fire({
@@ -266,128 +282,132 @@ const UploadCurriculum = () => {
   return (
     <>
       <Header/>
-      <div className='upload__container'>
-      <Card
-        title="新教案紙"
-        bordered={true}
-        style={{
-          width: 900
-        }}
-      >
-        <Form
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 24 }}
-          layout="horizontal"
-          style={{
-            maxWidth: 600,
-          }}
-        >
-          <Form.Item label="教案名稱">
-            <Input 
-              className='input__box' 
-              value={formValues['title']} 
-              onChange={(e) => handleInputChange('title', e.target.value)}
-            />
-          </Form.Item>
-          <Form.Item label="作者">
-            <Select
-              mode="multiple"
-              size='middle'
-              onChange={(e) => handleInputChange('author', e)}
-              style={{ width: '600px', marginLeft: '20px'}}
-              options={nameList}
-            />        
-          </Form.Item>
-          <Form.Item label="家別">
-            <Radio.Group 
-              style={{ marginLeft: '-70px' }} 
-              value={formValues['home']}
-              onChange={(e) => handleInputChange('home', e.target.value)}
-            >
-              <Radio value="加拿"> 加拿 </Radio>
-              <Radio value="新武"> 新武 </Radio>
-              <Radio value="霧鹿"> 霧鹿 </Radio>
-              <Radio value="利稻"> 利稻 </Radio>
-              <Radio value="電光"> 電光 </Radio>
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item label="期數">
-            <div style={{display: 'flex', flexDirection:'row', marginLeft: '20px', width: '240px'}}>
-              <Select
-                value={formValues['semester']} 
-                onChange={(value) => handleInputChange('semester', value)}
-              >
-                {
-                  semesters.map((s) => (
-                    <Select.Option value={s.key} onChange={(value) => handleInputChange('semester', value)}>{s.key} </Select.Option>
-                  ))
-                }
-              </Select>
-            </div>
-          </Form.Item>
-          <Form.Item label="科別">
-            <div style={{display: 'flex', flexDirection:'row', marginLeft: '20px', width: '240px'}}>
-              <Select 
-                value={formValues['type']}
-                onChange={(value) => handleInputChange('type', value)}
-              >
-                {
-                  types.map((t) => (
-                    <Select.Option value={t.key} onChange={(value) => handleInputChange('type', value)}>{t.key}</Select.Option>
-                  ))
-                }
-              </Select>
-            </div>
-          </Form.Item>
-          <Form.Item label="最後編輯日">
-            <DatePicker 
-              style={{marginLeft: '-170px', width: '240px'}} 
-              onChange={handleDatePickerChange}
-              placeholder='請選擇日期'
-            />
-          </Form.Item>
-          <Form.Item>
-            <div style={{ marginLeft: '500px', marginTop: '-185px', width: '240px'}}>
-              <Upload
-                accept=".doc, .docx"
-                listType="picture"
-                maxCount={1}
-                beforeUpload={(e) => handleBeforeUpload(e, 'w')}
-                onRemove={() => {
-                  setWordFileData([]);
-                  setWordUploadDone(false)
-                }}
-              >
-                <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳教案紙 word</Button>
-              </Upload>
-            </div>
-            <div style={{ marginLeft: '500px', marginTop: '25px', width: '240px'}}>
-              <Upload
-                accept=".pdf"
-                listType="picture"
-                maxCount={1}
-                beforeUpload={(e) => handleBeforeUpload(e, 'p')}
-                onRemove={() => {
-                  setPdfFileData([]);
-                  setPdfUploadDone(false)
-                }}
-              >
-                <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳教案紙 pdf</Button>
-              </Upload>
-            </div>
-          </Form.Item>
-        </Form>
-        <Button 
-            type="dashed" 
-            icon={<SnippetsOutlined />} 
-            size='large' 
-            style={{ width: '850px', marginTop: '10px'}}
-            onClick={ uploadClick } 
+      {
+        loading ? <Spin indicator={antIcon} size="large"/> : (
+          <div className='upload__container'>
+          <Card
+            title="新教案紙"
+            bordered={true}
+            style={{
+              width: 900
+            }}
           >
-            新增教案
-          </Button>
-      </Card>
-      </div>
+            <Form
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 24 }}
+              layout="horizontal"
+              style={{
+                maxWidth: 600,
+              }}
+            >
+              <Form.Item label="教案名稱">
+                <Input 
+                  className='input__box' 
+                  value={formValues['title']} 
+                  onChange={(e) => handleInputChange('title', e.target.value)}
+                />
+              </Form.Item>
+              <Form.Item label="作者">
+                <Select
+                  mode="multiple"
+                  size='middle'
+                  onChange={(e) => handleInputChange('author', e)}
+                  style={{ width: '600px', marginLeft: '20px'}}
+                  options={nameList}
+                />        
+              </Form.Item>
+              <Form.Item label="家別">
+                <Radio.Group 
+                  style={{ marginLeft: '-70px' }} 
+                  value={formValues['home']}
+                  onChange={(e) => handleInputChange('home', e.target.value)}
+                >
+                  <Radio value="加拿"> 加拿 </Radio>
+                  <Radio value="新武"> 新武 </Radio>
+                  <Radio value="霧鹿"> 霧鹿 </Radio>
+                  <Radio value="利稻"> 利稻 </Radio>
+                  <Radio value="電光"> 電光 </Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item label="期數">
+                <div style={{display: 'flex', flexDirection:'row', marginLeft: '20px', width: '240px'}}>
+                  <Select
+                    value={formValues['semester']} 
+                    onChange={(value) => handleInputChange('semester', value)}
+                  >
+                    {
+                      semesters.map((s) => (
+                        <Select.Option value={s.key} onChange={(value) => handleInputChange('semester', value)}>{s.key} </Select.Option>
+                      ))
+                    }
+                  </Select>
+                </div>
+              </Form.Item>
+              <Form.Item label="科別">
+                <div style={{display: 'flex', flexDirection:'row', marginLeft: '20px', width: '240px'}}>
+                  <Select 
+                    value={formValues['type']}
+                    onChange={(value) => handleInputChange('type', value)}
+                  >
+                    {
+                      types.map((t) => (
+                        <Select.Option value={t.key} onChange={(value) => handleInputChange('type', value)}>{t.key}</Select.Option>
+                      ))
+                    }
+                  </Select>
+                </div>
+              </Form.Item>
+              <Form.Item label="最後編輯日">
+                <DatePicker 
+                  style={{marginLeft: '-170px', width: '240px'}} 
+                  onChange={handleDatePickerChange}
+                  placeholder='請選擇日期'
+                />
+              </Form.Item>
+              <Form.Item>
+                <div style={{ marginLeft: '500px', marginTop: '-185px', width: '240px'}}>
+                  <Upload
+                    accept=".doc, .docx"
+                    listType="picture"
+                    maxCount={1}
+                    beforeUpload={(e) => handleBeforeUpload(e, 'w')}
+                    onRemove={() => {
+                      setWordFileData([]);
+                      setWordUploadDone(false)
+                    }}
+                  >
+                    <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳教案紙 word</Button>
+                  </Upload>
+                </div>
+                <div style={{ marginLeft: '500px', marginTop: '25px', width: '240px'}}>
+                  <Upload
+                    accept=".pdf"
+                    listType="picture"
+                    maxCount={1}
+                    beforeUpload={(e) => handleBeforeUpload(e, 'p')}
+                    onRemove={() => {
+                      setPdfFileData([]);
+                      setPdfUploadDone(false)
+                    }}
+                  >
+                    <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳教案紙 pdf</Button>
+                  </Upload>
+                </div>
+              </Form.Item>
+            </Form>
+            <Button 
+                type="dashed" 
+                icon={<SnippetsOutlined />} 
+                size='large' 
+                style={{ width: '850px', marginTop: '10px'}}
+                onClick={ uploadClick } 
+              >
+                新增教案
+              </Button>
+          </Card>
+          </div>
+        )
+      }
       <Footer/>
     </>
   );
