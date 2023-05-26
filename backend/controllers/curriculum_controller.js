@@ -4,6 +4,10 @@ const User = require('../models/user_model');
 const Home = require('../models/home_model');
 const Type = require('../models/type_model');
 
+const { readFileFromS3 } = require('../utils/s3Service');
+
+const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_BUCKET_NAME } = process.env;
+
 // get data from db
 const getCurricula = async (req, res) => {
     const data = await Curriculum.getCurricula();
@@ -85,6 +89,21 @@ const postCurriculum = async (req, res) => {
     res.json(createNewCurriculum)
 };
 
+const getFileContentByID = async (req, res) => {
+    const id = req.params.id;
+    const data = await Curriculum.getCurriculumByID(id);
+    if(data.data){
+        const filePath = `test/${data.data.title}.docx`
+        const fileContent = await readFileFromS3(filePath);
+        res.json(fileContent)
+    }else{
+        res.json({
+            "message": 'Server Response Error',
+            "code": "999"
+        })
+    }
+};
+
 module.exports = {
     getCurricula,
     getCurriculumByHome,
@@ -93,5 +112,6 @@ module.exports = {
     getCurriculumByKeyword,
     getCurriculumByID,
     getCurriculumByUser,
-    postCurriculum
+    postCurriculum,
+    getFileContentByID
 };

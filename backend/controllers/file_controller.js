@@ -29,9 +29,6 @@ const postFile = async (req, res) => {
     if(type === 'word'){
         try {
             upload_word.single('file')(req, res, async (err) => {
-                console.log('.........................................')
-                console.log(req.body)
-                console.log('.........................................')
                 if (err instanceof multer.MulterError) {
                     // Handle Multer errors
                     res.status(400).json({ error: err.message });
@@ -81,13 +78,13 @@ const postFile = async (req, res) => {
     
 };
 
-// const getFileUrlByID = async (req, res) => {
-//     const id = req.params.id
-//     const data = await File.getUrlByID(id);
-//     res.json(data)
-// }
+const getFileUrlByID = async (req, res) => {
+    const id = req.params.id
+    const data = await File.getUrlByID(id);
+    res.json(data)
+}
 
 module.exports = {
     postFile,
-    // getFileUrlByID,
+    getFileUrlByID,
 };

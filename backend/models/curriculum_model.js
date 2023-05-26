@@ -27,6 +27,7 @@ const getCurricula = async () => {
                     "home": result[i].h_name,
                     "type": result[i].t_name,
                     "last_update": date_last,
+                    "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
                     "created": date_create
                 };
@@ -76,6 +77,7 @@ const getCurriculumByHome = async (home) => {
                     "home": result[i].h_name,
                     "type": result[i].t_name,
                     "last_update": date_last,
+                    "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
                     "created": date_create
                 }
@@ -125,6 +127,7 @@ const getCurriculumByType = async (type) => {
                     "home": result[i].h_name,
                     "type": result[i].t_name,
                     "last_update": date_last,
+                    "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
                     "created": date_create
                 }
@@ -174,6 +177,7 @@ const getCurriculumBySemester = async (semester) => {
                     "home": result[i].h_name,
                     "type": result[i].t_name,
                     "last_update": date_last,
+                    "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
                     "created": date_create
                 }
@@ -223,6 +227,7 @@ const getCurriculumByUserId = async (id) => {
                     "home": result[i].h_name,
                     "type": result[i].t_name,
                     "last_update": date_last,
+                    "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
                     "created": date_create
                 };
@@ -275,6 +280,7 @@ const getCurriculumByKeyWord = async (kw) => {
                     "home": result[i].h_name,
                     "type": result[i].t_name,
                     "last_update": date_last,
+                    "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
                     "created": date_create
                 };
@@ -322,6 +328,7 @@ const getCurriculumByID = async (id) => {
                 "home": result[0].h_name,
                 "type": result[0].t_name,
                 "last_update": date_last,
+                "file_word": result[0].url_word,
                 "file_pdf": result[0].url_pdf,
                 "created": date_create
             }
