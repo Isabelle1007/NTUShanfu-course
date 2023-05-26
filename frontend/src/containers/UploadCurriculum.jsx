@@ -272,6 +272,7 @@ const UploadCurriculum = () => {
             confirmButtonText: 'OK',
             allowOutsideClick: false 
           })
+          setFormValues({})
           setLoading(false)
         }
       })
@@ -368,7 +369,7 @@ const UploadCurriculum = () => {
                 <div style={{ marginLeft: '500px', marginTop: '-185px', width: '240px'}}>
                   <Upload
                     accept=".doc, .docx"
-                    listType="picture"
+                    listType="text"
                     maxCount={1}
                     beforeUpload={(e) => handleBeforeUpload(e, 'w')}
                     onRemove={() => {
@@ -382,7 +383,7 @@ const UploadCurriculum = () => {
                 <div style={{ marginLeft: '500px', marginTop: '25px', width: '240px'}}>
                   <Upload
                     accept=".pdf"
-                    listType="picture"
+                    listType="text"
                     maxCount={1}
                     beforeUpload={(e) => handleBeforeUpload(e, 'p')}
                     onRemove={() => {
