@@ -11,6 +11,8 @@ import { EyeOutlined, EyeInvisibleOutlined, DownloadOutlined } from '@ant-design
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import FileViewer from 'react-file-viewer-fix';
 
+import Swal from 'sweetalert2'
+
 const Curriculum = () => {
 
   const { colors } = useContext(FilterContext);
@@ -33,10 +35,33 @@ const Curriculum = () => {
   const linkRef = useRef(null);
 
   const downloadClick = async () => {
-      linkRef.current.click();
+
+    if(curriculum.file_pdf === null){
+      Swal.fire({
+        title: 'Oops!',
+        text: '該教案尚未上傳教案紙',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false 
+      })
+      return
+    }
+      
+    linkRef.current.click();
   }
 
   const viewFileClick = async () => {
+
+    if(curriculum.file_pdf === null){
+      Swal.fire({
+        title: 'Error!',
+        text: '該教案並無上傳教案紙',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false 
+      })
+      return
+    }
 
     setOpenView(!openView)
     const command = new GetObjectCommand({

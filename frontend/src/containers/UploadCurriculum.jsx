@@ -5,7 +5,7 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { api } from '../utils/api'
 
-import { Card, Button, DatePicker, Form, Input, Radio, Select, Upload, message } from 'antd';
+import { Card, Button, DatePicker, Form, Input, Radio, Select, Upload } from 'antd';
 import { UploadOutlined, SnippetsOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2'
@@ -21,6 +21,8 @@ const UploadCurriculum = () => {
 
   const [ wordUploadDone, setWordUploadDone ] = useState(false);
   const [ pdfUploadDone, setPdfUploadDone ] = useState(false);
+
+  // const [ click, setClick ] = useState(false);
 
   const [ formValues, setFormValues ] = useState({
     'title': '',
@@ -79,14 +81,22 @@ const UploadCurriculum = () => {
   };
 
   const handleBeforeUpload = (e, type) => {
-    if(type === 'w')
+    if(type === 'w'){
       setWordFileData(e)
-    else
+      // setWordUploadDone(true)
+      // setClick(false)
+    }
+    else{
       setPdfFileData(e)
+      // setPdfUploadDone(true)
+      // setClick(false)
+    }
     return false; // Prevent automatic upload
   };
 
   const uploadClick = async () => {
+
+    // setClick(true)
 
     // input data check
     let isFormValuesComplete = true;
@@ -109,7 +119,7 @@ const UploadCurriculum = () => {
       }
     }
 
-    if(!isFormValuesComplete || wordFileData.length === 0 || pdfFileData.length === 0){
+    if(!isFormValuesComplete){
       Swal.fire({
         title: 'Error!',
         text: '請填入教案紙完整資訊',
@@ -120,38 +130,104 @@ const UploadCurriculum = () => {
       return
     }
 
-    // upload file
-    let formdata_word = new FormData();
-    let formdata_pdf = new FormData();
-    formdata_word.append('file', wordFileData);
-    formdata_pdf.append('file', pdfFileData);
-    formdata_word.append('name', formValues.title)
-    formdata_pdf.append('name', formValues.title)
-  
-    let url1, url2;
-    try {
-      const fileUploadResponse_word = await api.postFile(formdata_word, 'w');
-      const fileUploadResponse_pdf = await api.postFile(formdata_pdf, 'p');
-      if (fileUploadResponse_word.code === '000' && fileUploadResponse_pdf.code === '000') {
-        url1 = fileUploadResponse_word.data.file_info.Location;
-        url2 = fileUploadResponse_pdf.data.file_info.Location;
-        handleInputChange('file_word', url1);
-        handleInputChange('file_pdf', url2);
-        setWordUploadDone(true)
-        setPdfUploadDone(true)
-      } else {
-        console.log(fileUploadResponse_word.message);
-        console.log(fileUploadResponse_pdf.message);
+    if(isFormValuesComplete && (wordFileData.length === 0 || pdfFileData.length === 0)){
+      Swal.fire({
+        title: 'Oops!',
+        text: 'word 及 pdf 檔案未完整上傳',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false 
+      })
+      return
+    }
+
+    // if(isFormValuesComplete && !wordUploadDone && !pdfUploadDone){
+    //   Swal.fire({
+    //     title: 'Are you sure?',
+    //     text: "檔案尚未上傳，確定新增教案？",
+    //     icon: 'warning',
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     confirmButtonText: '確定新增',
+    //     cancelButtonText: '返回',
+    //   }).then((result) => {
+    //     if(!result.isConfirmed) {
+    //       return
+    //     }else{
+    //       // upload without file
+    //       api.postCurriculum(formValues)
+    //         .then((json) => {
+    //           if (json.code != '000'){
+    //             console.log(json.message);
+    //             Swal.fire({
+    //               title: 'Error!',
+    //               text: '教案新增失敗',
+    //               icon: 'error',
+    //               confirmButtonText: 'OK',
+    //               allowOutsideClick: false 
+    //             })
+    //           }else{
+    //             Swal.fire({
+    //               title: 'Success!',
+    //               text: '教案新增成功',
+    //               icon: 'success',
+    //               confirmButtonText: 'OK',
+    //               allowOutsideClick: false 
+    //             })
+    //           }
+    //         })
+    //         .catch((err) => console.log(err));
+    //         return;
+    //     }
+    //   })
+    // }
+
+    // if(isFormValuesComplete && (wordUploadDone + pdfUploadDone === 1)){
+    //   Swal.fire({
+    //     title: 'Error!',
+    //     text: '請完整上傳兩份檔案',
+    //     icon: 'error',
+    //     confirmButtonText: 'OK',
+    //     allowOutsideClick: false 
+    //   })
+    //   return
+    // }
+
+     // upload with file
+    //  if(wordUploadDone && pdfUploadDone){
+      let formdata_word = new FormData();
+      let formdata_pdf = new FormData();
+      formdata_word.append('file', wordFileData);
+      formdata_pdf.append('file', pdfFileData);
+      formdata_word.append('name', formValues.title)
+      formdata_pdf.append('name', formValues.title)
+    
+      let url1, url2;
+      try {
+        const fileUploadResponse_word = await api.postFile(formdata_word, 'w');
+        const fileUploadResponse_pdf = await api.postFile(formdata_pdf, 'p');
+        if (fileUploadResponse_word.code === '000' && fileUploadResponse_pdf.code === '000') {
+          url1 = fileUploadResponse_word.data.file_info.Location;
+          url2 = fileUploadResponse_pdf.data.file_info.Location;
+          handleInputChange('file_word', url1);
+          handleInputChange('file_pdf', url2);
+          setWordUploadDone(true)
+          setPdfUploadDone(true)
+        } else {
+          console.log(fileUploadResponse_word.message);
+          console.log(fileUploadResponse_pdf.message);
+          setWordUploadDone(false)
+          setPdfUploadDone(false)
+          return;
+        }
+      } catch (error) {
+        console.log(error);
         setWordUploadDone(false)
         setPdfUploadDone(false)
         return;
       }
-    } catch (error) {
-      console.log(error);
-      setWordUploadDone(false)
-      setPdfUploadDone(false)
-      return;
-    }
+    // }
   }
   
   useEffect(() => {
@@ -161,14 +237,26 @@ const UploadCurriculum = () => {
 
   useEffect(() => {
     // create new curriculum
-    if(wordUploadDone === true && pdfUploadDone === true){
+    if( wordUploadDone && pdfUploadDone ){
       api.postCurriculum(formValues)
-      .then((json2) => {
-        if (json2.code != '000'){
-          console.log(json2.message);
-          message.error('教案新增失敗')
+      .then((json) => {
+        if (json.code != '000'){
+          console.log(json.message);
+          Swal.fire({
+            title: 'Error!',
+            text: '教案新增失敗',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false 
+          })
         }else{
-          message.success('教案新增成功') 
+          Swal.fire({
+            title: 'Success!',
+            text: '教案新增成功',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false 
+          })
         }
       })
       .catch((err) => console.log(err));
