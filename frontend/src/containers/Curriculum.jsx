@@ -66,7 +66,7 @@ const Curriculum = () => {
     setOpenView(!openView)
     const command = new GetObjectCommand({
       Bucket: "doc-file-uploads",
-      Key: `test/${curriculum.title}.pdf`
+      Key: `pdf/${curriculum.title}.pdf`
     });
 
     try {

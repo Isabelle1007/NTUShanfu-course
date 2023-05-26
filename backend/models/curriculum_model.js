@@ -412,7 +412,6 @@ const updateCurriculum = async (cid, key, value) => {
     if(key === 'content'){
         const query = `UPDATE curricula SET content = '${value}' WHERE id = ${cid}`;
         const [result] = await pool.execute(query);
-        console.log(result)
         try{
             if(result.affectedRows > 0){
                 // let date_last = changeDataFormat(result[0].last_update);

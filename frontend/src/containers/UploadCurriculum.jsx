@@ -257,7 +257,6 @@ const UploadCurriculum = () => {
       api.postCurriculum(formValues)
       .then((json) => {
         if (json.code != '000'){
-          console.log(json.message);
           Swal.fire({
             title: 'Error!',
             text: '教案新增失敗',

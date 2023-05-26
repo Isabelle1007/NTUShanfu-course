@@ -131,7 +131,6 @@ const postAnUser = async (req, homeID) => {
         const [result] = await conn.query('INSERT INTO users (u_name, email, password, role_id, home_id, gender ) VALUES (?,?,?,?,?,?)', [name, email, password, role_id, homeID, gender]);
         let newUserID = result.insertId
         if(newUserID != -1){
-            console.log(result)
             return {
                 "message": "Success",
                 "code": "000",

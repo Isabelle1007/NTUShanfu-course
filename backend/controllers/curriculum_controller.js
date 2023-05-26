@@ -88,7 +88,7 @@ const postCurriculum = async (req, res) => {
     const createNewCurriculum = await Curriculum.createCurriculum(curriculum);
     if(createNewCurriculum.code === '000'){
         const cid = createNewCurriculum.data.id
-        const filePath = `test/${createNewCurriculum.data.title}.docx`
+        const filePath = `docx/${createNewCurriculum.data.title}.docx`
         const fileContent = await readFileFromS3(filePath);
         if(fileContent.code === '000'){
             await Curriculum.updateCurriculum(cid, 'content', fileContent.data.content);
@@ -102,7 +102,7 @@ const getFileContentByID = async (req, res) => {
     const id = req.params.id;
     const data = await Curriculum.getCurriculumByID(id);
     if(data.data){
-        const filePath = `test/${data.data.title}.docx`
+        const filePath = `docx/${data.data.title}.docx`
         const fileContent = await readFileFromS3(filePath);
         if(fileContent.code === '000'){
             const updateCurriculum = await Curriculum.updateCurriculum(id, 'content', fileContent.data.content);

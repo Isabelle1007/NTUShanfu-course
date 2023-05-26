@@ -33,7 +33,7 @@ exports.s3Uploadv2 = async (file, name, type) => {
 
       const param = {
           Bucket: AWS_BUCKET_NAME,
-          Key: `test/${name}.${type}`,
+          Key: `${type}/${name}.${type}`,
           Body: base64File
       }
       const uploadResponse = await s3.upload(param).promise();
@@ -46,7 +46,7 @@ exports.s3Uploadv2 = async (file, name, type) => {
     }else{
       const param = {
         Bucket: AWS_BUCKET_NAME,
-        Key: `test/${name}.${type}`,
+        Key: `${type}/${name}.${type}`,
         Body: file.buffer
       }
       return await s3.upload(param).promise();

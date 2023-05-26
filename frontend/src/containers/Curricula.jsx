@@ -102,7 +102,7 @@ function ShowCurrirula() {
                             ]}
                           >
                               <Meta
-                                  avatar={<AvatarWithText src="https://xsgames.co/randomusers/avatar.php?g=pixel" text={curriculum.author.join(' ')} count={curriculum.author.length}/>}
+                                  avatar={<AvatarWithText src="https://doc-file-uploads.s3.ap-northeast-1.amazonaws.com/image/default-pic.png" text={curriculum.author.join(' ')} count={curriculum.author.length}/>}
                                   title={curriculum.title}
                                   description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
                               />
