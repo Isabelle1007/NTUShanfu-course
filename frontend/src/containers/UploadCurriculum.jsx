@@ -403,7 +403,7 @@ const UploadCurriculum = () => {
                 style={{ width: '850px', marginTop: '10px'}}
                 onClick={ uploadClick } 
               >
-                新增教案
+                確認上傳
               </Button>
           </Card>
           </div>
