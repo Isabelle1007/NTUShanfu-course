@@ -6,7 +6,7 @@ import Curricula from './containers/Curricula'
 import Curriculum from './containers/Curriculum'
 import UploadCurriculum from './containers/UploadCurriculum'
 import Profile from './containers/Profile'
-import LogIn from './containers/LogIn'
+import SignUp from './containers/SignUp'
 
 import './App.css'
 
@@ -48,7 +48,7 @@ function App() {
           <Route exact path="/curriculum/*" element={<Curriculum />} />
           <Route exact path="/curriculum/upload" element={<UploadCurriculum />} />
           <Route exact path="/profile" element={<Profile/>} />
-          <Route exact path="/login" element={<LogIn/>} />
+          <Route exact path="/login" element={<SignUp/>} />
         </Routes>
       </BrowserRouter>
     </FilterContext.Provider>
