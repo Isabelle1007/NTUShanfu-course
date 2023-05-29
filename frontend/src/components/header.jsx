@@ -23,7 +23,7 @@ function getItem(label, key, icon, children, type) {
 const items_user = [
     getItem(
       (
-        <a href={`${api.hostname_fe}/login`} target="_self" rel="noreferrer">註冊/登入</a>
+        <a href={`${api.hostname_fe}/signin`} target="_self" rel="noreferrer">註冊/登入</a>
       ), 
       '1', 
       <UserOutlined />

@@ -55,7 +55,25 @@ export const api = {
     },
     insertContent(cid){
         return fetch(`${this.hostname_be}/curriculum/fileContent/id/${cid}`).then(response => response.json());
-    }
+    },
+    signUp(data){
+        return fetch(`${this.hostname_be}/user/signup`, {
+            body: JSON.stringify(data),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+            }),
+            method: 'POST',
+          }).then(response => response.json());
+    },
+    signIn(data){
+        return fetch(`${this.hostname_be}/user/signin`, {
+            body: JSON.stringify(data),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+            }),
+            method: 'POST',
+          }).then(response => response.json());
+    },
     // getFileUrlByID(id){
     //     return fetch(`${this.hostname_be}/file/id/${id}`).then(response => response.json());
     // },
