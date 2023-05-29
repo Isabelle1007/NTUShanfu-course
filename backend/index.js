@@ -26,6 +26,9 @@ app.use('/type', typeRouter);
 const homeRouter = require('./routes/home_route');
 app.use('/home', homeRouter);
 
+const roleRouter = require('./routes/role_route');
+app.use('/role', roleRouter);
+
 const fileRouter = require('./routes/file_route');
 app.use('/file', fileRouter);
 
