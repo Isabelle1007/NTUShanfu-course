@@ -9,7 +9,7 @@ import { Card, Button, DatePicker, Form, Input, Radio, Select, Upload, Spin } fr
 import { UploadOutlined, SnippetsOutlined, LoadingOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2'
-import Curriculum from './Curriculum';
+// import Curriculum from './Curriculum';
 
 const antIcon = (
   <LoadingOutlined
