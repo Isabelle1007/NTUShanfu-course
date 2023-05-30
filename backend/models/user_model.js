@@ -231,7 +231,7 @@ const signUp = async (name, roleId, email, password) => {
     }
 };
 
-const signIn = async (email, password) => {
+const login = async (email, password) => {
     const conn = await pool.getConnection();
     try {
         await conn.query('START TRANSACTION');
@@ -304,5 +304,5 @@ module.exports = {
     getIdByUserName,
     postAnUser,
     signUp,
-    signIn
+    login
 };

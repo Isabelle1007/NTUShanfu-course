@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Menu, Input, Button, Drawer } from 'antd';
 import { FileTextOutlined, HomeOutlined, TagsOutlined, FieldTimeOutlined, UserOutlined, HeartOutlined, IdcardOutlined, CloudUploadOutlined, DesktopOutlined, SettingOutlined } from '@ant-design/icons';
+import Swal from 'sweetalert2'
 
 import { FilterContext } from "../App";
 
@@ -10,44 +11,25 @@ import { api } from '../utils/api'
 
 import './header.css' 
 
-function getItem(label, key, icon, children, type) {
+function getItem(label, key, icon) {
     return {
-      key,
-      icon,
-      children,
       label,
-      type,
+      key,
+      icon
     };
 }
 
-const items_user = [
-    getItem(
-      (
-        <a href={`${api.hostname_fe}/signin`} target="_self" rel="noreferrer">註冊/登入</a>
-      ), 
-      '1', 
-      <UserOutlined />
-    ),
-    getItem('個人頁面', '2', <IdcardOutlined />),
-    getItem('我的收藏', '3', <HeartOutlined />),
-    getItem(
-        (
-            <a href={`${api.hostname_fe}/curriculum/upload`} target="_self" rel="noreferrer">上傳教案</a>
-        ), 
-        '4',
-        <CloudUploadOutlined />),
-    getItem('後台管理', '5', <DesktopOutlined />),
-    getItem('設定', '6', <SettingOutlined />),
-]
-
 const Header = () => {
 
-    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters } = useContext(FilterContext);
+    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin } = useContext(FilterContext);
 
     const [inputValue, setInputValue] = useState('');
-    const [isLogin, setIsLogin] = useState(false);
 
     const [open, setOpen] = useState(false);
+
+    const [admin, setAdmin] = useState(false);
+
+    const [userID, setUserID] = useState(1)
 
     const showDrawer = () => {
         setOpen(true);
@@ -55,6 +37,14 @@ const Header = () => {
 
     const onClose = () => {
         setOpen(false);
+    }
+
+    const checkLogIn = async () => {
+        const jwtToken = window.localStorage.getItem('jwtToken');
+        if(jwtToken) 
+            setIsLogin(true)
+        else
+            setIsLogin(false)
     }
 
     const getHomes = async () => {
@@ -109,10 +99,20 @@ const Header = () => {
     }
 
     useEffect(() => {
+        checkLogIn();
         getHomes();
         getTypes();
         getSemester();
         }, []
+    );
+
+    useEffect(() => {
+        checkLogIn();
+        api.getUserInfo().then((json) => {
+            if(json.code === "000") console.log(json)
+            else console.log('not logged in')
+        })
+        }, [isLogin]
     );
 
     const [current, setCurrent] = useState();
@@ -145,10 +145,6 @@ const Header = () => {
     ]
 
     const navigate = useNavigate();
-    const navTo = (path) => {
-        navigate(path); 
-        window.location.reload();
-    }
 
     const refresh = () => {
         navigate('/'); 
@@ -159,9 +155,33 @@ const Header = () => {
     };
 
     const { Search } = Input;
+
     const onSearch = () => {
         navigate(`/curricula?keyword=${inputValue}`);
         window.location.reload();
+    }
+
+    const handleLogIn = () => {
+        if(isLogin){
+            // window.location.href = `/logout`
+            Swal.fire({
+                title: 'Are You Sure?',
+                text: '登出帳號嗎',
+                icon: 'warning',
+                confirmButtonText: '登出',
+                showCancelButton: true,
+                cancelButtonText: '取消',
+                allowOutsideClick: true 
+              }).then((result) => {
+                if(result.isConfirmed){
+                  localStorage.removeItem('jwtToken');
+
+                }
+                window.location.href = `/`
+              })
+
+        } 
+        else window.location.href = `/login`
     }
 
     return (
@@ -189,7 +209,7 @@ const Header = () => {
             </div>
             <div className='right__div'>
                 <Button 
-                    type="link"
+                    type="ghost"
                     size="large"
                     style={{
                         color: colors.colorDarkOrange,
@@ -205,13 +225,53 @@ const Header = () => {
                     open={open}
                     key='right'
                 >
-                    <Menu
-                        mode="inline"
-                        style={{
-                            marginTop: '-10px',
-                        }}
-                        items={items_user}
-                    />
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start'}} >
+                        <Button 
+                            className='userMenu__btn'
+                            type="ghost"
+                            size="large"
+                            icon={<UserOutlined />} 
+                            onClick={ handleLogIn }
+                        >{isLogin ? "登出" : "註冊/登入"}</Button>
+                    
+                        <Button 
+                            className='userMenu__btn'
+                            type="ghost"
+                            size="large"
+                            icon={<IdcardOutlined />} 
+                            onClick={ () => window.location.href = `/profile?id=${userID}`}
+                        >個人頁面</Button>
+
+                        <Button 
+                            className='userMenu__btn'
+                            type="ghost"
+                            size="large"
+                            icon={<HeartOutlined />} 
+                        >我的收藏</Button>
+
+                        <Button 
+                            className='userMenu__btn'
+                            type="ghost"
+                            size="large"
+                            icon={<CloudUploadOutlined />} 
+                            onClick={ () => window.location.href = `/curriculum/upload`}
+                        >上傳教案</Button>
+
+                        <Button 
+                            className='userMenu__btn'
+                            type="ghost"
+                            size="large"
+                            icon={<DesktopOutlined />} 
+                        >後台管理</Button>
+
+                        <Button 
+                            className='userMenu__btn'
+                            type="ghost"
+                            size="large"
+                            icon={<SettingOutlined />} 
+                        >設定</Button>
+                    </div>
+
                 </Drawer>
             </div>
         </div>

@@ -7,7 +7,7 @@ import Curriculum from './containers/Curriculum'
 import UploadCurriculum from './containers/UploadCurriculum'
 import Profile from './containers/Profile'
 import SignUp from './containers/SignUp'
-import SignIn from './containers/SignIn'
+import LogIn from './containers/LogIn'
 
 import './App.css'
 
@@ -30,6 +30,8 @@ function App() {
   const [homes, setHomes] = useState([]);
   const [types, setTypes] = useState([]);
   const [semesters, setSemesters] = useState([]);
+  const [isLogin, setIsLogin] = useState(false);
+
 
   useEffect(() => {
     // console.log('useEffect in App.jsx')
@@ -38,7 +40,7 @@ function App() {
   return (
     <FilterContext.Provider 
       value={{
-        loading, setLoading, colors, homes, setHomes, types, setTypes, semesters, setSemesters
+        loading, setLoading, colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin
       }}
     > 
       <BrowserRouter>
@@ -48,9 +50,9 @@ function App() {
           <Route exact path="/curricula/*" element={<Curricula/>} />
           <Route exact path="/curriculum/*" element={<Curriculum />} />
           <Route exact path="/curriculum/upload" element={<UploadCurriculum />} />
-          <Route exact path="/profile" element={<Profile/>} />
+          <Route exact path="/profile/*" element={<Profile/>} />
           <Route exact path="/signup" element={<SignUp/>} />
-          <Route exact path="/signin" element={<SignIn/>} />
+          <Route exact path="/login" element={<LogIn/>} />
         </Routes>
       </BrowserRouter>
     </FilterContext.Provider>

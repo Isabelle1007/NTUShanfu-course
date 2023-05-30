@@ -74,6 +74,10 @@ const LogIn = () => {
               icon: 'success',
               confirmButtonText: 'OK',
               allowOutsideClick: false 
+            }).then((result) => {
+              if (result.isConfirmed){
+                window.location.href = '/login';
+              }
             })
           }else{
             Swal.fire({
@@ -179,39 +183,6 @@ const LogIn = () => {
             <Input.Password />
           </Form.Item>
 
-          {/* <Form.Item 
-            name="gender"
-            label="生理性別"
-            rules={[
-              {
-                required: true,
-                // message: 'Please select gender!',
-              },
-            ]}
-          >
-            <Radio.Group 
-              style={{ marginLeft: '-70px' }} 
-            >
-              <Radio value="加拿"> 男 </Radio>
-              <Radio value="新武"> 女 </Radio>
-            </Radio.Group>
-          </Form.Item>
-
-          <Form.Item
-            name="phone"
-            label="手機號碼"
-            rules={[
-              {
-                required: false,
-                message: 'Please input your phone number!',
-              },
-            ]}
-          >
-            <Input
-              style={{ width: '100%' }}
-            />
-          </Form.Item> */}
-
           <Form.Item {...tailFormItemLayout}>
             <Button 
               type="primary" 
@@ -228,7 +199,7 @@ const LogIn = () => {
           <Form.Item {...tailFormItemLayout}>
             <Button 
               type="link"
-            ><a href={`${api.hostname_fe}/signin`} target="_self" rel="noreferrer">已有帳號？</a></Button>
+            ><a href={`${api.hostname_fe}/login`} target="_self" rel="noreferrer">已有帳號？</a></Button>
           </Form.Item>
 
         </Form>

@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 
 import { api } from '../utils/api'
 
-import './SignIn.css'
+import './LogIn.css'
 
 const formItemLayout = {
   labelCol: {
@@ -63,7 +63,7 @@ const LogIn = () => {
   const onSubmit = async () => {
     try {
       let signIpInfo = formValues
-      api.signIn(signIpInfo).then((json) => {
+      api.login(signIpInfo).then((json) => {
           if(json.code === "000"){
             Swal.fire({
               title: 'Success!',
@@ -71,6 +71,12 @@ const LogIn = () => {
               icon: 'success',
               confirmButtonText: 'OK',
               allowOutsideClick: false 
+            }).then((result) => {
+              if (result.isConfirmed){
+                const jwtToken = json.data.access_token;
+                window.localStorage.setItem('jwtToken', jwtToken);
+                window.location.href = `/`;
+              }
             })
           }else{
             Swal.fire({
@@ -90,7 +96,7 @@ const LogIn = () => {
   return (
     <>
       <Header/>
-      <div className="signin__container">
+      <div className="login__container">
         <Form
           {...formItemLayout}
           form={form}
