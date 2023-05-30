@@ -9,7 +9,6 @@ import { Card, Button, DatePicker, Form, Input, Radio, Select, Upload, Spin } fr
 import { UploadOutlined, SnippetsOutlined, LoadingOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2'
-// import Curriculum from './Curriculum';
 
 const antIcon = (
   <LoadingOutlined
@@ -271,9 +270,14 @@ const UploadCurriculum = () => {
             icon: 'success',
             confirmButtonText: 'OK',
             allowOutsideClick: false 
+          }).then((result) => {
+            if(result.isConfirmed){
+              setFormValues({})
+              setLoading(false)
+              window.location.href = '/curriculum/upload'
+            }
           })
-          setFormValues({})
-          setLoading(false)
+          
         }
       })
       .catch((err) => console.log(err));

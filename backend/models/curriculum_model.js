@@ -209,13 +209,13 @@ const getCurriculumByUserId = async (id) => {
     let curr = [];
     const query = `SELECT c.id, c.title, 
                   (SELECT GROUP_CONCAT(u_name) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id)) AS authors,
-                   c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at
+                   c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content
                    FROM curricula c 
                    JOIN homes h ON c.home_id = h.id 
                    JOIN types t ON c.type_id = t.id 
                    LEFT JOIN files f ON c.file_id = f.id
                    WHERE c.id IN (SELECT cid FROM user_curriculum WHERE uid = '${id}')
-                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at`;
+                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at, c.content`;
     const [result] = await pool.execute(query);
     try {
         if (result.length > 0) {
@@ -311,7 +311,7 @@ const getCurriculumByKeyWord = async (kw) => {
 };
 
 const getCurriculumByID = async (id) => {
-    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content
                    FROM curricula c 
                    JOIN user_curriculum u_c ON c.id = u_c.cid 
                    JOIN users u ON u_c.uid = u.id 
@@ -319,7 +319,7 @@ const getCurriculumByID = async (id) => {
                    JOIN types t ON c.type_id = t.id 
                    LEFT JOIN files f ON c.file_id = f.id
                    WHERE c.id = ${id}
-                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at`
+                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at, c.content`
     const [result] = await pool.execute(query);
     try{
         if(result.length === 1){
@@ -337,7 +337,7 @@ const getCurriculumByID = async (id) => {
                 "file_word": result[0].url_word,
                 "file_pdf": result[0].url_pdf,
                 "created": date_create,
-                    "content": result[0].content
+                "content": result[0].content
             }
             return {
                 "message": "Success",
@@ -410,8 +410,9 @@ const createCurriculum = async(c) => {
 
 const updateCurriculum = async (cid, key, value) => {
     if(key === 'content'){
-        const query = `UPDATE curricula SET content = '${value}' WHERE id = ${cid}`;
-        const [result] = await pool.execute(query);
+        const query = 'UPDATE curricula SET content = ? WHERE id = ?';
+        const params = [value, cid]
+        const [result] = await pool.query(query, params);
         try{
             if(result.affectedRows > 0){
                 // let date_last = changeDataFormat(result[0].last_update);

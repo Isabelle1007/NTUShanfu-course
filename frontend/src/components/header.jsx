@@ -266,7 +266,7 @@ const Header = () => {
                             size="large"
                             icon={<IdcardOutlined />} 
                             onClick={ () => window.location.href = '/myProfile'}
-                        >個人資料</Button>
+                        >個人頁面</Button>
 
                         {/* <Button 
                             className='userMenu__btn'

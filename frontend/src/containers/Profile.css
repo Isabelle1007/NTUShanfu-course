@@ -55,3 +55,11 @@
   flex-wrap: wrap;
   flex-direction: row;
 }
+
+.fixed-anchor{
+  position: fixed;
+  top: 180px;
+  left: 50px;
+  height: 100%;
+  font-size: 40px;
+}
