@@ -11,40 +11,21 @@ import { api } from '../utils/api'
 
 import './header.css' 
 
-function getItem(label, key, icon) {
-    return {
-      label,
-      key,
-      icon
-    };
-}
-
 const Header = () => {
 
-    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin } = useContext(FilterContext);
+    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, userInfo, setUserInfo } = useContext(FilterContext);
 
     const [inputValue, setInputValue] = useState('');
 
     const [open, setOpen] = useState(false);
-
-    const [admin, setAdmin] = useState(false);
 
     const [userID, setUserID] = useState(1)
 
     const showDrawer = () => {
         setOpen(true);
     };
-
     const onClose = () => {
         setOpen(false);
-    }
-
-    const checkLogIn = async () => {
-        const jwtToken = window.localStorage.getItem('jwtToken');
-        if(jwtToken) 
-            setIsLogin(true)
-        else
-            setIsLogin(false)
     }
 
     const getHomes = async () => {
@@ -98,6 +79,50 @@ const Header = () => {
         setSemesters(transformedSemesters)
     }
 
+    const checkLogIn = async () => {
+        const jwtToken = window.localStorage.getItem('jwtToken');
+        if(jwtToken){
+            setIsLogin(true)
+            api.getUserInfo(jwtToken).then((json) => {
+                if(json.code === "000"){
+                    if(json.data.role === "admin") setIsAdmin(true)
+                    else setIsAdmin(false)
+                    const newInfo = {
+                        "id": json.data.id,
+                        "name": json.data.name,
+                        "email": json.data.email,
+                        "role": json.data.role,
+                        "home": json.data.home,
+                        "group": json.data.group,
+                        "join_semester": json.data.join_semester,
+                        "gender": json.data.gender,
+                        "birthday": json.data.birthday,
+                        "department": json.data.department,
+                        "picture_url": json.data.picture_url
+                    }
+                    setUserInfo(newInfo)
+                }
+            })
+        }   
+        else{
+            setIsLogin(false)
+            setIsAdmin(false)
+            setUserInfo({
+                "id": -1,
+                "name": "",
+                "email": "",
+                "role": "",
+                "home": "",
+                "group": "",
+                "join_semester": "",
+                "gender": "",
+                "birthday": "",
+                "department": "",
+                "picture_url": ""
+            })
+        }  
+    }
+
     useEffect(() => {
         checkLogIn();
         getHomes();
@@ -108,10 +133,6 @@ const Header = () => {
 
     useEffect(() => {
         checkLogIn();
-        api.getUserInfo().then((json) => {
-            if(json.code === "000") console.log(json)
-            else console.log('not logged in')
-        })
         }, [isLogin]
     );
 
@@ -147,7 +168,7 @@ const Header = () => {
     const navigate = useNavigate();
 
     const refresh = () => {
-        navigate('/'); 
+        window.location.href = '/'
     }
 
     const onClick = (e) => {
@@ -163,7 +184,6 @@ const Header = () => {
 
     const handleLogIn = () => {
         if(isLogin){
-            // window.location.href = `/logout`
             Swal.fire({
                 title: 'Are You Sure?',
                 text: '登出帳號嗎',
@@ -175,7 +195,6 @@ const Header = () => {
               }).then((result) => {
                 if(result.isConfirmed){
                   localStorage.removeItem('jwtToken');
-
                 }
                 window.location.href = `/`
               })
@@ -228,7 +247,7 @@ const Header = () => {
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start'}} >
                         <Button 
                             className='userMenu__btn'
-                            type="ghost"
+                            type="text"
                             size="large"
                             icon={<UserOutlined />} 
                             onClick={ handleLogIn }
@@ -236,22 +255,23 @@ const Header = () => {
                     
                         <Button 
                             className='userMenu__btn'
-                            type="ghost"
+                            type="text"
                             size="large"
                             icon={<IdcardOutlined />} 
-                            onClick={ () => window.location.href = `/profile?id=${userID}`}
+                            onClick={ () => window.location.href = `/profile?id=${userInfo.id}`}
                         >個人頁面</Button>
 
                         <Button 
                             className='userMenu__btn'
-                            type="ghost"
+                            type="text"
                             size="large"
                             icon={<HeartOutlined />} 
+                            onClick={() => console.log('Click 我的收藏') }
                         >我的收藏</Button>
 
                         <Button 
                             className='userMenu__btn'
-                            type="ghost"
+                            type="text"
                             size="large"
                             icon={<CloudUploadOutlined />} 
                             onClick={ () => window.location.href = `/curriculum/upload`}
@@ -259,16 +279,20 @@ const Header = () => {
 
                         <Button 
                             className='userMenu__btn'
-                            type="ghost"
+                            type="text"
                             size="large"
                             icon={<DesktopOutlined />} 
+                            disabled={!isAdmin}
+                            title={!isAdmin ? "屬於管理帳號權限" : ""}
+                            onClick={() => console.log('Click 後台管理') }
                         >後台管理</Button>
 
                         <Button 
                             className='userMenu__btn'
-                            type="ghost"
+                            type="text"
                             size="large"
                             icon={<SettingOutlined />} 
+                            onClick={() => console.log('Click 設定') }
                         >設定</Button>
                     </div>
 

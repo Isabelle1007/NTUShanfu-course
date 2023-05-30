@@ -1,4 +1,9 @@
 require('dotenv').config();
+const { TOKEN_SECRET } = process.env; // 30 days by seconds
+const { promisify } = require('util'); // util from native nodejs library
+const jwt = require('jsonwebtoken');
+
+const User = require('../models/user_model');
 
 // reference: https://thecodebarbarian.com/80-20-guide-to-express-error-handling
 const wrapAsync = (fn) => {
@@ -25,9 +30,42 @@ const changeDataFormat = (response) => {
     return formattedDate
 };
 
+const authentication = () => {
+    return async function (req, res, next) {
+        let accessToken = req.get('Authorization');
+        if (!accessToken) {
+            res.status(401).send({ error: 'Unauthorized' });
+            return;
+        }
+
+        accessToken = accessToken.replace('Bearer ', '');
+        if (accessToken == 'null') {
+            res.status(401).send({ error: 'Unauthorized' });
+            return;
+        }
+
+        try {
+            req.user = await promisify(jwt.verify)(accessToken, TOKEN_SECRET);
+            const userDetail = await User.getInfoByUserEmail(req.user.email);
+            if (!userDetail) {
+                res.status(403).send({ error: 'Forbidden' });
+            } else {
+                req.user.id = userDetail.data.id;
+                req.user.role = userDetail.data.role;
+                next();
+            }
+            return;
+        } catch (err) {
+            res.status(403).send({ error: 'Forbidden' });
+            return;
+        }
+    };
+};
+
 module.exports = {
     wrapAsync,
-    changeDataFormat
+    changeDataFormat,
+    authentication
 };
 
 

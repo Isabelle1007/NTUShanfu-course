@@ -14,12 +14,23 @@ const USER_ROLE = {
     member: 3
 };
 
-const getInfoByUserId = async (id) => {
-    const query = `SELECT u.*, r.r_name, h.h_name, g.g_name 
-                   FROM users u JOIN roles r ON u.role_id = r.id 
-                                JOIN homes h ON u.home_id = h.id 
-                                JOIN \`groups\` g ON u.group_id = g.id 
-                   WHERE u.id = ${id}`
+const getUserByKey = async (key, value) => {
+
+    let query;
+    if( key === 'id' || key === 'home_id' || key === 'group_id' || key === 'role_id'){
+        query = `SELECT u.*, r.r_name, h.h_name, g.g_name 
+                 FROM users u JOIN roles r ON u.role_id = r.id 
+                              JOIN homes h ON u.home_id = h.id 
+                              JOIN \`groups\` g ON u.group_id = g.id 
+                 WHERE u.${key} = ${value}`
+
+    }else{
+        query = `SELECT u.*, r.r_name, h.h_name, g.g_name 
+                 FROM users u JOIN roles r ON u.role_id = r.id 
+                              JOIN homes h ON u.home_id = h.id 
+                              JOIN \`groups\` g ON u.group_id = g.id 
+                 WHERE u.${key} = '${value}'`
+    }
     const [result] = await pool.execute(query);
     try{
         if(result.length === 1){
@@ -60,6 +71,14 @@ const getInfoByUserId = async (id) => {
     }catch(err){
         return err
     }
+}
+
+const getInfoByUserId = async (id) => {
+    return getUserByKey('id', id);
+};
+
+const getInfoByUserEmail = async (email) => {
+    return getUserByKey('email', email);
 };
 
 const getInfoOfAllUsers = async () => {
@@ -300,6 +319,7 @@ const login = async (email, password) => {
 module.exports = {
     USER_ROLE,
     getInfoByUserId,
+    getInfoByUserEmail,
     getInfoOfAllUsers,
     getIdByUserName,
     postAnUser,

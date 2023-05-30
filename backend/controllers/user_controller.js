@@ -9,7 +9,10 @@ const Role = require('../models/role_model');
 // get data from db
 const getInfoOfUser = async (req, res) => {
     const id = req.query.id;
-    const data = await User.getInfoByUserId(id);
+    const email = req.body.email
+    let data;
+    if(id) data = await User.getInfoByUserId(id);
+    if(email) data = await User.getInfoByUserEmail(email);
     res.json(data);
 };
 
@@ -74,7 +77,7 @@ const signUp = async (req, res) => {
 };
 
 // sign in
-const signIn = async (req, res) => {
+const login = async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
         return res.json({
@@ -83,7 +86,7 @@ const signIn = async (req, res) => {
         });
     }
     try {
-        const result = await User.signIn(email, password);
+        const result = await User.login(email, password);
         const roleName = await Role.getRoleByID(result.data.role_id)
         result.data.role = roleName.data.name
         delete result.data.role_id
@@ -96,10 +99,17 @@ const signIn = async (req, res) => {
     }
 };
 
+const getUserProfile = async (req, res) => {
+    const userProfile = await User.getInfoByUserEmail(req.user.email);
+    res.json(userProfile);
+    return;
+}
+
 module.exports = {
     getInfoOfUser,
     getAllUsers,
     createNewUser,
     signUp,
-    signIn
+    login,
+    getUserProfile
 };

@@ -1,0 +1,9 @@
+.profile__container{
+  max-width: 1140px;
+  min-height: 1140px;
+  margin: 0px auto;
+  padding: 180px 0px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}

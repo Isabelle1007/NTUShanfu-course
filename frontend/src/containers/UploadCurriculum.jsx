@@ -230,8 +230,8 @@ const UploadCurriculum = () => {
           setWordUploadDone(true)
           setPdfUploadDone(true)
         } else {
-          console.log(fileUploadResponse_word.message);
-          console.log(fileUploadResponse_pdf.message);
+          // console.log(fileUploadResponse_word.message);
+          // console.log(fileUploadResponse_pdf.message);
           setWordUploadDone(false)
           setPdfUploadDone(false)
           return;

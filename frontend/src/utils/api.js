@@ -65,8 +65,8 @@ export const api = {
             method: 'POST',
           }).then(response => response.json());
     },
-    signIn(data){
-        return fetch(`${this.hostname_be}/user/signin`, {
+    login(data){
+        return fetch(`${this.hostname_be}/user/login`, {
             body: JSON.stringify(data),
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -74,7 +74,12 @@ export const api = {
             method: 'POST',
           }).then(response => response.json());
     },
-    // getFileUrlByID(id){
-    //     return fetch(`${this.hostname_be}/file/id/${id}`).then(response => response.json());
-    // },
+    getUserInfo(access_token){
+        return fetch(`${this.hostname_be}/user/profile`,{
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${access_token}`,
+            }),
+        }).then(response => response.json());
+    }
 };

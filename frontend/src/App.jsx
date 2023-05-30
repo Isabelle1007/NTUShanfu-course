@@ -31,6 +31,20 @@ function App() {
   const [types, setTypes] = useState([]);
   const [semesters, setSemesters] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    "id": -1,
+    "name": "",
+    "email": "",
+    "role": "",
+    "home": "",
+    "group": "",
+    "join_semester": "",
+    "gender": "",
+    "birthday": "",
+    "department": "",
+    "picture_url": ""
+  });
 
 
   useEffect(() => {
@@ -40,7 +54,7 @@ function App() {
   return (
     <FilterContext.Provider 
       value={{
-        loading, setLoading, colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin
+        loading, setLoading, colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, userInfo, setUserInfo
       }}
     > 
       <BrowserRouter>
