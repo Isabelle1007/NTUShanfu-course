@@ -268,13 +268,13 @@ const Header = () => {
                             onClick={ () => window.location.href = '/myProfile'}
                         >個人資料</Button>
 
-                        <Button 
+                        {/* <Button 
                             className='userMenu__btn'
                             type="text"
                             size="large"
                             icon={<HeartOutlined />} 
                             onClick={() => console.log('Click 我的收藏') }
-                        >我的收藏</Button>
+                        >我的收藏</Button> */}
 
                         <Button 
                             className='userMenu__btn'

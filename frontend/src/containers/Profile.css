@@ -28,6 +28,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: start;
+  padding-bottom: 80px;
+  border-bottom: 20px solid #FAAC58;
 }
 
 .curriculum__con{
@@ -36,6 +38,20 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  padding: 0px;
+}
+
+.favorite__sec{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
   padding-bottom: 180px;
+}
+
+.favorite__con{
+  align-self: center;
+  width: 1140px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
 }

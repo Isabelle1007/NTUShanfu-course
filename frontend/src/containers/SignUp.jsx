@@ -11,20 +11,7 @@ import { api } from '../utils/api'
 
 import './SignUp.css'
 
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-  },
-};
-
-const LogIn = () => {
+const SignUp = () => {
 
   const { colors, semesters } = useContext(FilterContext);
 
@@ -339,7 +326,8 @@ const LogIn = () => {
               color: colors.colorWhite,
               backgroundColor: colors.colorPrimary,
               width: '100%',
-              marginBottom: '10px'
+              marginTop: '10px',
+                marginBottom: '20px'
             }}
             onClick={onSubmit}
           >註冊</Button>
@@ -347,7 +335,6 @@ const LogIn = () => {
           <Button 
             type="link"
           ><a href={`${api.hostname_fe}/login`} target="_self" rel="noreferrer">已有帳號？</a></Button>
-
         </Form>
         </Card>
       </div>
@@ -356,4 +343,4 @@ const LogIn = () => {
   );
 }
 
-export default LogIn;
+export default SignUp;

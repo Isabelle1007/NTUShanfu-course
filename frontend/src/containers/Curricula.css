@@ -1,7 +1,6 @@
 .curricula__container {
   width: 1140px;
-  min-height: 1140px;
-  margin: 0px auto;
+  min-height: 520px;
   padding: 180px 0 100px;
   display: flex;
   flex-wrap: wrap;

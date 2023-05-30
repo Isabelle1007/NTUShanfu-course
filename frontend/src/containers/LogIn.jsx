@@ -3,7 +3,7 @@ import { FilterContext } from "../App";
 import Header from "../components/header";
 import Footer from "../components/footer";
 
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Card } from 'antd';
 import Swal from 'sweetalert2'
 
 import { api } from '../utils/api'
@@ -118,12 +118,24 @@ const LogIn = () => {
     <>
       <Header/>
       <div className="login__container">
+      <Card
+        title="登入"
+        bordered={true}
+        style={{
+          width: 900,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
         <Form
-          {...formItemLayout}
+          labelCol={{ span: 2 }}
+          wrapperCol={{ span: 28 }}
+          layout="horizontal"
           form={form}
-          name="register"
           style={{
-            maxWidth: 900,
+            width: 700,
           }}
           scrollToFirstError
         >
@@ -162,26 +174,24 @@ const LogIn = () => {
             />
           </Form.Item>
 
-          <Form.Item {...tailFormItemLayout}>
-            <Button 
+          <Button 
               type="primary" 
               htmlType="submit"
               style={{
                 color: colors.colorWhite,
                 backgroundColor: colors.colorPrimary,
-                width: '100%'
+                width: '100%',
+                marginTop: '10px',
+                marginBottom: '20px'
               }}
               onClick={onSubmit}
-            >登入</Button>
-          </Form.Item>
+          >登入</Button>
 
-          <Form.Item {...tailFormItemLayout}>
-            <Button 
+          <Button 
               type="link"
             ><a href={`${api.hostname_fe}/signup`} target="_self" rel="noreferrer">尚未註冊？</a></Button>
-          </Form.Item>
         </Form>
-        
+        </Card>
       </div>
       <Footer/>
     </>

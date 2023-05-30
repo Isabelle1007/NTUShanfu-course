@@ -22,8 +22,8 @@ const antIcon = (
 const Profile = () => {
 
   const { colors, loading, setLoading, userInfo } = useContext(FilterContext);
-
-  const [curricula, setCurricula] = useState([]);
+  const [myCurricula, setMyCurricula] = useState([]);
+  const [favCurricula, setFavCurricula] = useState([]);
 
   useEffect(() => {
     checkLogIn();
@@ -59,7 +59,7 @@ const Profile = () => {
 
     fetchProducts().then((json) => {
       if(json.data){
-        setCurricula((prev) => [...prev, ...json.data]);
+        setMyCurricula((prev) => [...prev, ...json.data]);
       }
       setLoading(false);
     });
@@ -153,7 +153,43 @@ const Profile = () => {
               <p style={{marginTop: '30px', fontSize: '32px', marginLeft: '50px'}}>我的教案紙</p>
               <div className="curriculum__con">
               {
-                curricula.map((curriculum) => (
+                myCurricula.map((curriculum) => (
+                  <a
+                    className="curriculum"
+                    key={curriculum.id}
+                    href={`${api.hostname_fe}/curriculum?id=${curriculum.id}`}
+                  >
+                    <Card
+                      cover={
+                        <img
+                            alt="picture_example"
+                            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                        />
+                      }
+                      actions={[
+                          <HeartOutlined key="favorite"/>,
+                          <EllipsisOutlined key="ellipsis" />
+                      ]}
+                    >
+                        <Meta
+                            avatar={<AvatarWithText src="https://doc-file-uploads.s3.ap-northeast-1.amazonaws.com/image/default-pic.png" text={curriculum.author.join(' ')} count={curriculum.author.length}/>}
+                            title={curriculum.title}
+                            description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
+                        />
+                    </Card>
+                  </a>
+                ))
+              }
+              </div>
+            </div>
+            <div className="favorite__sec">
+              <p style={{marginTop: '30px', fontSize: '32px', marginLeft: '50px'}}>我的收藏</p>
+              {
+                favCurricula.length === 0 ? (<p style={{alignSelf: 'center'}}>尚未收藏任何教案紙</p>) : (<></>)
+              }
+              <div className="favorite__con">
+              {
+                favCurricula.map((curriculum) => (
                   <a
                     className="curriculum"
                     key={curriculum.id}
