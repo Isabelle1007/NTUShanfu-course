@@ -44,7 +44,7 @@ const tailFormItemLayout = {
 
 const LogIn = () => {
 
-  const { colors } = useContext(FilterContext);
+  const { colors, userInfo, setUserInfo } = useContext(FilterContext);
 
   const [form] = Form.useForm();
 
@@ -75,7 +75,28 @@ const LogIn = () => {
               if (result.isConfirmed){
                 const jwtToken = json.data.access_token;
                 window.localStorage.setItem('jwtToken', jwtToken);
-                window.location.href = `/`;
+                if(jwtToken){
+                    // setIsLogin(true)
+                    api.getUserInfo(jwtToken).then((json) => {
+                        if(json.code === "000"){
+                            const newInfo = {
+                                "id": json.data.id,
+                                "name": json.data.name,
+                                "email": json.data.email,
+                                "role": json.data.role,
+                                "home": json.data.home,
+                                "group": json.data.group,
+                                "join_semester": json.data.join_semester,
+                                "gender": json.data.gender,
+                                "birthday": json.data.birthday,
+                                "department": json.data.department,
+                                "picture_url": json.data.picture_url
+                            }
+                            setUserInfo(newInfo)
+                        }
+                    })
+                } 
+                window.location.href = `/myProfile`;
               }
             })
           }else{

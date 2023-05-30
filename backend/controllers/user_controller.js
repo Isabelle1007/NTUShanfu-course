@@ -37,7 +37,7 @@ const createNewUser = async (req, res) => {
 // sign up
 const signUp = async (req, res) => {
     let { name } = req.body;
-    const { role, email, password } = req.body;
+    const { role, email, password, picture_url, home, group, join_semester, gender, birthday, department, student_id } = req.body;
 
     if (!name || !email || !password) {
         return res.json({
@@ -55,7 +55,7 @@ const signUp = async (req, res) => {
 
     name = validator.escape(name);
 
-    const result = await User.signUp(name, User.USER_ROLE[role], email, password);
+    const result = await User.signUp(name, User.USER_ROLE[role], email, password, picture_url, home, group, join_semester, gender, birthday, department, student_id);
     if (result.code != "000") {
         return res.json({
             "message": result.message,

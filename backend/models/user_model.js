@@ -42,7 +42,7 @@ const getUserByKey = async (key, value) => {
                     "role": result[i].r_name,
                     "home": result[i].h_name,
                     "group": result[i].g_name,
-                    "join semester": result[i].join_semester,
+                    "join_semester": result[i].join_semester,
                     "gender": result[i].gender,
                     "birthday": result[i].birthday,
                     "department": result[i].department,
@@ -185,7 +185,8 @@ const postAnUser = async (req, homeID) => {
     }
 };
 
-const signUp = async (name, roleId, email, password) => {
+const signUp = async (name, roleId, email, password, picture_url, home, group, join_semester, gender, birthday, department, student_id) => {
+    
     const conn = await pool.getConnection();
     try {
         await conn.query('START TRANSACTION');
@@ -206,10 +207,18 @@ const signUp = async (name, roleId, email, password) => {
             email: email,
             password: bcrypt.hashSync(password, salt),
             role_id: roleId,
-            picture_url: null,
             access_expired: TOKEN_EXPIRE,
             login_at: loginAt,
         };
+
+        if(picture_url != "") user.picture_url = picture_url
+        if(join_semester != "") user.join_semester = join_semester
+        if(home != "") user.home_id = home
+        if(group != "") user.group_id = group
+        if(gender != "") user.gender = gender
+        if(birthday != "") user.birthday = birthday
+        if(department != "") user.department = department
+        if(student_id != "") user.student_id = student_id
 
         const accessToken = jwt.sign(
             {
