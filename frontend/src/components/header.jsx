@@ -85,8 +85,10 @@ const Header = () => {
             setIsLogin(true)
             api.getUserInfo(jwtToken).then((json) => {
                 if(json.code === "000"){
+                    
                     if(json.data.role === "admin") setIsAdmin(true)
                     else setIsAdmin(false)
+
                     const newInfo = {
                         "id": json.data.id,
                         "name": json.data.name,
@@ -231,6 +233,15 @@ const Header = () => {
                     type="ghost"
                     size="large"
                     style={{
+                        color: colors.colorDarkOrange
+                    }}
+                    icon={<UserOutlined />} 
+                    onClick={ handleLogIn }
+                >{isLogin ? "登出" : "註冊/登入"}</Button>
+                <Button 
+                    type="ghost"
+                    size="large"
+                    style={{
                         color: colors.colorDarkOrange,
                         margin: '0px 20px 0px 0px'
                     }}
@@ -245,21 +256,14 @@ const Header = () => {
                     key='right'
                 >
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start'}} >
-                        <Button 
-                            className='userMenu__btn'
-                            type="text"
-                            size="large"
-                            icon={<UserOutlined />} 
-                            onClick={ handleLogIn }
-                        >{isLogin ? "登出" : "註冊/登入"}</Button>
                     
                         <Button 
                             className='userMenu__btn'
                             type="text"
                             size="large"
                             icon={<IdcardOutlined />} 
-                            onClick={ () => window.location.href = `/profile?id=${userInfo.id}`}
-                        >個人頁面</Button>
+                            onClick={ () => window.location.href = '/myProfile'}
+                        >個人資料</Button>
 
                         <Button 
                             className='userMenu__btn'

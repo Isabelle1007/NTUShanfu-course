@@ -64,7 +64,7 @@ function App() {
           <Route exact path="/curricula/*" element={<Curricula/>} />
           <Route exact path="/curriculum/*" element={<Curriculum />} />
           <Route exact path="/curriculum/upload" element={<UploadCurriculum />} />
-          <Route exact path="/profile/*" element={<Profile/>} />
+          <Route exact path="/myProfile" element={<Profile/>} />
           <Route exact path="/signup" element={<SignUp/>} />
           <Route exact path="/login" element={<LogIn/>} />
         </Routes>

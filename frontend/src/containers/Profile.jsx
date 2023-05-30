@@ -1,16 +1,13 @@
+import './Profile.css'
 import { useState, useEffect, useContext } from "react";
-// import { useParams } from 'react-router-dom';
 import { FilterContext } from "../App";
 import Header from "../components/header";
 import Footer from "../components/footer";
-
-import { Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
-import Swal from 'sweetalert2'
-
 import { api } from '../utils/api'
 
-import './Profile.css'
+import { Card, Form, Spin, Button, Image } from 'antd';
+import { LoadingOutlined, EditOutlined } from '@ant-design/icons';
+import Swal from 'sweetalert2'
 
 const antIcon = (
   <LoadingOutlined
@@ -23,57 +20,102 @@ const antIcon = (
 
 const Profile = () => {
 
-  const { colors, loading, setLoading, setIsAdmin, userInfo, setUserInfo } = useContext(FilterContext);
-  const userID = new URLSearchParams(location.search).get('id');
+  const { colors, loading, setLoading, userInfo, setUserInfo } = useContext(FilterContext);
 
   useEffect(() => {
-    setLoading(true)
+    checkLogIn();
+  }, []);
+
+  const checkLogIn = async () => {
+    setLoading(true);
     const jwtToken = window.localStorage.getItem('jwtToken');
     if(jwtToken){
-      if(userInfo.id === -1){
-        api.getUserInfo(jwtToken).then((json) => {
-          if(json.code === "000"){
-              if(json.data.role === "admin") setIsAdmin(true)
-              else setIsAdmin(false)
-              const newInfo = {
-                  "id": json.data.id,
-                  "name": json.data.name,
-                  "email": json.data.email,
-                  "role": json.data.role,
-                  "home": json.data.home,
-                  "group": json.data.group,
-                  "join_semester": json.data.join_semester,
-                  "gender": json.data.gender,
-                  "birthday": json.data.birthday,
-                  "department": json.data.department,
-                  "picture_url": json.data.picture_url
-              }
-              setUserInfo(newInfo)
-              setLoading(false)
-          }
-        })
-      }
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }else{
       Swal.fire('Opps!', '請先登入!', 'error').then((result) => {
           if (result.isConfirmed) {
               window.location.href = '/login';
           }
       });
-      setLoading(false)
+      setLoading(false);
       return;
     }
-  },[]);
+  };
+
+  const handleEditProfile = async () => {
+    console.log('Click 編輯個人資料')
+  };
 
   return (
     <>
       <Header/>
       {
         loading ? ( <Spin indicator={antIcon} size="large"/>) : (
-          <h2>This is Profile page, for user: {userInfo.id}</h2>
+          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+            <div className='image__container'>
+              <Image
+                width={200}
+                height={200}
+                src={userInfo.picture_url}
+              />
+            </div>
+            <div className='profile__container'>
+              <Card
+                title={`社員資訊`}
+                bordered={true}
+                style={{
+                  width: 900,
+                }}
+              >
+                <Form
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 24 }}
+                  layout="horizontal"
+                  style={{
+                    maxWidth: 600,
+                  }}
+                >
+                  <Form.Item label="姓名" >
+                    <div className='input' >{userInfo.name}</div>
+                  </Form.Item>
+                  <Form.Item label="性別" >
+                    <div className='input' >{userInfo.gender === 'M'? '男' : '女'}</div>
+                  </Form.Item>
+                  <Form.Item label="系級" >
+                    <div className='input' >{userInfo.department}</div>
+                  </Form.Item>
+                  <Form.Item label="入團期別">
+                    <div className='input'>{userInfo.join_semester}</div>
+                  </Form.Item>
+                  <Form.Item label="家別">
+                    <div className='input' >{userInfo.home}</div>
+                  </Form.Item>
+                  <Form.Item label="功能組">
+                    <div className='input' >{userInfo.group}</div>
+                  </Form.Item>
+                </Form>
+              </Card>
+              
+              <Button 
+                type="dashed" 
+                shape="circle"
+                icon={<EditOutlined />} 
+                size='large' 
+                style={{
+                  color: colors.colorPrimary,
+                  alignSelf: 'end',
+                  marginTop: '-60px',
+                  marginRight: '20px'
+                }}
+                onClick={ handleEditProfile } 
+                disabled
+              />
+            </div>
+          </div>
         )
       }
-      
-      
       <Footer/>
     </>
   );

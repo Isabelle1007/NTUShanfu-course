@@ -167,8 +167,8 @@ const Curriculum = () => {
           </div>
         )}
         <a ref={linkRef} href={curriculum.file_pdf} target="_blank" rel="noopener noreferrer" style={{ display: 'none' }}/>
-    </div>
-    <Footer/>
+      </div>
+      <Footer/>
     </>
   );
 }
