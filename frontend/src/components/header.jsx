@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Menu, Input, Button, Drawer } from 'antd';
-import { FileTextOutlined, HomeOutlined, TagsOutlined, FieldTimeOutlined, UserOutlined, HeartOutlined, IdcardOutlined, CloudUploadOutlined, DesktopOutlined, SettingOutlined } from '@ant-design/icons';
+import { FileTextOutlined, HomeOutlined, TagsOutlined, FieldTimeOutlined, UserOutlined, HeartOutlined, IdcardOutlined, CloudUploadOutlined, DesktopOutlined, SettingOutlined, DoubleLeftOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2'
 
 import { FilterContext } from "../App";
@@ -233,20 +233,23 @@ const Header = () => {
                     type="ghost"
                     size="large"
                     style={{
-                        color: colors.colorDarkOrange
+                        color: colors.colorDarkOrange,
+                        fontSize: '18px'
                     }}
                     icon={<UserOutlined />} 
                     onClick={ handleLogIn }
                 >{isLogin ? "登出" : "註冊/登入"}</Button>
                 <Button 
+                    icon={<DoubleLeftOutlined />}
                     type="ghost"
                     size="large"
                     style={{
                         color: colors.colorDarkOrange,
-                        margin: '0px 20px 0px 0px'
+                        margin: '0px 20px 0px 0px',
+                        fontSize: '18px'
                     }}
                     onClick={ showDrawer }
-                >使用者選單</Button>
+                ></Button>
                 <Drawer
                     title="使用者選單"
                     placement='right'
