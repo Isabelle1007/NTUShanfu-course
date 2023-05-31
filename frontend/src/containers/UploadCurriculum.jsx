@@ -305,14 +305,14 @@ const UploadCurriculum = () => {
                 maxWidth: 600,
               }}
             >
-              <Form.Item label="教案名稱">
+              <Form.Item label={<span className="custom-label-upload">教案名稱</span>}>
                 <Input 
                   className='input__box' 
                   value={formValues['title']} 
                   onChange={(e) => handleInputChange('title', e.target.value)}
                 />
               </Form.Item>
-              <Form.Item label="作者">
+              <Form.Item label={<span className="custom-label-upload">作者</span>}>
                 <Select
                   mode="multiple"
                   size='middle'
@@ -321,20 +321,20 @@ const UploadCurriculum = () => {
                   options={nameList}
                 />        
               </Form.Item>
-              <Form.Item label="家別">
+              <Form.Item label={<span className="custom-label-upload">家別</span>}>
                 <Radio.Group 
                   style={{ marginLeft: '-70px' }} 
                   value={formValues['home']}
                   onChange={(e) => handleInputChange('home', e.target.value)}
                 >
-                  <Radio value="加拿"> 加拿 </Radio>
-                  <Radio value="新武"> 新武 </Radio>
-                  <Radio value="霧鹿"> 霧鹿 </Radio>
-                  <Radio value="利稻"> 利稻 </Radio>
-                  <Radio value="電光"> 電光 </Radio>
+                  <Radio value="加拿"><span className="custom-option-upload">加拿</span></Radio>
+                  <Radio value="新武"><span className="custom-option-upload">新武</span></Radio>
+                  <Radio value="霧鹿"><span className="custom-option-upload">霧鹿</span></Radio>
+                  <Radio value="利稻"><span className="custom-option-upload">利稻</span></Radio>
+                  <Radio value="電光"><span className="custom-option-upload">電光</span></Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="期數">
+              <Form.Item label={<span className="custom-label-upload">期數</span>}>
                 <div style={{display: 'flex', flexDirection:'row', marginLeft: '20px', width: '240px'}}>
                   <Select
                     value={formValues['semester']} 
@@ -348,7 +348,7 @@ const UploadCurriculum = () => {
                   </Select>
                 </div>
               </Form.Item>
-              <Form.Item label="科別">
+              <Form.Item label={<span className="custom-label-upload">科別</span>}>
                 <div style={{display: 'flex', flexDirection:'row', marginLeft: '20px', width: '240px'}}>
                   <Select 
                     value={formValues['type']}
@@ -362,7 +362,7 @@ const UploadCurriculum = () => {
                   </Select>
                 </div>
               </Form.Item>
-              <Form.Item label="最後編輯日">
+              <Form.Item label={<span className="custom-label-upload">最後編輯日</span>}>
                 <DatePicker 
                   style={{marginLeft: '-170px', width: '240px'}} 
                   onChange={handleDatePickerChange}
@@ -404,7 +404,7 @@ const UploadCurriculum = () => {
                 type="dashed" 
                 icon={<SnippetsOutlined />} 
                 size='large' 
-                style={{ width: '850px', marginTop: '10px'}}
+                style={{ width: '850px'}}
                 onClick={ uploadClick } 
               >
                 確認上傳

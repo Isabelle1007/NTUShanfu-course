@@ -21,6 +21,7 @@
 
 .input {
   width: 600px;
+  font-size: 16px;
 }
 
 .curricula__sec{
@@ -58,8 +59,27 @@
 
 .fixed-anchor{
   position: fixed;
-  top: 180px;
+  top: 170px;
   left: 50px;
   height: 100%;
   font-size: 40px;
+}
+
+.custom-anchor .ant-anchor-link {
+  margin-bottom: 10px;
+}
+
+.custom-anchor .ant-anchor-link-title {
+  font-size: 18px;
+  text-align: start;
+}
+
+.custom-form-p .ant-form-item-label label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.custom-form-p .ant-form-item-control-input-content {
+  font-size: 16px;
+  font-weight: 500;
 }

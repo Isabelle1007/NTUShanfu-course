@@ -107,6 +107,7 @@ const Curriculum = () => {
           }}
         >
           <Form
+            className="custom-form-c"
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 24 }}
             layout="horizontal"
@@ -163,6 +164,7 @@ const Curriculum = () => {
               fileType='pdf'
               filePath={downloadedFile}
               onError={console.error}
+              zoom="2"
             />
           </div>
         )}

@@ -96,6 +96,7 @@ const Profile = () => {
                 className="fixed-anchor"
               >
                 <Anchor
+                  className="custom-anchor"
                   items={[
                     {
                       key: 'myProfile',
@@ -134,6 +135,7 @@ const Profile = () => {
                     }}
                   >
                     <Form
+                      className="custom-form-p"
                       labelCol={{ span: 6 }}
                       wrapperCol={{ span: 24 }}
                       layout="horizontal"
@@ -213,7 +215,7 @@ const Profile = () => {
               <div className="favorite__sec" id="favorite">
                 <p style={{marginTop: '30px', fontSize: '32px', marginLeft: '50px'}}>我的收藏</p>
                 {
-                  favCurricula.length === 0 ? (<p style={{alignSelf: 'center'}}>尚未收藏任何教案紙</p>) : (<></>)
+                  favCurricula.length === 0 ? (<p style={{alignSelf: 'center', fontSize: 20}}>尚未收藏任何教案紙</p>) : (<></>)
                 }
                 <div className="favorite__con">
                 {

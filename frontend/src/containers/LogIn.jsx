@@ -142,7 +142,7 @@ const LogIn = () => {
 
           <Form.Item
             name="email"
-            label="信箱"
+            label={<span className="custom-label-login">信箱</span>}
             rules={[
               {
                 type: 'email',
@@ -161,7 +161,7 @@ const LogIn = () => {
 
           <Form.Item
             name="password"
-            label="密碼"
+            label={<span className="custom-label-login">密碼</span>}
             rules={[
               {
                 required: true,
@@ -177,6 +177,7 @@ const LogIn = () => {
           <Button 
               type="primary" 
               htmlType="submit"
+              size="large"
               style={{
                 color: colors.colorWhite,
                 backgroundColor: colors.colorPrimary,
@@ -189,6 +190,7 @@ const LogIn = () => {
 
           <Button 
               type="link"
+              size="large"
             ><a href={`${api.hostname_fe}/signup`} target="_self" rel="noreferrer">尚未註冊？</a></Button>
         </Form>
         </Card>

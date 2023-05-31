@@ -11,3 +11,13 @@
 .input {
   width: 600px;
 }
+
+.custom-form-c .ant-form-item-label label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.custom-form-c .ant-form-item-control-input-content {
+  font-size: 16px;
+  font-weight: 500;
+}

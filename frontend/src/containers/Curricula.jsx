@@ -79,7 +79,7 @@ function ShowCurrirula() {
           {
             loading ? ( <Spin indicator={antIcon} size="large"/>):(
               curricula.length === 0 ? (
-                <p>尚無教案紙</p>
+                <p style={{fontSize: '24px'}}>尚無教案紙</p>
               ):(
                 <div className="curricula__container">
                   {

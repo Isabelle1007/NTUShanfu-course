@@ -112,7 +112,7 @@ const SignUp = () => {
         >
            <Form.Item
             name="name"
-            label="姓名"
+            label={<span className="custom-label-signup">姓名</span>}
             tooltip="請填寫真實姓名"
             rules={[
               {
@@ -129,7 +129,7 @@ const SignUp = () => {
 
           <Form.Item
             name="email"
-            label="信箱"
+            label={<span className="custom-label-signup">信箱</span>}
             rules={[
               {
                 type: 'email',
@@ -148,7 +148,7 @@ const SignUp = () => {
 
           <Form.Item
             name="password"
-            label="密碼"
+            label={<span className="custom-label-signup">密碼</span>}
             rules={[
               {
                 required: true,
@@ -164,7 +164,7 @@ const SignUp = () => {
 
           <Form.Item
             name="confirm"
-            label="確認密碼"
+            label={<span className="custom-label-signup">確認密碼</span>}
             dependencies={['password']}
             hasFeedback
             rules={[
@@ -187,7 +187,7 @@ const SignUp = () => {
 
           <Form.Item
             name="home"
-            label="家別"
+            label={<span className="custom-label-signup">家別</span>}
             rules={[
               {
                 required: false,
@@ -199,17 +199,16 @@ const SignUp = () => {
               value={formValues['home']}
               onChange={(e) => handleInputChange('home', e.target.value)}
             >
-              <Radio value="1"> 加拿 </Radio>
-              <Radio value="2"> 新武 </Radio>
-              <Radio value="3"> 霧鹿 </Radio>
-              <Radio value="4"> 利稻 </Radio>
-              <Radio value="5"> 電光 </Radio>
+              <Radio value="1"><span className="custom-option-signup">加拿</span></Radio>
+              <Radio value="2"><span className="custom-option-signup">新武</span></Radio>
+              <Radio value="3"><span className="custom-option-signup">霧鹿</span></Radio>
+              <Radio value="4"><span className="custom-option-signup">利稻</span></Radio>
             </Radio.Group>
           </Form.Item>
 
           <Form.Item
             name="group"
-            label="功能組"
+            label={<span className="custom-label-signup">功能組</span>}
             rules={[
               {
                 required: false,
@@ -221,19 +220,19 @@ const SignUp = () => {
               value={formValues['group']}
               onChange={(e) => handleInputChange('group', e.target.value)}
             >
-              <Radio value="2"> 志工 </Radio>
-              <Radio value="3"> 公關 </Radio>
-              <Radio value="4"> 教案 </Radio>
-              <Radio value="5"> 財務 </Radio>
-              <Radio value="6"> 文書 </Radio>
-              <Radio value="7"> 平課 </Radio>
-              <Radio value="1"> 無 </Radio>
+              <Radio value="2"><span className="custom-option-signup">志工</span></Radio>
+              <Radio value="3"><span className="custom-option-signup">公關</span></Radio>
+              <Radio value="4"><span className="custom-option-signup">教案</span></Radio>
+              <Radio value="5"><span className="custom-option-signup">財務</span></Radio>
+              <Radio value="6"><span className="custom-option-signup">文書</span></Radio>
+              <Radio value="7"><span className="custom-option-signup">平課</span></Radio>
+              <Radio value="1"><span className="custom-option-signup">無</span></Radio>
             </Radio.Group>
           </Form.Item>
 
           <Form.Item
             name="semester"
-            label="入團期別"
+            label={<span className="custom-label-signup">入團期別</span>}
             rules={[
               {
                 required: false,
@@ -255,7 +254,7 @@ const SignUp = () => {
 
           <Form.Item
             name="gender"
-            label="生理性別"
+            label={<span className="custom-label-signup">生理性別</span>}
             rules={[
               {
                 required: false,
@@ -267,8 +266,8 @@ const SignUp = () => {
               value={formValues['gender']}
               onChange={(e) => handleInputChange('gender', e.target.value)}
             >
-              <Radio value="M"> 男 </Radio>
-              <Radio value="F"> 女 </Radio>
+              <Radio value="M"><span className="custom-option-signup">男</span></Radio>
+              <Radio value="F"><span className="custom-option-signup">女</span></Radio>
             </Radio.Group>
           </Form.Item>
 
@@ -291,7 +290,7 @@ const SignUp = () => {
 
           <Form.Item
             name="department"
-            label="系級"
+            label={<span className="custom-label-signup">系級</span>}
             rules={[
               {
                 required: false,
@@ -306,7 +305,7 @@ const SignUp = () => {
 
           <Form.Item
             name="student_id"
-            label="學號"
+            label={<span className="custom-label-signup">學號</span>}
             rules={[
               {
                 required: false,
@@ -321,6 +320,7 @@ const SignUp = () => {
 
           <Button 
             type="primary" 
+            size="large"
             htmlType="submit"
             style={{
               color: colors.colorWhite,
@@ -334,6 +334,7 @@ const SignUp = () => {
 
           <Button 
             type="link"
+            size="large"
           ><a href={`${api.hostname_fe}/login`} target="_self" rel="noreferrer">已有帳號？</a></Button>
         </Form>
         </Card>
