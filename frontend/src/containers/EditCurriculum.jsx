@@ -1,14 +1,15 @@
-import './UploadCurriculum.css';
+import './EditCurriculum.css';
 import { useContext, useEffect, useState } from "react";
 import { FilterContext } from "../App";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import { api } from '../utils/api'
 
-import { Card, Button, DatePicker, Form, Input, Radio, Select, Upload, Spin } from 'antd';
-import { UploadOutlined, SnippetsOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Card, Button, DatePicker, Form, Input, Radio, Select, Spin } from 'antd';
+import { CheckCircleOutlined, LoadingOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2'
+// import moment from 'moment';
 
 const antIcon = (
   <LoadingOutlined
@@ -19,21 +20,15 @@ const antIcon = (
   />
 );
 
-const UploadCurriculum = () => {
+const EditCurriculum = () => {
 
   const { colors, semesters, types } = useContext(FilterContext);
 
+  const id = new URLSearchParams(location.search).get('id');
+
   const [ nameList, setNameList ] = useState([]);
 
-  const [ wordFileData, setWordFileData ] = useState([]);
-  const [ pdfFileData, setPdfFileData ] = useState([]);
-
-  const [ wordUploadDone, setWordUploadDone ] = useState(false);
-  const [ pdfUploadDone, setPdfUploadDone ] = useState(false);
-
   const [ loading, setLoading ] = useState(false);
-
-  // const [ click, setClick ] = useState(false);
 
   const [ formValues, setFormValues ] = useState({
     'title': '',
@@ -42,8 +37,6 @@ const UploadCurriculum = () => {
     'home': '',
     'type': '',
     'last_update': '',
-    'file_word': '',
-    'file_pdf': ''
   });
 
   const getUsers = () => {
@@ -91,30 +84,15 @@ const UploadCurriculum = () => {
     }));
   };
 
-  const handleBeforeUpload = (e, type) => {
-    if(type === 'w'){
-      setWordFileData(e)
-      // setWordUploadDone(true)
-      // setClick(false)
-    }
-    else{
-      setPdfFileData(e)
-      // setPdfUploadDone(true)
-      // setClick(false)
-    }
-    return false; // Prevent automatic upload
-  };
+  const editedClick = async () => {
 
-  const uploadClick = async () => {
-
-    // setClick(true)
     setLoading(true)
 
     // input data check
     let isFormValuesComplete = true;
     const keys = Object.keys(formValues);
 
-    for (let i = 0; i < keys.length - 2; i++) {
+    for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       const value = formValues[key];
 
@@ -142,123 +120,15 @@ const UploadCurriculum = () => {
       setLoading(false)
       return
     }
-
-    if(isFormValuesComplete && (wordFileData.length === 0 || pdfFileData.length === 0)){
-      Swal.fire({
-        title: 'Oops!',
-        text: 'word 及 pdf 檔案未完整上傳',
-        icon: 'warning',
-        confirmButtonText: 'OK',
-        allowOutsideClick: false 
-      })
-      setLoading(false)
-      return
-    }
-
-    // if(isFormValuesComplete && !wordUploadDone && !pdfUploadDone){
-    //   Swal.fire({
-    //     title: 'Are you sure?',
-    //     text: "檔案尚未上傳，確定新增教案？",
-    //     icon: 'warning',
-    //     showCancelButton: true,
-    //     confirmButtonColor: '#3085d6',
-    //     cancelButtonColor: '#d33',
-    //     confirmButtonText: '確定新增',
-    //     cancelButtonText: '返回',
-    //   }).then((result) => {
-    //     if(!result.isConfirmed) {
-    //       return
-    //     }else{
-    //       // upload without file
-    //       api.postCurriculum(formValues)
-    //         .then((json) => {
-    //           if (json.code != '000'){
-    //             console.log(json.message);
-    //             Swal.fire({
-    //               title: 'Error!',
-    //               text: '教案新增失敗',
-    //               icon: 'error',
-    //               confirmButtonText: 'OK',
-    //               allowOutsideClick: false 
-    //             })
-    //           }else{
-    //             Swal.fire({
-    //               title: 'Success!',
-    //               text: '教案新增成功',
-    //               icon: 'success',
-    //               confirmButtonText: 'OK',
-    //               allowOutsideClick: false 
-    //             })
-    //           }
-    //         })
-    //         .catch((err) => console.log(err));
-    //         return;
-    //     }
-    //   })
-    // }
-
-    // if(isFormValuesComplete && (wordUploadDone + pdfUploadDone === 1)){
-    //   Swal.fire({
-    //     title: 'Error!',
-    //     text: '請完整上傳兩份檔案',
-    //     icon: 'error',
-    //     confirmButtonText: 'OK',
-    //     allowOutsideClick: false 
-    //   })
-    //   return
-    // }
-
-     // upload with file
-    //  if(wordUploadDone && pdfUploadDone){
-      let formdata_word = new FormData();
-      let formdata_pdf = new FormData();
-      formdata_word.append('file', wordFileData);
-      formdata_pdf.append('file', pdfFileData);
-      formdata_word.append('name', formValues.title)
-      formdata_pdf.append('name', formValues.title)
-    
-      let url1, url2;
-      try {
-        const fileUploadResponse_word = await api.postFile(formdata_word, 'w');
-        const fileUploadResponse_pdf = await api.postFile(formdata_pdf, 'p');
-        if (fileUploadResponse_word.code === '000' && fileUploadResponse_pdf.code === '000') {
-          url1 = fileUploadResponse_word.data.file_info.Location;
-          url2 = fileUploadResponse_pdf.data.file_info.Location;
-          handleInputChange('file_word', url1);
-          handleInputChange('file_pdf', url2);
-          setWordUploadDone(true)
-          setPdfUploadDone(true)
-        } else {
-          // console.log(fileUploadResponse_word.message);
-          // console.log(fileUploadResponse_pdf.message);
-          setWordUploadDone(false)
-          setPdfUploadDone(false)
-          return;
-        }
-      } catch (error) {
-        console.log(error);
-        setWordUploadDone(false)
-        setPdfUploadDone(false)
-        return;
-      }
-    // }
-  }
-  
-  useEffect(() => {
-    getUsers();
-    }, []
-  );
-
-  useEffect(() => {
-    // create new curriculum
-    if( wordUploadDone && pdfUploadDone ){
-      setLoading(true)
-      api.postCurriculum(formValues)
+   
+    setLoading(true)
+    try {
+      api.putCurriculum(formValues)
       .then((json) => {
         if (json.code != '000'){
           Swal.fire({
             title: 'Error!',
-            text: '教案新增失敗',
+            text: '教案編輯失敗',
             icon: 'error',
             confirmButtonText: 'OK',
             allowOutsideClick: false 
@@ -266,7 +136,7 @@ const UploadCurriculum = () => {
         }else{
           Swal.fire({
             title: 'Success!',
-            text: '教案新增成功',
+            text: '教案編輯成功',
             icon: 'success',
             confirmButtonText: 'OK',
             allowOutsideClick: false 
@@ -274,24 +144,43 @@ const UploadCurriculum = () => {
             if(result.isConfirmed){
               setFormValues({})
               setLoading(false)
-              window.location.href = '/curriculum/upload'
+              window.location.href = `/curriculum？id=${id}`
             }
           })
           
         }
       })
       .catch((err) => console.log(err));
-    }  
-  }, [wordUploadDone, pdfUploadDone]);
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  }
+  
+  useEffect(() => {
+    api.getCurriculumByID(id).then((json) => {
+      if(json.data){
+        handleInputChange("title", json.data.title)
+        handleInputChange("author", json.data.author)
+        handleInputChange("home", json.data.home)
+        handleInputChange("semester", json.data.semester)
+        handleInputChange("type", json.data.type)
+        // handleDatePickerChange(json.data.last_update)
+        console.log(json.data.last_update)
+      }
+    });
+    getUsers();
+    }, []
+  );
 
   return (
     <>
       <Header/>
       {
         loading ? <Spin indicator={antIcon} size="large"/> : (
-          <div className='upload__container'>
+          <div className='edit__container'>
             <Card
-              title="新教案紙"
+              title={`編輯教案紙${id}`} 
               bordered={true}
               style={{
                 width: 900
@@ -316,6 +205,7 @@ const UploadCurriculum = () => {
                   <Select
                     mode="multiple"
                     size='middle'
+                    value={formValues['author']}
                     onChange={(e) => handleInputChange('author', e)}
                     style={{ width: '600px', marginLeft: '20px'}}
                     options={nameList}
@@ -362,52 +252,25 @@ const UploadCurriculum = () => {
                     </Select>
                   </div>
                 </Form.Item>
-                <Form.Item label={<span className="custom-label-upload">最後編輯日</span>}>
+                <Form.Item 
+                  label={<span className="custom-label-upload">最後編輯日</span>}
+                >
                   <DatePicker 
+                    // defaultValue={moment(formValues['last_update'])}
                     style={{marginLeft: '-170px', width: '240px'}} 
                     onChange={handleDatePickerChange}
                     placeholder='請選擇日期'
                   />
                 </Form.Item>
-                <Form.Item>
-                  <div style={{ marginLeft: '500px', marginTop: '-185px', width: '240px'}}>
-                    <Upload
-                      accept=".doc, .docx"
-                      listType="text"
-                      maxCount={1}
-                      beforeUpload={(e) => handleBeforeUpload(e, 'w')}
-                      onRemove={() => {
-                        setWordFileData([]);
-                        setWordUploadDone(false)
-                      }}
-                    >
-                      <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳教案紙 word</Button>
-                    </Upload>
-                  </div>
-                  <div style={{ marginLeft: '500px', marginTop: '25px', width: '240px'}}>
-                    <Upload
-                      accept=".pdf"
-                      listType="text"
-                      maxCount={1}
-                      beforeUpload={(e) => handleBeforeUpload(e, 'p')}
-                      onRemove={() => {
-                        setPdfFileData([]);
-                        setPdfUploadDone(false)
-                      }}
-                    >
-                      <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳教案紙 pdf</Button>
-                    </Upload>
-                  </div>
-                </Form.Item>
               </Form>
               <Button 
                   type="dashed" 
-                  icon={<SnippetsOutlined />} 
+                  icon={<CheckCircleOutlined />} 
                   size='large' 
                   style={{ width: '850px'}}
-                  onClick={ uploadClick } 
+                  onClick={ editedClick } 
                 >
-                  確認上傳
+                  完成編輯
                 </Button>
             </Card>
           </div>
@@ -418,4 +281,4 @@ const UploadCurriculum = () => {
   );
 }
 
-export default UploadCurriculum;
+export default EditCurriculum;

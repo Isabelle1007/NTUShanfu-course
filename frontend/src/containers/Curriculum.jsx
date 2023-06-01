@@ -6,7 +6,7 @@ import Footer from "../components/footer";
 import { api } from '../utils/api'
 
 import { Card, Form, Button} from 'antd';
-import { EyeOutlined, EyeInvisibleOutlined, DownloadOutlined } from '@ant-design/icons';
+import { EyeOutlined, EyeInvisibleOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons';
 
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import FileViewer from 'react-file-viewer-fix';
@@ -15,7 +15,7 @@ import Swal from 'sweetalert2'
 
 const Curriculum = () => {
 
-  const { colors } = useContext(FilterContext);
+  const { colors, userInfo } = useContext(FilterContext);
   const [ curriculum, setCurriculum ] = useState([]);
   const [ displayName, setDisplayName ] = useState('');
   const [ displayDate, setDisplayDate ] = useState('');
@@ -31,6 +31,24 @@ const Curriculum = () => {
       secretAccessKey: "9DNR0Ind0rhM8PJIXQfMUtKsysskBZXnRgXYuEB6",
     }
   })
+
+  const handleEdit = async () => {
+    console.log(userInfo)
+    if(curriculum.author.includes(userInfo.name) || userInfo.role === 'admin'){
+      console.log('編輯教案')
+      window.location.href = `/curriculum/edit?id=${id}`;
+    }
+    else{
+      Swal.fire({
+        title: 'Oops!',
+        text: '沒有編輯權限',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false 
+      })
+      return
+    }
+  };
 
   const linkRef = useRef(null);
 
@@ -133,12 +151,22 @@ const Curriculum = () => {
             <Form.Item label="最後編輯日">
               <div className='input' >{displayDate}</div>
             </Form.Item>
-            {/* <Form.Item label="檔案">
-              <div className='input' >{curriculum.file}</div>
-            </Form.Item> */}
           </Form>
         </Card>
-        <div style={{display: 'flex', justifyContent:'space-between', alignItems: 'center', marginTop: '10px'}}>
+        <Button 
+          type="dashed" 
+          shape="circle"
+          icon={<EditOutlined />} 
+          size='large' 
+          style={{
+            color: colors.colorPrimary,
+            alignSelf: 'end',
+            marginTop: '-60px',
+            marginRight: '20px'
+          }}
+          onClick={ handleEdit } 
+        />
+        <div style={{display: 'flex', justifyContent:'space-between', alignItems: 'center', marginTop: '30px'}}>
           <Button 
             type="dashed" 
             icon={<DownloadOutlined />} 
