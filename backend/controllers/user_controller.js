@@ -5,6 +5,7 @@ const validator = require('validator');
 const User = require('../models/user_model');
 const Home = require('../models/home_model');
 const Role = require('../models/role_model');
+const Group = require('../models/group_model');
 
 // get data from db
 const getInfoOfUser = async (req, res) => {
@@ -105,11 +106,42 @@ const getUserProfile = async (req, res) => {
     return;
 }
 
+const updateProfile = async (req, res) => {
+    let { name, home, group, join_semester, gender, department } = req.body;
+    
+    let homeID;
+    const getHomeID = await Home.getIdByHomeName(home);
+    if(getHomeID.code != '000')
+        return res.json(getHomeID)
+    else
+        homeID = getHomeID.data.id
+
+    let groupID;
+    const getGroupID = await Group.getIdByGroupName(group);
+    if(getGroupID.code != '000')
+        return res.json(getGroupID)
+    else
+        groupID = getGroupID.data.id
+    
+    const profile = {
+        u_name: name,
+        home_id: homeID,
+        group_id: groupID,
+        join_semester: join_semester,
+        gender: gender === "男"? "M" : "F",
+        department: department
+    }
+    const updatedUserProfile = await User.updateInfoByEmail(req.user.email, profile);
+    res.json(updatedUserProfile);
+    return;
+}
+
 module.exports = {
     getInfoOfUser,
     getAllUsers,
     createNewUser,
     signUp,
     login,
-    getUserProfile
+    getUserProfile,
+    updateProfile
 };

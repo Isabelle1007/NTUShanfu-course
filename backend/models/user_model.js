@@ -15,7 +15,6 @@ const USER_ROLE = {
 };
 
 const getUserByKey = async (key, value) => {
-
     let query;
     if( key === 'id' || key === 'home_id' || key === 'group_id' || key === 'role_id'){
         query = `SELECT u.*, r.r_name, h.h_name, g.g_name 
@@ -325,6 +324,33 @@ const login = async (email, password) => {
     }
 };
 
+const updateInfoByEmail = async (email, profile) => {
+    const setClauses = Object.entries(profile).map(([column, value]) => `${column} = '${value}'`).join(', ');
+    const query = `UPDATE users SET ${setClauses} WHERE email = '${email}';`;
+    
+    try{
+        const [result] = await pool.execute(query);
+        if(result.affectedRows > 0){
+            return {
+                "message": "Success",
+                "code": "000"
+            }
+        }else{
+            return {
+                "message": 'Server Response Error',
+                "code": "999"
+            }
+        }
+    }catch (error) {
+        console.log(error);
+        return {
+            "message": error,
+            "code": "999"
+        }
+    }
+
+}
+
 module.exports = {
     USER_ROLE,
     getInfoByUserId,
@@ -333,5 +359,6 @@ module.exports = {
     getIdByUserName,
     postAnUser,
     signUp,
-    login
+    login,
+    updateInfoByEmail
 };

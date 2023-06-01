@@ -5,8 +5,8 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { api } from '../utils/api'
 
-import { Card, Form, Spin, Button, Image, Avatar, Anchor, Col, Row } from 'antd';
-import { LoadingOutlined, EditOutlined, HeartOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { Card, Form, Spin, Button, Image, Avatar, Anchor, Col, Row, Space } from 'antd';
+import { LoadingOutlined, EditOutlined, HeartOutlined, EllipsisOutlined, FileTextOutlined, IdcardOutlined} from '@ant-design/icons';
 const { Meta } = Card;
 import Swal from 'sweetalert2'
 
@@ -22,8 +22,8 @@ const antIcon = (
 const Profile = () => {
 
   const { colors, loading, setLoading, userInfo } = useContext(FilterContext);
-  const [myCurricula, setMyCurricula] = useState([]);
-  const [favCurricula ] = useState([]);
+  const [ myCurricula, setMyCurricula] = useState([]);
+  const [ favCurricula ] = useState([]);
 
   useEffect(() => {
     checkLogIn();
@@ -67,7 +67,7 @@ const Profile = () => {
   };
 
   const handleEditProfile = async () => {
-    console.log('Click 編輯個人資料')
+      window.location.href = '/myProfile/edit';
   };
 
   const AvatarWithText = ({ array }) => (
@@ -133,7 +133,13 @@ const Profile = () => {
                 </div>
                 <div className='profile__container'>
                   <Card
-                    title={<span className="custom-card-title-profile">個人資訊</span>}
+                    title={
+                      // <span className="custom-card-title-profile">個人資訊</span>
+                      <Space>
+                        <IdcardOutlined style={{ fontSize: '24px', marginTop: '5px' }}/>
+                        <span className="custom-card-title-profile">個人資訊</span>
+                      </Space>
+                    }
                     bordered={true}
                     style={{
                       width: 700,
@@ -180,12 +186,14 @@ const Profile = () => {
                       marginRight: '20px'
                     }}
                     onClick={ handleEditProfile } 
-                    disabled
                   />
                 </div>
               </div>
               <div className="curricula__sec" id="curri">
-                <p style={{marginTop: '30px', fontSize: '28px', marginLeft: '50px'}}>我的教案紙</p>
+                <Space style={{ marginTop: '20px', fontSize: '28px', marginLeft: '20px' }}>
+                  <FileTextOutlined />
+                  <p>我的教案紙</p>
+                </Space>
                 {
                   myCurricula.length === 0 ? (<p style={{alignSelf: 'center', fontSize: 20}}>尚未撰寫任何教案紙</p>) : (<></>)
                 }
@@ -221,7 +229,10 @@ const Profile = () => {
                 </div>
               </div>
               <div className="favorite__sec" id="favorite">
-                <p style={{marginTop: '30px', fontSize: '28px', marginLeft: '50px'}}>我的收藏</p>
+              <Space style={{ marginTop: '20px', fontSize: '28px', marginLeft: '20px' }}>
+                  <HeartOutlined />
+                  <p>我的收藏</p>
+                </Space>
                 {
                   favCurricula.length === 0 ? (<p style={{alignSelf: 'center', fontSize: 20}}>尚未收藏任何教案紙</p>) : (<></>)
                 }

@@ -8,7 +8,8 @@ import UploadCurriculum from './containers/UploadCurriculum'
 import Profile from './containers/Profile'
 import SignUp from './containers/SignUp'
 import LogIn from './containers/LogIn'
-import EditCurriculum from './containers/EditCurriculum' 
+import EditCurriculum from './containers/EditCurriculum'
+import EditProfile from './containers/EditProfile' 
 
 import './App.css'
 
@@ -67,6 +68,7 @@ function App() {
           <Route exact path="/curriculum/edit/*" element={<EditCurriculum />} />
           <Route exact path="/curriculum/upload" element={<UploadCurriculum />} />
           <Route exact path="/myProfile" element={<Profile/>} />
+          <Route exact path="/myProfile/edit" element={<EditProfile/>} />
           <Route exact path="/signup" element={<SignUp/>} />
           <Route exact path="/login" element={<LogIn/>} />
         </Routes>

@@ -5,8 +5,8 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { api } from '../utils/api'
 
-import { Card, Button, DatePicker, Form, Input, Radio, Select, Upload, Spin } from 'antd';
-import { UploadOutlined, SnippetsOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Card, Button, DatePicker, Form, Input, Radio, Select, Upload, Spin, Space } from 'antd';
+import { UploadOutlined, SnippetsOutlined, LoadingOutlined, FileTextOutlined} from '@ant-design/icons';
 
 import Swal from 'sweetalert2'
 
@@ -291,7 +291,12 @@ const UploadCurriculum = () => {
         loading ? <Spin indicator={antIcon} size="large"/> : (
           <div className='upload__container'>
             <Card
-              title="新教案紙"
+               title={
+                <Space>
+                  <FileTextOutlined style={{ fontSize: '24px', marginTop: '5px' }}/>
+                  <span className="custom-card-title-upload">新教案紙</span>
+                </Space>
+              }
               bordered={true}
               style={{
                 width: 900

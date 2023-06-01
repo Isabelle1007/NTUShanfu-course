@@ -91,5 +91,16 @@ export const api = {
             body: JSON.stringify(data),
             method: 'PUT',
         }).then(response => response.json());
-    }
+    },
+    putUserProfile(access_token, data){
+        return fetch(`${this.hostname_be}/user/edit`,{
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${access_token}`,
+            }),
+            body: JSON.stringify(data),
+            method: 'PUT',
+        }).then(response => response.json());
+    },
+
 };

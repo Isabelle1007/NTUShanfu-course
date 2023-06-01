@@ -5,8 +5,8 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { api } from '../utils/api'
 
-import { Card, Form, Button} from 'antd';
-import { EyeOutlined, EyeInvisibleOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons';
+import { Card, Form, Button, Space} from 'antd';
+import { EyeOutlined, EyeInvisibleOutlined, DownloadOutlined, EditOutlined, FileTextOutlined } from '@ant-design/icons';
 
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import FileViewer from 'react-file-viewer-fix';
@@ -33,9 +33,7 @@ const Curriculum = () => {
   })
 
   const handleEdit = async () => {
-    console.log(userInfo)
-    if(curriculum.author.includes(userInfo.name) || userInfo.role === 'admin'){
-      console.log('編輯教案')
+    if(curriculum.author.includes(userInfo.name)){
       window.location.href = `/curriculum/edit?id=${id}`;
     }
     else{
@@ -118,7 +116,12 @@ const Curriculum = () => {
       <Header/>
       <div className='curriculum__container'>
         <Card
-          title={<span className="custom-card-title-curri">教案紙 #{id}</span>}
+          title={
+            <Space>
+              <FileTextOutlined style={{ fontSize: '24px', marginTop: '5px' }}/>
+              <span className="custom-card-title-curri">教案紙 #{id}</span>
+            </Space>
+          }
           bordered={true}
           style={{
             width: 900,
