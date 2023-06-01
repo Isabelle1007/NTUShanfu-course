@@ -81,5 +81,15 @@ export const api = {
                 Authorization: `Bearer ${access_token}`,
             }),
         }).then(response => response.json());
+    },
+    putCurriculum(access_token, id, data){
+        return fetch(`${this.hostname_be}/curriculum/update/id/${id}`,{
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${access_token}`,
+            }),
+            body: JSON.stringify(data),
+            method: 'PUT',
+        }).then(response => response.json());
     }
 };

@@ -6,7 +6,7 @@ import Footer from "../components/footer";
 import { api } from '../utils/api'
 
 import { Card, Button, DatePicker, Form, Input, Radio, Select, Spin } from 'antd';
-import { CheckCircleOutlined, LoadingOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, LoadingOutlined, CloseSquareOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2'
 // import moment from 'moment';
@@ -86,8 +86,6 @@ const EditCurriculum = () => {
 
   const editedClick = async () => {
 
-    setLoading(true)
-
     // input data check
     let isFormValuesComplete = true;
     const keys = Object.keys(formValues);
@@ -120,41 +118,71 @@ const EditCurriculum = () => {
       setLoading(false)
       return
     }
-   
-    setLoading(true)
-    try {
-      api.putCurriculum(formValues)
-      .then((json) => {
-        if (json.code != '000'){
-          Swal.fire({
-            title: 'Error!',
-            text: '教案編輯失敗',
-            icon: 'error',
-            confirmButtonText: 'OK',
-            allowOutsideClick: false 
-          })
-        }else{
-          Swal.fire({
-            title: 'Success!',
-            text: '教案編輯成功',
-            icon: 'success',
-            confirmButtonText: 'OK',
-            allowOutsideClick: false 
-          }).then((result) => {
-            if(result.isConfirmed){
-              setFormValues({})
+
+    Swal.fire({
+      title: 'Warning!',
+      text: '確定完成編輯？',
+      icon: 'warning',
+      confirmButtonText: '確認編輯',
+      showCancelButton: true,
+      cancelButtonText: '取消',
+      allowOutsideClick: false 
+    }).then((result) => {
+      if(result.isConfirmed){
+        setLoading(true)
+        try {
+          const jwtToken = window.localStorage.getItem('jwtToken');
+          api.putCurriculum(jwtToken, id, formValues)
+          .then((json) => {
+            console.log(json)
+            if (json.code != '000'){
+              Swal.fire({
+                title: 'Error!',
+                text: '教案編輯失敗',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false 
+              })
               setLoading(false)
-              window.location.href = `/curriculum？id=${id}`
+            }else{
+              Swal.fire({
+                title: 'Success!',
+                text: '教案編輯成功',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false 
+              }).then((result) => {
+                if(result.isConfirmed){
+                  setFormValues({})
+                  setLoading(false)
+                  window.location.href = `/curriculum?id=${id}`
+                }
+              })
             }
           })
-          
+          .catch((err) => console.log(err));
+        } catch (error) {
+          console.log(error);
+          return;
         }
-      })
-      .catch((err) => console.log(err));
-    } catch (error) {
-      console.log(error);
-      return;
-    }
+      }
+    }) 
+  }
+
+  const backClick = async () => {
+    Swal.fire({
+      title: 'Warning!',
+      text: '確定取消編輯？所有更動將不會保存',
+      icon: 'warning',
+      confirmButtonText: '確定取消',
+      showCancelButton: true,
+      cancelButtonText: '繼續編輯',
+      allowOutsideClick: false 
+    }).then((result) => {
+      if(result.isConfirmed)
+        window.location.href = `/curriculum?id=${id}`
+    })
+    
   }
   
   useEffect(() => {
@@ -165,8 +193,6 @@ const EditCurriculum = () => {
         handleInputChange("home", json.data.home)
         handleInputChange("semester", json.data.semester)
         handleInputChange("type", json.data.type)
-        // handleDatePickerChange(json.data.last_update)
-        console.log(json.data.last_update)
       }
     });
     getUsers();
@@ -264,14 +290,23 @@ const EditCurriculum = () => {
                 </Form.Item>
               </Form>
               <Button 
-                  type="dashed" 
-                  icon={<CheckCircleOutlined />} 
-                  size='large' 
-                  style={{ width: '850px'}}
-                  onClick={ editedClick } 
-                >
-                  完成編輯
-                </Button>
+                type="dashed" 
+                icon={<CheckCircleOutlined />} 
+                size='large' 
+                style={{ width: '850px'}}
+                onClick={ editedClick } 
+              >
+                完成編輯
+              </Button>
+              <Button 
+                type="dashed" 
+                icon={<CloseSquareOutlined />} 
+                size='large' 
+                style={{ width: '850px', marginTop: '10px'}}
+                onClick={ backClick } 
+              >
+                取消編輯
+              </Button>
             </Card>
           </div>
         )

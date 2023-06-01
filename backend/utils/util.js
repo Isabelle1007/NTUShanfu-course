@@ -62,10 +62,38 @@ const authentication = () => {
     };
 };
 
+const findMissingID = (arr1, arr2) => {
+
+    const missingID = [];
+  
+    for (let i = 0; i < arr1.length; i++) {
+      if (!arr2.includes(arr1[i])) {
+        missingID.push(arr1[i]);
+      }
+    }
+    
+    return missingID;
+}
+
+const findNewID = (arr1, arr2) => {
+
+    const newID = [];
+  
+    for (let i = 0; i < arr2.length; i++) {
+      if (!arr1.includes(arr2[i])) {
+        newID.push(arr2[i]);
+      }
+    }
+    
+    return newID;
+}
+
 module.exports = {
     wrapAsync,
     changeDataFormat,
-    authentication
+    authentication,
+    findMissingID,
+    findNewID
 };
 
 

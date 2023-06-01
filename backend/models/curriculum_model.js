@@ -1,6 +1,6 @@
 require('dotenv').config();
 const pool = require('../db')
-const { changeDataFormat } = require('../utils/util')
+const { changeDataFormat, findMissingID, findNewID } = require('../utils/util')
 
 const getCurricula = async () => {
     let curr = [];
@@ -476,61 +476,51 @@ const createCurriculum = async(c) => {
     }
 };
 
-const updateCurriculum = async (cid, key, value) => {
-    if(key === 'content'){
-        const query = 'UPDATE curricula SET content = ? WHERE id = ?';
-        const params = [value, cid]
-        const [result] = await pool.query(query, params);
-        try{
-            if(result.affectedRows > 0){
-                // let date_last = changeDataFormat(result[0].last_update);
-                // let date_create = changeDataFormat(result[0].created_at);
-                // let authors = result[0].authors.split(","); // Split the authors string into an array
-                // let authorPictureUrls = result[i].author_picture_urls.split(",");       
-                
-                // let authorObjects = [];
-                // for (let j = 0; j < authors.length; j++) {
-                //     let authorObject = {
-                //         name: authors[j],
-                //         picture_url: authorPictureUrls[j]
-                //     };
-                //     authorObjects.push(authorObject);
-                // }
+const updateCurriculum = async (id, curriculum) => {
+   
+    const author_id_list = curriculum.author_id_list;
+    delete curriculum.author_id_list
+    const conn = await pool.getConnection();
+    const setClauses = Object.entries(curriculum).map(([column, value]) => `${column} = '${value}'`).join(', ');
+    const query = `UPDATE curricula SET ${setClauses} WHERE id = ${id};`;
+    try{
+        await conn.query('START TRANSACTION');
+        // update author 
+        let currAuthorID = []
+        const getCurrentAuthor = await conn.query('SELECT * FROM user_curriculum WHERE cid = ?', [id]);
+        for(var i = 0; i < getCurrentAuthor[0].length; i++){
+            currAuthorID.push(getCurrentAuthor[0][i].uid)
+        }
+        const toRemoveID = findMissingID(currAuthorID, author_id_list)
+        const newID = findNewID(currAuthorID, author_id_list)
+        for(var i = 0; i < toRemoveID.length; i++){
+            await conn.query('DELETE FROM user_curriculum WHERE uid = ? AND cid = ?', [toRemoveID[i], id]);
+        }
+        for(var i = 0; i < newID.length; i++){
+            await conn.query('INSERT INTO user_curriculum (uid, cid) VALUES (?, ?)', [newID[i], id]);    
+        }
 
-                // let curriculum = {
-                //     "id": result[0].id,
-                //     "title": result[0].title,
-                //     "author": authorObjects,
-                //     "semester": result[0].semester,
-                //     "home": result[0].h_name,
-                //     "type": result[0].t_name,
-                //     "last_update": date_last,
-                //     "file_word": result[0].url_word,
-                //     "file_pdf": result[0].url_pdf,
-                //     "created": date_create,
-                //     "content": result[0].content
-                // }
-                return {
-                    "message": "Success",
-                    "code": "000",
-                    // "data": curriculum
-                }
-            }else{
-                return {
-                    "message": 'Server Response Error',
-                    "code": "999"
-                }
+        // update basic info
+        const [result] = await conn.execute(query);
+        if(result.affectedRows > 0){
+            await conn.query('COMMIT');
+            return {
+                "message": "Success",
+                "code": "000"
             }
-        }catch(err){
-            return err
+        }else{
+            return {
+                "message": 'Server Response Error',
+                "code": "999"
+            }
         }
-    }else{
-        return {
-            "message": "TBC",
-            "code": "001",
-        }
+    }catch (error) {
+        await conn.query('ROLLBACK');
+        console.log(error);
+        return -1;
+    } finally {
+        await conn.release();
     }
-
 }
 
 module.exports = {

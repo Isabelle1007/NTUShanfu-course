@@ -91,7 +91,10 @@ const postCurriculum = async (req, res) => {
         const filePath = `docx/${createNewCurriculum.data.title}.docx`
         const fileContent = await readFileFromS3(filePath);
         if(fileContent.code === '000'){
-            await Curriculum.updateCurriculum(cid, 'content', fileContent.data.content);
+            const data = {
+                "content": fileContent.data.content
+            }
+            await Curriculum.updateCurriculum(cid, data);
             createNewCurriculum.data.content = fileContent.data.content
         }
     }
@@ -117,9 +120,38 @@ const getFileContentByID = async (req, res) => {
 };
 
 const putCurriculum = async (req, res) => {
-    const { key, value } = req.body;
-    const cid = req.params.id;
-    const data = await Curriculum.updateCurriculum(cid, key, value);
+    const id = req.params.id;
+    const { title, author, semester, home, type, last_update } = req.body
+    let authors_id;
+    const getUserID = await User.getIdByUserName(author);
+    if(getUserID.code != '000')
+        return res.json(getUserID)
+    else
+        authors_id = getUserID.data.id
+
+    let homeID;
+    const getHomeID = await Home.getIdByHomeName(home);
+    if(getHomeID.code != '000')
+        return res.json(getHomeID)
+    else
+        homeID = getHomeID.data.id
+
+    let typeID;
+    const getTypeID = await Type.getIdByTypeName(type);
+    if(getTypeID.code != '000')
+        return res.json(getTypeID)
+    else
+        typeID = getTypeID.data.id
+
+    const curriculum = {
+        title: title,
+        author_id_list: authors_id,
+        semester: semester,
+        home_id: homeID,
+        type_id: typeID,
+        last_update: last_update
+    }
+    const data = await Curriculum.updateCurriculum(id, curriculum);
     res.json(data);
 }
 
