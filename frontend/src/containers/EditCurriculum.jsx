@@ -6,10 +6,9 @@ import Footer from "../components/footer";
 import { api } from '../utils/api'
 
 import { Card, Button, DatePicker, Form, Input, Radio, Select, Spin } from 'antd';
-import { CheckCircleOutlined, LoadingOutlined, CloseSquareOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, LoadingOutlined, CloseSquareOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2'
-// import moment from 'moment';
 
 const antIcon = (
   <LoadingOutlined
@@ -85,7 +84,6 @@ const EditCurriculum = () => {
   };
 
   const editedClick = async () => {
-
     // input data check
     let isFormValuesComplete = true;
     const keys = Object.keys(formValues);
@@ -183,6 +181,56 @@ const EditCurriculum = () => {
         window.location.href = `/curriculum?id=${id}`
     })
     
+  }
+
+  const handleDelete = async () => {
+    Swal.fire({
+      title: 'Warning!',
+      text: '確定刪除教案？將無法復原',
+      icon: 'warning',
+      confirmButtonText: '確定刪除',
+      showCancelButton: true,
+      cancelButtonText: '取消',
+      allowOutsideClick: false 
+    }).then((result) => {
+      if(result.isConfirmed)
+        // do something ...
+        try {
+          const jwtToken = window.localStorage.getItem('jwtToken');
+          api.deleteCurriculum(jwtToken, id)
+          .then((json) => {
+            // console.log(json)
+            if (json.code != '000'){
+              Swal.fire({
+                title: 'Error!',
+                text: '教案刪除失敗',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false 
+              })
+              setLoading(false)
+            }else{
+              Swal.fire({
+                title: 'Success!',
+                text: '教案已成功刪除',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false 
+              }).then((result) => {
+                if(result.isConfirmed){
+                  setFormValues({})
+                  setLoading(false)
+                  window.location.href = `/curricula/all`
+                }
+              })
+            }
+          })
+          .catch((err) => console.log(err));
+        } catch (error) {
+          console.log(error);
+          return;
+        }
+    })
   }
   
   useEffect(() => {
@@ -289,25 +337,40 @@ const EditCurriculum = () => {
                   />
                 </Form.Item>
               </Form>
-              <Button 
-                type="dashed" 
-                icon={<CheckCircleOutlined />} 
-                size='large' 
-                style={{ width: '850px'}}
-                onClick={ editedClick } 
-              >
-                完成編輯
-              </Button>
-              <Button 
-                type="dashed" 
-                icon={<CloseSquareOutlined />} 
-                size='large' 
-                style={{ width: '850px', marginTop: '10px'}}
-                onClick={ backClick } 
-              >
-                取消編輯
-              </Button>
             </Card>
+            <Button 
+              type="dashed" 
+              shape="circle"
+              icon={<DeleteOutlined />} 
+              size='large' 
+              style={{
+                color: 'red',
+                alignSelf: 'end',
+                marginTop: '-60px',
+                marginRight: '20px'
+              }}
+              onClick={ handleDelete } 
+            />
+            <div style={{display: 'flex', justifyContent:'space-between', alignItems: 'center', marginTop: '30px'}}>
+                <Button 
+                  type="dashed" 
+                  icon={<CloseSquareOutlined />} 
+                  size='large' 
+                  style={{ width: '440px'}}
+                  onClick={ backClick } 
+                >
+                  取消編輯
+                </Button>
+                <Button 
+                  type="dashed" 
+                  icon={<CheckCircleOutlined />} 
+                  size='large' 
+                  style={{ width: '440px'}}
+                  onClick={ editedClick } 
+                >
+                  完成編輯
+                </Button>
+              </div>
           </div>
         )
       }

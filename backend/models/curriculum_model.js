@@ -523,6 +523,35 @@ const updateCurriculum = async (id, curriculum) => {
     }
 }
 
+const delCurriculum = async (cid, url) => {
+
+    const query1 = `DELETE FROM user_curriculum WHERE cid = ${cid}`;
+    const query2 = `DELETE FROM curricula WHERE id = ${cid}`
+    const query3 = `DELETE FROM files WHERE url_word = '${url}'`
+
+    const conn = await pool.getConnection();
+    try{
+        await conn.query('START TRANSACTION');
+        await conn.execute(query1);
+        await conn.execute(query2);
+        await conn.execute(query3);
+        await conn.query('COMMIT');
+        return {
+            "message": "Success",
+            "code": "000"
+        }
+    }catch (error) {
+        console.log(error);
+        await conn.query('ROLLBACK');
+        return {
+            "message": error,
+            "code": "999"
+        }
+    } finally {
+        await conn.release();
+    }
+};
+
 module.exports = {
     getCurricula,
     getCurriculumByHome,
@@ -532,5 +561,6 @@ module.exports = {
     getCurriculumByUserId,
     getCurriculumByID,
     createCurriculum,
-    updateCurriculum
+    updateCurriculum,
+    delCurriculum
 };

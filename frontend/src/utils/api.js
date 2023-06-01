@@ -102,5 +102,14 @@ export const api = {
             method: 'PUT',
         }).then(response => response.json());
     },
+    deleteCurriculum(access_token, id){
+        return fetch(`${this.hostname_be}/curriculum/delete/id/${id}`,{
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${access_token}`,
+            }),
+            method: 'DELETE',
+        }).then(response => response.json());
+    },
 
 };

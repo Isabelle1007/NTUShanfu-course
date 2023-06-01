@@ -155,6 +155,18 @@ const putCurriculum = async (req, res) => {
     res.json(data);
 }
 
+const deleteCurriculum = async (req, res) => {
+    const id = req.params.id;
+    const curri_info = await Curriculum.getCurriculumByID(id);
+    if(curri_info.code === "000"){
+        const file_url_word = curri_info.data.file_word
+        const deleteResult = await Curriculum.delCurriculum(id, file_url_word);
+        res.json(deleteResult)
+    }else{
+        res.json(curri_info)
+    }
+}
+
 module.exports = {
     getCurricula,
     getCurriculumByHome,
@@ -165,5 +177,6 @@ module.exports = {
     getCurriculumByUser,
     postCurriculum,
     getFileContentByID,
-    putCurriculum
+    putCurriculum,
+    deleteCurriculum
 };
