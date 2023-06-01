@@ -61,7 +61,8 @@ function App() {
     > 
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Home/>} />
+          {/* <Route exact path="/" element={<Home/>} /> */}
+          <Route exact path="/" element={<Curricula/>} />
           <Route exact path="/curricula/all" element={<Curricula/>} />
           <Route exact path="/curricula/*" element={<Curricula/>} />
           <Route exact path="/curriculum/*" element={<Curriculum />} />
