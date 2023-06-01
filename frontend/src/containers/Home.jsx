@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { useNavigate } from 'react-router-dom';
 
 import { FilterContext } from "../App";
 
@@ -11,11 +10,6 @@ import { Button } from 'antd';
 const Home = () => {
 
   const { colors } = useContext(FilterContext);
-
-  // const navigate = useNavigate();
-  // const navTo = (path) => {
-  //     navigate(path); 
-  // }
 
   return (
     <>

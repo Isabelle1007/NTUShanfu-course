@@ -119,7 +119,7 @@ const LogIn = () => {
       <Header/>
       <div className="login__container">
       <Card
-        title="登入"
+        title={<span className="custom-card-title-login">登入</span>}
         bordered={true}
         style={{
           width: 900,

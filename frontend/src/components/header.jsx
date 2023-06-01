@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { Menu, Input, Button, Drawer } from 'antd';
 import { FileTextOutlined, HomeOutlined, TagsOutlined, FieldTimeOutlined, UserOutlined, HeartOutlined, IdcardOutlined, CloudUploadOutlined, DesktopOutlined, SettingOutlined, DoubleLeftOutlined } from '@ant-design/icons';
@@ -110,7 +109,7 @@ const Header = () => {
             setIsLogin(false)
             setIsAdmin(false)
             setUserInfo({
-                "id": -1,
+                "id": "",
                 "name": "",
                 "email": "",
                 "role": "",
@@ -167,8 +166,6 @@ const Header = () => {
         },
     ]
 
-    const navigate = useNavigate();
-
     const refresh = () => {
         window.location.href = '/'
     }
@@ -180,8 +177,7 @@ const Header = () => {
     const { Search } = Input;
 
     const onSearch = () => {
-        navigate(`/curricula?keyword=${inputValue}`);
-        window.location.reload();
+        window.location.href = `/curricula?keyword=${inputValue}`;
     }
 
     const handleLogIn = () => {
@@ -197,10 +193,9 @@ const Header = () => {
               }).then((result) => {
                 if(result.isConfirmed){
                   localStorage.removeItem('jwtToken');
+                  window.location.href = `/curricula/all`
                 }
-                window.location.href = `/`
               })
-
         } 
         else window.location.href = `/login`
     }

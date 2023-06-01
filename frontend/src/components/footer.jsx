@@ -20,7 +20,7 @@ const Footer = () => {
                 <Button 
                     shape="square" 
                     icon={<FacebookOutlined />} 
-                    size="large"
+                    size='middle'
                     style={{
                         color: colors.colorWhite,
                         backgroundColor: '#000000',

@@ -3,7 +3,7 @@ import { FilterContext } from "../App";
 import Header from "../components/header";
 import Footer from "../components/footer";
 
-import { Avatar, Card, Spin } from 'antd';
+import { Avatar, Card, Divider, Spin } from 'antd';
 const { Meta } = Card;
 import { HeartOutlined, EllipsisOutlined, LoadingOutlined } from '@ant-design/icons';
 
@@ -63,14 +63,18 @@ function ShowCurrirula() {
     intersectionObserver.observe(document.querySelector('.waypoint'));
   }, []);
   
-  const AvatarWithText = ({ src, text, count }) => (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+  const AvatarWithText = ({ array }) => (
+    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
        <div style={{display: 'flex', alignItems: 'center'}}>
-        {[...Array(count)].map((_, index) => (
-          <Avatar key={index} src={src} style={{ marginLeft: '8px', marginRight: '8px' }} />
-        ))}
+        {
+          array.map((user, index) => (
+            <div key={index} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+              <Avatar src={user.picture_url} style={{ marginLeft: '8px', marginRight: '8px' }} />
+              <span style={{fontSize:'12px'}}>{user.name}</span>
+            </div>
+          ))
+        }
        </div>
-      <span>{text}</span>
     </div>
   );
 
@@ -101,12 +105,11 @@ function ShowCurrirula() {
                                 <EllipsisOutlined key="ellipsis" />
                             ]}
                           >
-                              <Meta
-                                  avatar={<AvatarWithText src="https://doc-file-uploads.s3.ap-northeast-1.amazonaws.com/image/default-pic.png" text={curriculum.author.join(' ')} count={curriculum.author.length}/>}
-                                  title={curriculum.title}
-                                  description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
-                              />
-                              
+                            <Meta
+                              avatar={<AvatarWithText array={curriculum.author}/>}
+                              title={curriculum.title}
+                              description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
+                            /> 
                           </Card>
                         </a>
                     ))
@@ -115,7 +118,7 @@ function ShowCurrirula() {
               )
             )
           }
-      <div className="waypoint"></div>
+        <div className="waypoint"></div>
       </>
   );
 }

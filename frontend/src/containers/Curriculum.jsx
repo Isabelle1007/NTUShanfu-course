@@ -100,7 +100,7 @@ const Curriculum = () => {
       <Header/>
       <div className='curriculum__container'>
         <Card
-          title={`教案紙 #${id}`}
+          title={<span className="custom-card-title-curri">教案紙 #{id}</span>}
           bordered={true}
           style={{
             width: 900,

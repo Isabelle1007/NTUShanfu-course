@@ -1,16 +1,18 @@
 .curricula__container {
   width: 1140px;
-  min-height: 520px;
+  min-height: 800px;
   padding: 180px 0 100px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  align-items: start;
+  align-self: center;
+  align-content: flex-start;
 }
   
 .curriculum {
   width: 320px;
-  margin: 20px 30px;
+  height: 340px;
+  padding: 30px 30px;
   flex-shrink: 0;
   text-decoration: none;
 }

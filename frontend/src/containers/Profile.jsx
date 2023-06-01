@@ -70,14 +70,18 @@ const Profile = () => {
     console.log('Click 編輯個人資料')
   };
 
-  const AvatarWithText = ({ src, text, count }) => (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+  const AvatarWithText = ({ array }) => (
+    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
        <div style={{display: 'flex', alignItems: 'center'}}>
-        {[...Array(count)].map((_, index) => (
-          <Avatar key={index} src={src} style={{ marginLeft: '8px', marginRight: '8px' }} />
-        ))}
+        {
+          array.map((user, index) => (
+            <div key={index} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+              <Avatar src={user.picture_url} style={{ marginLeft: '8px', marginRight: '8px' }} />
+              <span style={{fontSize:'12px'}}>{user.name}</span>
+            </div>
+          ))
+        }
        </div>
-      <span>{text}</span>
     </div>
   );
 
@@ -123,15 +127,16 @@ const Profile = () => {
                   <Image
                     width={200}
                     height={200}
+                    style={{borderRadius: '100%'}}
                     src={userInfo.picture_url}
                   />
                 </div>
                 <div className='profile__container'>
                   <Card
-                    title={`個人資訊`}
+                    title={<span className="custom-card-title-profile">個人資訊</span>}
                     bordered={true}
                     style={{
-                      width: 900,
+                      width: 700,
                     }}
                   >
                     <Form
@@ -180,7 +185,10 @@ const Profile = () => {
                 </div>
               </div>
               <div className="curricula__sec" id="curri">
-                <p style={{marginTop: '30px', fontSize: '32px', marginLeft: '50px'}}>我的教案紙</p>
+                <p style={{marginTop: '30px', fontSize: '28px', marginLeft: '50px'}}>我的教案紙</p>
+                {
+                  myCurricula.length === 0 ? (<p style={{alignSelf: 'center', fontSize: 20}}>尚未撰寫任何教案紙</p>) : (<></>)
+                }
                 <div className="curriculum__con">
                 {
                   myCurricula.map((curriculum) => (
@@ -202,10 +210,10 @@ const Profile = () => {
                         ]}
                       >
                           <Meta
-                              avatar={<AvatarWithText src="https://doc-file-uploads.s3.ap-northeast-1.amazonaws.com/image/default-pic.png" text={curriculum.author.join(' ')} count={curriculum.author.length}/>}
+                              avatar={<AvatarWithText array={curriculum.author}/>}
                               title={curriculum.title}
                               description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
-                          />
+                            /> 
                       </Card>
                     </a>
                   ))
@@ -213,7 +221,7 @@ const Profile = () => {
                 </div>
               </div>
               <div className="favorite__sec" id="favorite">
-                <p style={{marginTop: '30px', fontSize: '32px', marginLeft: '50px'}}>我的收藏</p>
+                <p style={{marginTop: '30px', fontSize: '28px', marginLeft: '50px'}}>我的收藏</p>
                 {
                   favCurricula.length === 0 ? (<p style={{alignSelf: 'center', fontSize: 20}}>尚未收藏任何教案紙</p>) : (<></>)
                 }
@@ -238,10 +246,10 @@ const Profile = () => {
                         ]}
                       >
                           <Meta
-                              avatar={<AvatarWithText src="https://doc-file-uploads.s3.ap-northeast-1.amazonaws.com/image/default-pic.png" text={curriculum.author.join(' ')} count={curriculum.author.length}/>}
+                              avatar={<AvatarWithText array={curriculum.author}/>}
                               title={curriculum.title}
                               description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
-                          />
+                            /> 
                       </Card>
                     </a>
                   ))

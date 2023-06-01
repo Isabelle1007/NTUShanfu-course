@@ -33,7 +33,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [userInfo, setUserInfo] = useState({
-    "id": -1,
+    "id": "",
     "name": "",
     "email": "",
     "role": "",

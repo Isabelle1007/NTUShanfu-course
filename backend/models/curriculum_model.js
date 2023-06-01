@@ -4,7 +4,7 @@ const { changeDataFormat } = require('../utils/util')
 
 const getCurricula = async () => {
     let curr = [];
-    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content
                    FROM curricula c 
                    JOIN user_curriculum u_c ON c.id = u_c.cid 
                    JOIN users u ON u_c.uid = u.id 
@@ -19,10 +19,21 @@ const getCurricula = async () => {
                 let date_last = changeDataFormat(result[i].last_update);
                 let date_create = changeDataFormat(result[i].created_at);
                 let authors = result[i].authors.split(","); // Split the authors string into an array
+                let authorPictureUrls = result[i].author_picture_urls.split(",");
+                
+                let authorObjects = [];
+                for (let j = 0; j < authors.length; j++) {
+                    let authorObject = {
+                        name: authors[j],
+                        picture_url: authorPictureUrls[j]
+                    };
+                    authorObjects.push(authorObject);
+                }
+
                 let curriculum = {
                     "id": result[i].id,
                     "title": result[i].title,
-                    "author": authors,
+                    "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
                     "type": result[i].t_name,
@@ -54,7 +65,7 @@ const getCurricula = async () => {
 
 const getCurriculumByHome = async (home) => {
     let curr = []
-    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at
                    FROM curricula c 
                    JOIN user_curriculum u_c ON c.id = u_c.cid 
                    JOIN users u ON u_c.uid = u.id 
@@ -69,11 +80,22 @@ const getCurriculumByHome = async (home) => {
             for(var i = 0; i < result.length; i++){
                 let date_last = changeDataFormat(result[i].last_update);
                 let date_create = changeDataFormat(result[i].created_at);
-                let authors = result[i].authors.split(","); // Split the authors string into an array               
+                let authors = result[i].authors.split(","); // Split the authors string into an array 
+                let authorPictureUrls = result[i].author_picture_urls.split(",");    
+                
+                let authorObjects = [];
+                for (let j = 0; j < authors.length; j++) {
+                    let authorObject = {
+                        name: authors[j],
+                        picture_url: authorPictureUrls[j]
+                    };
+                    authorObjects.push(authorObject);
+                }
+
                 let curriculum = {
                     "id": result[i].id,
                     "title": result[i].title,
-                    "author": authors,
+                    "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
                     "type": result[i].t_name,
@@ -105,7 +127,7 @@ const getCurriculumByHome = async (home) => {
 
 const getCurriculumByType = async (type) => {
     let curr = []
-    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at
                    FROM curricula c 
                    JOIN user_curriculum u_c ON c.id = u_c.cid 
                    JOIN users u ON u_c.uid = u.id 
@@ -120,11 +142,22 @@ const getCurriculumByType = async (type) => {
             for(var i = 0; i < result.length; i++){
                 let date_last = changeDataFormat(result[i].last_update);
                 let date_create = changeDataFormat(result[i].created_at);
-                let authors = result[i].authors.split(","); // Split the authors string into an array               
+                let authors = result[i].authors.split(","); // Split the authors string into an array 
+                let authorPictureUrls = result[i].author_picture_urls.split(",");  
+                
+                let authorObjects = [];
+                for (let j = 0; j < authors.length; j++) {
+                    let authorObject = {
+                        name: authors[j],
+                        picture_url: authorPictureUrls[j]
+                    };
+                    authorObjects.push(authorObject);
+                }
+
                 let curriculum = {
                     "id": result[i].id,
                     "title": result[i].title,
-                    "author": authors,
+                    "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
                     "type": result[i].t_name,
@@ -156,7 +189,7 @@ const getCurriculumByType = async (type) => {
 
 const getCurriculumBySemester = async (semester) => {
     let curr = []
-    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at
                    FROM curricula c 
                    JOIN user_curriculum u_c ON c.id = u_c.cid 
                    JOIN users u ON u_c.uid = u.id 
@@ -171,11 +204,22 @@ const getCurriculumBySemester = async (semester) => {
             for(var i = 0; i < result.length; i++){
                 let date_last = changeDataFormat(result[i].last_update);
                 let date_create = changeDataFormat(result[i].created_at);
-                let authors = result[i].authors.split(","); // Split the authors string into an array               
+                let authors = result[i].authors.split(","); // Split the authors string into an array 
+                let authorPictureUrls = result[i].author_picture_urls.split(",");   
+                
+                let authorObjects = [];
+                for (let j = 0; j < authors.length; j++) {
+                    let authorObject = {
+                        name: authors[j],
+                        picture_url: authorPictureUrls[j]
+                    };
+                    authorObjects.push(authorObject);
+                }
+
                 let curriculum = {
                     "id": result[i].id,
                     "title": result[i].title,
-                    "author": authors,
+                    "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
                     "type": result[i].t_name,
@@ -209,6 +253,7 @@ const getCurriculumByUserId = async (id) => {
     let curr = [];
     const query = `SELECT c.id, c.title, 
                   (SELECT GROUP_CONCAT(u_name) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id)) AS authors,
+                  (SELECT GROUP_CONCAT(picture_url) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id)) AS author_picture_urls,
                    c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content
                    FROM curricula c 
                    JOIN homes h ON c.home_id = h.id 
@@ -223,10 +268,21 @@ const getCurriculumByUserId = async (id) => {
                 let date_last = changeDataFormat(result[i].last_update);
                 let date_create = changeDataFormat(result[i].created_at);
                 let authors = result[i].authors ? result[i].authors.split(",") : []; // Split the authors string into an array or assign an empty array if authors is null
+                let authorPictureUrls = result[i].author_picture_urls? result[i].author_picture_urls.split(",") : [];
+
+                let authorObjects = [];
+                for (let j = 0; j < authors.length; j++) {
+                    let authorObject = {
+                        name: authors[j],
+                        picture_url: authorPictureUrls[j]
+                    };
+                    authorObjects.push(authorObject);
+                }
+
                 let curriculum = {
                     "id": result[i].id,
                     "title": result[i].title,
-                    "author": authors,
+                    "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
                     "type": result[i].t_name,
@@ -260,6 +316,7 @@ const getCurriculumByKeyWord = async (kw) => {
     let curr = [];
     const query = `SELECT c.id, c.title, 
                   (SELECT GROUP_CONCAT(u_name) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id)) AS authors,
+                  (SELECT GROUP_CONCAT(picture_url) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id)) AS author_picture_urls,
                    c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content
                    FROM curricula c 
                    JOIN homes h ON c.home_id = h.id 
@@ -277,10 +334,21 @@ const getCurriculumByKeyWord = async (kw) => {
                 let date_last = changeDataFormat(result[i].last_update);
                 let date_create = changeDataFormat(result[i].created_at);
                 let authors = result[i].authors ? result[i].authors.split(",") : []; // Split the authors string into an array or assign an empty array if authors is null
+                let authorPictureUrls = result[i].author_picture_urls? result[i].author_picture_urls.split(",") : [];
+
+                let authorObjects = [];
+                for (let j = 0; j < authors.length; j++) {
+                    let authorObject = {
+                        name: authors[j],
+                        picture_url: authorPictureUrls[j]
+                    };
+                    authorObjects.push(authorObject);
+                }
+
                 let curriculum = {
                     "id": result[i].id,
                     "title": result[i].title,
-                    "author": authors,
+                    "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
                     "type": result[i].t_name,
@@ -417,11 +485,22 @@ const updateCurriculum = async (cid, key, value) => {
             if(result.affectedRows > 0){
                 // let date_last = changeDataFormat(result[0].last_update);
                 // let date_create = changeDataFormat(result[0].created_at);
-                // let authors = result[0].authors.split(","); // Split the authors string into an array               
+                // let authors = result[0].authors.split(","); // Split the authors string into an array
+                // let authorPictureUrls = result[i].author_picture_urls.split(",");       
+                
+                // let authorObjects = [];
+                // for (let j = 0; j < authors.length; j++) {
+                //     let authorObject = {
+                //         name: authors[j],
+                //         picture_url: authorPictureUrls[j]
+                //     };
+                //     authorObjects.push(authorObject);
+                // }
+
                 // let curriculum = {
                 //     "id": result[0].id,
                 //     "title": result[0].title,
-                //     "author": authors,
+                //     "author": authorObjects,
                 //     "semester": result[0].semester,
                 //     "home": result[0].h_name,
                 //     "type": result[0].t_name,

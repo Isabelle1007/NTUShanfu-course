@@ -91,7 +91,7 @@ const SignUp = () => {
       <Header/>
       <div className="signup__container">
       <Card
-        title="註冊新帳號"
+        title={<span className="custom-card-title-signup">註冊新帳號</span>}
         bordered={true}
         style={{
           width: 900,
