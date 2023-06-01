@@ -23,7 +23,7 @@ const Profile = () => {
 
   const { colors, loading, setLoading, userInfo } = useContext(FilterContext);
   const [myCurricula, setMyCurricula] = useState([]);
-  const [favCurricula, setFavCurricula] = useState([]);
+  const [favCurricula ] = useState([]);
 
   useEffect(() => {
     checkLogIn();
