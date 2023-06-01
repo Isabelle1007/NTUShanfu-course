@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 4000
 
-CMD [ "nodemon", "app.js" ]
+CMD [ "nodemon", "index.js" ]
