@@ -243,8 +243,27 @@ const UploadCurriculum = () => {
       }
     // }
   }
+
+  const checkLogIn = async () => {
+    setLoading(true);
+    const jwtToken = window.localStorage.getItem('jwtToken');
+    if(jwtToken){
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }else{
+      Swal.fire('Opps!', '請先登入!', 'error').then((result) => {
+          if (result.isConfirmed) {
+              window.location.href = '/login';
+          }
+      });
+      setLoading(false);
+      return;
+    }
+  };
   
   useEffect(() => {
+    checkLogIn();
     getUsers();
     }, []
   );

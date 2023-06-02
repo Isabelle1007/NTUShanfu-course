@@ -54,7 +54,7 @@ const Profile = () => {
   const showCurricula = async () => {
     setLoading(true);
     function fetchProducts() {
-      return api.getCurriculaByKeyword(userInfo.name);
+      return api.getCurriculumByUserID(userInfo.id)
     }
 
     fetchProducts().then((json) => {

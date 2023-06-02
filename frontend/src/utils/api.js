@@ -29,6 +29,9 @@ export const api = {
     getCurriculumByID(id){
         return fetch(`${this.hostname_be}/curriculum/id/${id}`).then(response => response.json());
     },
+    getCurriculumByUserID(id){
+        return fetch(`${this.hostname_be}/curriculum/user/${id}`).then(response => response.json());
+    },
     getAllUsers(){
         return fetch(`${this.hostname_be}/user/all`).then(response => response.json());
     },
