@@ -10,14 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.24.10",
+    "@ant-design/icons": "^5.0.1",
     "@aws-sdk/client-s3": "^3.338.0",
-    "antd": "^4.16.11",
+    "antd": "^5.5.0",
     "aws-sdk": "^2.1384.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-file-viewer-fix": "^0.1.2",
-    "react-router-dom": "^5.2.0",
+    "react-router-dom": "^6.11.1",
     "sweetalert2": "^11.7.5"
   },
   "devDependencies": {
