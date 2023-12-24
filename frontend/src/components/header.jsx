@@ -12,7 +12,7 @@ import './header.css'
 
 const Header = () => {
 
-    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, userInfo, setUserInfo } = useContext(FilterContext);
+    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, setUserInfo } = useContext(FilterContext);
 
     const [inputValue, setInputValue] = useState('');
 
@@ -63,7 +63,7 @@ const Header = () => {
 
     const getSemester = () => {
         const list = []
-        for(var i = 23; i > 17; i--){
+        for(var i = 24; i > 17; i--){
             const s1 = `${i}夏`
             list.push(s1)
             const s2 = `${i}冬`

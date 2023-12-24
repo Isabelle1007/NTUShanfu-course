@@ -91,14 +91,17 @@ const postCurriculum = async (req, res) => {
         const filePath = `docx/${createNewCurriculum.data.title}.docx`
         const fileContent = await readFileFromS3(filePath);
         if(fileContent.code === '000'){
+            console.log(fileContent)
             const data = {
                 "content": fileContent.data.content
             }
-            await Curriculum.updateCurriculum(cid, data);
-            createNewCurriculum.data.content = fileContent.data.content
-        }
+            const addContent = await Curriculum.updateCurriculum(cid, data);
+            if(addContent.code === '000'){
+                createNewCurriculum.data.content = fileContent.data.content
+            }else console.log(addContent)
+        }else console.log(fileContent)
+        return res.json(createNewCurriculum)
     }
-    res.json(createNewCurriculum)
 };
 
 const getFileContentByID = async (req, res) => {
@@ -121,37 +124,33 @@ const getFileContentByID = async (req, res) => {
 
 const putCurriculum = async (req, res) => {
     const id = req.params.id;
-    const { title, author, semester, home, type, last_update } = req.body
-    let authors_id;
-    const getUserID = await User.getIdByUserName(author);
-    if(getUserID.code != '000')
-        return res.json(getUserID)
-    else
-        authors_id = getUserID.data.id
+    const curriculumUpdates = {};
 
-    let homeID;
-    const getHomeID = await Home.getIdByHomeName(home);
-    if(getHomeID.code != '000')
-        return res.json(getHomeID)
-    else
-        homeID = getHomeID.data.id
-
-    let typeID;
-    const getTypeID = await Type.getIdByTypeName(type);
-    if(getTypeID.code != '000')
-        return res.json(getTypeID)
-    else
-        typeID = getTypeID.data.id
-
-    const curriculum = {
-        title: title,
-        author_id_list: authors_id,
-        semester: semester,
-        home_id: homeID,
-        type_id: typeID,
-        last_update: last_update
+    if (req.body.title) curriculumUpdates.title = req.body.title;
+    
+    if (req.body.author) {
+        const getUserID = await User.getIdByUserName(req.body.author);
+        if (getUserID.code != '000') return res.json(getUserID);
+        curriculumUpdates.author_id_list = getUserID.data.id;
     }
-    const data = await Curriculum.updateCurriculum(id, curriculum);
+
+    if (req.body.semester) curriculumUpdates.semester = req.body.semester;
+
+    if (req.body.home) {
+        const getHomeID = await Home.getIdByHomeName(req.body.home);
+        if (getHomeID.code != '000') return res.json(getHomeID);
+        curriculumUpdates.home_id = getHomeID.data.id;
+    }
+
+    if (req.body.type) {
+        const getTypeID = await Type.getIdByTypeName(req.body.type);
+        if (getTypeID.code != '000') return res.json(getTypeID);
+        curriculumUpdates.type_id = getTypeID.data.id;
+    }
+
+    if (req.body.last_update) curriculumUpdates.last_update = req.body.last_update;
+
+    const data = await Curriculum.updateCurriculum(id, curriculumUpdates);
     res.json(data);
 }
 

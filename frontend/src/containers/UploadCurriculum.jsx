@@ -274,6 +274,7 @@ const UploadCurriculum = () => {
       setLoading(true)
       api.postCurriculum(formValues)
       .then((json) => {
+        console.log(json);
         if (json.code != '000'){
           Swal.fire({
             title: 'Error!',
