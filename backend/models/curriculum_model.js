@@ -582,11 +582,11 @@ const updateCurriculum = async (id, curriculum) => {
 };
 
 
-const delCurriculum = async (cid, url) => {
+const delCurriculum = async (cid) => {
 
     const query1 = `DELETE FROM user_curriculum WHERE cid = ${cid}`;
     const query2 = `DELETE FROM curricula WHERE id = ${cid}`
-    const query3 = `DELETE FROM files WHERE url_word = '${url}'`
+    const query3 = `DELETE FROM files WHERE id = ${cid}`
 
     const conn = await pool.getConnection();
     try{

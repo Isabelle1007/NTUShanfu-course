@@ -4,7 +4,7 @@ const User = require('../models/user_model');
 const Home = require('../models/home_model');
 const Type = require('../models/type_model');
 
-const { readFileFromS3 } = require('../utils/s3Service');
+const { readFileFromS3, deleteFileFromS3 } = require('../utils/s3Service');
 
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_BUCKET_NAME } = process.env;
 
@@ -158,14 +158,23 @@ const deleteCurriculum = async (req, res) => {
     const id = req.params.id;
     const curri_info = await Curriculum.getCurriculumByID(id);
     if(curri_info.code === "000"){
-        const file_url_word = curri_info.data.file_word
-        const deleteResult = await Curriculum.delCurriculum(id, file_url_word);
-        res.json(deleteResult)
+        const deleteResult = await Curriculum.delCurriculum(id);
+        if(deleteResult.code === "000"){
+            const url_docx = curri_info.data.file_word
+            const url_pdf = curri_info.data.file_pdf
+            const deleteFileInS3 = await deleteFileFromS3([url_docx, url_pdf]);
+            if(deleteFileInS3.code != '000') 
+                console.log(deleteFileInS3)
+            res.json(deleteFileInS3)
+        }else{
+            console.log(deleteResult)
+            res.json(deleteResult)
+        }
     }else{
+        console.log(curri_info)
         res.json(curri_info)
     }
 }
-
 module.exports = {
     getCurricula,
     getCurriculumByHome,

@@ -87,3 +87,33 @@ exports.readFileFromS3 = async (input) => {
   }
 }
 
+exports.deleteFileFromS3 = async (input) => {
+  const fileURL = input;
+  try {
+    for (let fileURL of input) {
+      // Extract the key from the URL
+      // The key includes the folder (docx or pdf) and the file name
+      const key = fileURL.split('amazonaws.com/')[1];
+
+      const params = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: key
+      };
+
+      // Delete the file
+      await s3.deleteObject(params).promise();
+    }
+
+    return {
+      message: "Files deleted successfully",
+      code: "000"
+    };
+  } catch (error) {
+    console.error('Error deleting file from S3:', error);
+    return {
+      message: error.message,
+      code: "001"
+    };
+  }
+}
+
