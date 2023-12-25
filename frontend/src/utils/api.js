@@ -1,11 +1,8 @@
 export const api = {
-    // server_url: 'https://ntushanfu-search-curricula.onrender.com', //production
+    server_url: 'https://ntushanfu-search-curricula.onrender.com', //production
     // server_url: 'http://localhost:4000', //development
-    // app_url: 'https://ntushanfu.onrender.com', //production
+    app_url: 'https://ntushanfu.onrender.com', //production
     // app_url: 'http://localhost:3000', //development
-
-    server_url: process.env.REACT_APP_SERVER_URL,
-    app_url: process.env.REACT_APP_APP_URL,
 
     getAllHomes() {
         return fetch(`${this.server_url}/home/all`).then(response => response.json());
