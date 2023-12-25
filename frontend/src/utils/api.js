@@ -1,8 +1,8 @@
 export const api = {
     // hostname_be: 'http://18.182.163.170/api',
     // hostname_fe: 'http://18.182.163.170',
-    // hostname_be: 'http://ntushanfu-search-curricula.onrender.com',
-    hostname_be: 'http://localhost:4000',
+    hostname_be: 'http://ntushanfu-search-curricula.onrender.com',
+    // hostname_be: 'http://localhost:4000',
     hostname_fe: 'http://localhost:3000',
    
     getAllHomes() {
