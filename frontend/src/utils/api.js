@@ -1,8 +1,8 @@
 export const api = {
     // server_url: 'http://18.182.163.170/api',
-    server_url: 'http://ntushanfu-search-curricula.onrender.com', //production
+    server_url: 'https://ntushanfu-search-curricula.onrender.com', //production
     // server_url: 'http://localhost:4000', //development
-    app_url: 'http://ntushanfu.onrender.com', //production
+    app_url: 'https://ntushanfu.onrender.com', //production
     // app_url: 'http://localhost:3000', //development
    
     getAllHomes() {
