@@ -194,13 +194,11 @@ const EditCurriculum = () => {
       allowOutsideClick: false 
     }).then((result) => {
       if(result.isConfirmed)
-        // do something ...
         try {
           const jwtToken = window.localStorage.getItem('jwtToken');
           api.deleteCurriculum(jwtToken, id)
           .then((json) => {
-            // console.log(json)
-            if (json.code != '000'){
+            if(json.code != '000'){
               Swal.fire({
                 title: 'Error!',
                 text: '教案刪除失敗',
