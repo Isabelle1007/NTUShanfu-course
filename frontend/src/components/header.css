@@ -1,0 +1,67 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100px;
+    width: 100%;
+    z-index: 1;
+    border-bottom: 30px solid #FAAC58;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: Arial;
+}
+
+.header__logo {
+    margin: 0px 30px;
+    width: 300px;
+    height: 64px;
+    background-image: url(../images/NTUShanfu_black.png);
+    background-size: 100% 100%;
+    cursor: pointer;
+
+}
+
+.left__div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+}
+
+.right__div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+}
+  
+ .menu {
+    color: #C48E67;
+    margin: 10px;
+    font-size: 18px;
+ }
+
+ .userMenu__btn {
+    color: #000000;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: start;
+    font-size: 32px;
+ }
+
+@media screen and (max-width: 600px) {
+    .header {
+        height: 52px;
+        padding: 0;
+        padding-right: 0;
+        border: none;
+        justify-content: center;
+    }
+
+    .header__logo {
+        width: 129px;
+        height: 24px;
+    }
+}

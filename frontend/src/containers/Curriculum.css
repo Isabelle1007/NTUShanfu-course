@@ -1,0 +1,28 @@
+.curriculum__container{
+  max-width: 1140px;
+  /* min-height: 1140px; */
+  margin: 0px auto;
+  padding: 180px 0px 180px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.input {
+  width: 600px;
+}
+
+.custom-form-c .ant-form-item-label label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.custom-form-c .ant-form-item-control-input-content {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.custom-card-title-curri{
+  font-size: 20px;
+  font-weight: 500;
+}

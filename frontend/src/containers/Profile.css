@@ -1,0 +1,91 @@
+.profile__sec{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  border-bottom: 20px solid #FAAC58;
+}
+
+.image__container{
+  margin-top: 240px;
+} 
+
+.profile__container{
+  /* margin: 0px auto; */
+  margin-left: 40px;
+  padding: 120px 0px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}s
+
+.input {
+  width: 600px;
+  font-size: 16px;
+}
+
+.curricula__sec{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding-bottom: 80px;
+  border-bottom: 20px solid #FAAC58;
+}
+
+.curriculum__con{
+  align-self: center;
+  width: 1140px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.favorite__sec{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding-bottom: 180px;
+}
+
+.favorite__con{
+  align-self: center;
+  width: 1140px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.fixed-anchor{
+  position: fixed;
+  top: 170px;
+  left: 10px;
+  height: 100%;
+  font-size: 40px;
+}
+
+.custom-anchor .ant-anchor-link {
+  margin-bottom: 10px;
+}
+
+.custom-anchor .ant-anchor-link-title {
+  font-size: 16px;
+  text-align: start;
+}
+
+.custom-form-p .ant-form-item-label label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.custom-form-p .ant-form-item-control-input-content {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.custom-card-title-profile{
+  font-size: 20px;
+  font-weight: 500;
+}

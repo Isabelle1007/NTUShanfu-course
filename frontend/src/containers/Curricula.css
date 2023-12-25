@@ -1,0 +1,30 @@
+.curricula__container {
+  width: 1140px;
+  min-height: 800px;
+  padding: 180px 0 100px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-self: center;
+  align-content: flex-start;
+}
+  
+.curriculum {
+  width: 320px;
+  height: 340px;
+  padding: 30px 30px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+  
+@media screen and (max-width: 1140px) {
+  .curricula__container {
+    max-width: 760px;
+  }
+}
+@media screen and (max-width: 760px) {
+  .curricula__container {
+    max-width: 380px;
+  }
+}
+  

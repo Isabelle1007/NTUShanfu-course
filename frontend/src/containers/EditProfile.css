@@ -1,0 +1,24 @@
+.editProfile__container{
+  max-width: 1140px;
+  margin: 0px auto;
+  padding: 180px 0px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  padding-top: 180px;
+  padding-bottom: 180px;
+}
+
+.custom-label-editProfile {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.custom-option-editProfile {
+  font-size: 16px;
+}
+
+.custom-card-title-editProfile{
+  font-size: 20px;
+  font-weight: 500;
+}
