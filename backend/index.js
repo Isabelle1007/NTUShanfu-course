@@ -2,6 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const path = require('path')
 const dotenv = require('dotenv');
+// const https = require('https'); //development
+// const fs = require('fs'); //development
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 const { PORT } = process.env;
@@ -34,3 +36,11 @@ const port = PORT || 4001;
 app.listen(port, (req, res) => {
     console.log(`Server runnning on port ${port}`)
 })
+
+//Development
+// const sslServer = https.createServer({
+//     key: fs.readFileSync(path.resolve(__dirname, 'cert', 'key.pem')),
+//     cert: fs.readFileSync(path.resolve(__dirname, 'cert', 'cert.pem'))
+// }, app);
+
+// sslServer.listen(port, () => console.log(`Server runnning on port ${port}`));

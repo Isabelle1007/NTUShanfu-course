@@ -8,6 +8,9 @@
 .env.test
 .env.production
 
+# SSL certificate files
+/cert
+
 # dependencies
 /.pnp
 .pnp.js
