@@ -104,23 +104,26 @@ const postCurriculum = async (req, res) => {
     }
 };
 
-const getFileContentByID = async (req, res) => {
-    const id = req.params.id;
-    const data = await Curriculum.getCurriculumByID(id);
-    if(data.data){
-        const filePath = `docx/${data.data.title}.docx`
-        const fileContent = await readFileFromS3(filePath);
-        if(fileContent.code === '000'){
-            const updateCurriculum = await Curriculum.updateCurriculum(id, 'content', fileContent.data.content);
-            res.json(updateCurriculum)
-        }
-    }else{
-        res.json({
-            "message": 'Server Response Error',
-            "code": "999"
-        })
-    }
-};
+// const getFileContentByID = async (req, res) => {
+//     const id = req.params.id;
+//     const data = await Curriculum.getCurriculumByID(id);
+//     if(data.data){
+//         const filePath = `docx/${data.data.title}.docx`
+//         const fileContent = await readFileFromS3(filePath);
+//         if(fileContent.code === '000'){
+//             const data = {
+//                 "content": fileContent.data.content
+//             }
+//             const updateCurriculum = await Curriculum.updateCurriculum(id, data);
+//             res.json(updateCurriculum)
+//         }
+//     }else{
+//         res.json({
+//             "message": 'Server Response Error',
+//             "code": "999"
+//         })
+//     }
+// };
 
 const putCurriculum = async (req, res) => {
     const id = req.params.id;
@@ -185,7 +188,7 @@ module.exports = {
     getCurriculumByID,
     getCurriculumByUser,
     postCurriculum,
-    getFileContentByID,
+    // getFileContentByID,
     putCurriculum,
     deleteCurriculum
 };
