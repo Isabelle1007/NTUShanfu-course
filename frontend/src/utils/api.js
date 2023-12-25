@@ -1,53 +1,53 @@
 export const api = {
-    // hostname_be: 'http://18.182.163.170/api',
-    hostname_be: 'http://ntushanfu-search-curricula.onrender.com',
-    // hostname_be: 'http://localhost:4000',
+    // server_url: 'http://18.182.163.170/api',
+    server_url: 'http://ntushanfu-search-curricula.onrender.com', //production
+    // server_url: 'http://localhost:4000', //development
    
     getAllHomes() {
-        return fetch(`${this.hostname_be}/home/all`).then(response => response.json());
+        return fetch(`${this.server_url}/home/all`).then(response => response.json());
     },
     getAllTypes() {
-        return fetch(`${this.hostname_be}/type/all`).then(response => response.json());
+        return fetch(`${this.server_url}/type/all`).then(response => response.json());
     },
     getAllCurricula() {
-        return fetch(`${this.hostname_be}/curriculum/all`).then(response => response.json());
+        return fetch(`${this.server_url}/curriculum/all`).then(response => response.json());
     },
     getCurriculaByHome(home){
-        return fetch(`${this.hostname_be}/curriculum/home/${home}`).then(response => response.json());
+        return fetch(`${this.server_url}/curriculum/home/${home}`).then(response => response.json());
     },
     getCurriculaByType(type){
-        return fetch(`${this.hostname_be}/curriculum/type/${type}`).then(response => response.json());
+        return fetch(`${this.server_url}/curriculum/type/${type}`).then(response => response.json());
     },
     getCurriculaBySemester(semester){
-        return fetch(`${this.hostname_be}/curriculum/semester/${semester}`).then(response => response.json());
+        return fetch(`${this.server_url}/curriculum/semester/${semester}`).then(response => response.json());
     },
     getCurriculaByKeyword(keyword){
-        return fetch(`${this.hostname_be}/curriculum/search/${keyword}`).then(response => response.json());
+        return fetch(`${this.server_url}/curriculum/search/${keyword}`).then(response => response.json());
     },
     getCurriculumByID(id){
-        return fetch(`${this.hostname_be}/curriculum/id/${id}`).then(response => response.json());
+        return fetch(`${this.server_url}/curriculum/id/${id}`).then(response => response.json());
     },
     getCurriculumByUserID(id){
-        return fetch(`${this.hostname_be}/curriculum/user/${id}`).then(response => response.json());
+        return fetch(`${this.server_url}/curriculum/user/${id}`).then(response => response.json());
     },
     getAllUsers(){
-        return fetch(`${this.hostname_be}/user/all`).then(response => response.json());
+        return fetch(`${this.server_url}/user/all`).then(response => response.json());
     },
     postFile(formdata, type){
         if(type === 'w'){
-            return fetch(`${this.hostname_be}/file/upload/type/word`, {
+            return fetch(`${this.server_url}/file/upload/type/word`, {
                 body: formdata,
                 method: 'POST',
               }).then(response => response.json());
         }else{
-            return fetch(`${this.hostname_be}/file/upload/type/pdf`, {
+            return fetch(`${this.server_url}/file/upload/type/pdf`, {
                 body: formdata,
                 method: 'POST',
               }).then(response => response.json());
         }
     },
     postCurriculum(data){
-        return fetch(`${this.hostname_be}/curriculum/upload`, {
+        return fetch(`${this.server_url}/curriculum/upload`, {
             body: JSON.stringify(data),
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -56,10 +56,10 @@ export const api = {
           }).then(response => response.json());
     },
     insertContent(cid){
-        return fetch(`${this.hostname_be}/curriculum/fileContent/id/${cid}`).then(response => response.json());
+        return fetch(`${this.server_url}/curriculum/fileContent/id/${cid}`).then(response => response.json());
     },
     signUp(data){
-        return fetch(`${this.hostname_be}/user/signup`, {
+        return fetch(`${this.server_url}/user/signup`, {
             body: JSON.stringify(data),
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ export const api = {
           }).then(response => response.json());
     },
     login(data){
-        return fetch(`${this.hostname_be}/user/login`, {
+        return fetch(`${this.server_url}/user/login`, {
             body: JSON.stringify(data),
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export const api = {
           }).then(response => response.json());
     },
     getUserInfo(access_token){
-        return fetch(`${this.hostname_be}/user/profile`,{
+        return fetch(`${this.server_url}/user/profile`,{
             headers: new Headers({
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${access_token}`,
@@ -85,7 +85,7 @@ export const api = {
         }).then(response => response.json());
     },
     putCurriculum(access_token, id, data){
-        return fetch(`${this.hostname_be}/curriculum/update/id/${id}`,{
+        return fetch(`${this.server_url}/curriculum/update/id/${id}`,{
             headers: new Headers({
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${access_token}`,
@@ -95,7 +95,7 @@ export const api = {
         }).then(response => response.json());
     },
     putUserProfile(access_token, data){
-        return fetch(`${this.hostname_be}/user/edit`,{
+        return fetch(`${this.server_url}/user/edit`,{
             headers: new Headers({
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${access_token}`,
@@ -105,7 +105,7 @@ export const api = {
         }).then(response => response.json());
     },
     deleteCurriculum(access_token, id){
-        return fetch(`${this.hostname_be}/curriculum/delete/id/${id}`,{
+        return fetch(`${this.server_url}/curriculum/delete/id/${id}`,{
             headers: new Headers({
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${access_token}`,
