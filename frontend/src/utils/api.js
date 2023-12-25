@@ -1,5 +1,4 @@
 export const api = {
-    // server_url: 'http://18.182.163.170/api',
     server_url: 'https://ntushanfu-search-curricula.onrender.com', //production
     // server_url: 'http://localhost:4000', //development
     app_url: 'https://ntushanfu.onrender.com', //production
@@ -57,9 +56,9 @@ export const api = {
             method: 'POST',
           }).then(response => response.json());
     },
-    insertContent(cid){
-        return fetch(`${this.server_url}/curriculum/fileContent/id/${cid}`).then(response => response.json());
-    },
+    // insertContent(cid){
+    //     return fetch(`${this.server_url}/curriculum/fileContent/id/${cid}`).then(response => response.json());
+    // },
     signUp(data){
         return fetch(`${this.server_url}/user/signup`, {
             body: JSON.stringify(data),
