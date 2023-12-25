@@ -335,7 +335,7 @@ const SignUp = () => {
           <Button 
             type="link"
             size="large"
-          ><a href={`${api.hostname_fe}/login`} target="_self" rel="noreferrer">已有帳號？</a></Button>
+          ><a href={`${api.app_url}/login`} target="_self" rel="noreferrer">已有帳號？</a></Button>
         </Form>
         </Card>
       </div>

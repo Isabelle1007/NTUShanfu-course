@@ -33,7 +33,7 @@ const Header = () => {
                 const list = json.data.home_name_list;
                 const transformedHomes = list.map((home) => ({
                     label: (
-                        <a href={`${api.hostname_fe}/curricula?home=${home}`} target="_self" rel="noreferrer">{home}</a>
+                        <a href={`${api.app_url}/curricula?home=${home}`} target="_self" rel="noreferrer">{home}</a>
                     ),
                     key: `${home}`
                 }));
@@ -50,7 +50,7 @@ const Header = () => {
                 const list = json.data.type_name_list;
                 const transformedTypes = list.map((type) => ({
                     label: (
-                        <a href={`${api.hostname_fe}/curricula?type=${type}`} target="_self" rel="noreferrer">{type}</a>
+                        <a href={`${api.app_url}/curricula?type=${type}`} target="_self" rel="noreferrer">{type}</a>
                     ),
                     key: `${type}`
                 }));
@@ -71,7 +71,7 @@ const Header = () => {
         }
         const transformedSemesters = list.map((s) => ({
             label: (
-                <a href={`${api.hostname_fe}/curricula?semester=${s}`} target="_self" rel="noreferrer">{s}</a>
+                <a href={`${api.app_url}/curricula?semester=${s}`} target="_self" rel="noreferrer">{s}</a>
             ),
             key: `${s}`
         }));
@@ -141,7 +141,7 @@ const Header = () => {
     const items = [
         {
           label: (
-            <a href={`${api.hostname_fe}/curricula/all`} target="_self" rel="noreferrer">所有教案紙</a>
+            <a href={`${api.app_url}/curricula/all`} target="_self" rel="noreferrer">所有教案紙</a>
           ),
           key: 'all',
           icon: <FileTextOutlined/>,

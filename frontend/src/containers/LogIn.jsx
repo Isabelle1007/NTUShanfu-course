@@ -191,7 +191,7 @@ const LogIn = () => {
           <Button 
               type="link"
               size="large"
-            ><a href={`${api.hostname_fe}/signup`} target="_self" rel="noreferrer">尚未註冊？</a></Button>
+            ><a href={`${api.app_url}/signup`} target="_self" rel="noreferrer">尚未註冊？</a></Button>
         </Form>
         </Card>
       </div>

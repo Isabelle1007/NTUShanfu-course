@@ -203,7 +203,7 @@ const Profile = () => {
                     <a
                       className="curriculum"
                       key={curriculum.id}
-                      href={`${api.hostname_fe}/curriculum?id=${curriculum.id}`}
+                      href={`${api.app_url}/curriculum?id=${curriculum.id}`}
                     >
                       <Card
                         cover={
@@ -242,7 +242,7 @@ const Profile = () => {
                     <a
                       className="curriculum"
                       key={curriculum.id}
-                      href={`${api.hostname_fe}/curriculum?id=${curriculum.id}`}
+                      href={`${api.app_url}/curriculum?id=${curriculum.id}`}
                     >
                       <Card
                         cover={
