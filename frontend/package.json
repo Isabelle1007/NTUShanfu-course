@@ -16,7 +16,6 @@
     "aws-sdk": "^2.1384.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-file-viewer-fix": "^0.1.2",
     "react-router-dom": "^6.11.1",
     "sweetalert2": "^11.7.5"
   },
