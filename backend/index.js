@@ -9,8 +9,13 @@ const { PORT } = process.env;
 const app = express()
 
 // Use CORS and JSON middleware
-app.use(cors())
+// app.use(cors())
 app.use(express.json())
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*"); // or specific domain
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 // Define routes
 const basicRouter = require('./routes/basic_route');
