@@ -87,6 +87,7 @@ const postCurriculum = async (req, res) => {
     
     const createNewCurriculum = await Curriculum.createCurriculum(curriculum);
     if(createNewCurriculum.code === '000'){
+        // Extract content in word file to insert into db
         const cid = createNewCurriculum.data.id
         const filePath = `docx/${createNewCurriculum.data.title}.docx`
         const fileContent = await readFileFromS3(filePath);
@@ -103,27 +104,6 @@ const postCurriculum = async (req, res) => {
         return res.json(createNewCurriculum)
     }
 };
-
-// const getFileContentByID = async (req, res) => {
-//     const id = req.params.id;
-//     const data = await Curriculum.getCurriculumByID(id);
-//     if(data.data){
-//         const filePath = `docx/${data.data.title}.docx`
-//         const fileContent = await readFileFromS3(filePath);
-//         if(fileContent.code === '000'){
-//             const data = {
-//                 "content": fileContent.data.content
-//             }
-//             const updateCurriculum = await Curriculum.updateCurriculum(id, data);
-//             res.json(updateCurriculum)
-//         }
-//     }else{
-//         res.json({
-//             "message": 'Server Response Error',
-//             "code": "999"
-//         })
-//     }
-// };
 
 const putCurriculum = async (req, res) => {
     const id = req.params.id;
@@ -163,6 +143,7 @@ const deleteCurriculum = async (req, res) => {
     if(curri_info.code === "000"){
         const deleteResult = await Curriculum.delCurriculum(id, curri_info.data.file_word);
         if(deleteResult.code === "000"){
+            // Delete files in S3
             const url_docx = curri_info.data.file_word
             const url_pdf = curri_info.data.file_pdf
             const deleteFileInS3 = await deleteFileFromS3([url_docx, url_pdf]);
@@ -179,6 +160,7 @@ const deleteCurriculum = async (req, res) => {
         res.json(curri_info)
     }
 }
+
 module.exports = {
     getCurricula,
     getCurriculumByHome,
@@ -188,7 +170,6 @@ module.exports = {
     getCurriculumByID,
     getCurriculumByUser,
     postCurriculum,
-    // getFileContentByID,
     putCurriculum,
     deleteCurriculum
 };

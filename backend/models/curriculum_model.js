@@ -476,56 +476,6 @@ const createCurriculum = async(c) => {
     }
 };
 
-// const updateCurriculum = async (id, curriculum) => {
-   
-//     const author_id_list = curriculum.author_id_list;
-//     delete curriculum.author_id_list
-//     const conn = await pool.getConnection();
-//     const setClauses = Object.entries(curriculum).map(([column, value]) => `${column} = '${value}'`).join(', ');
-//     const query = `UPDATE curricula SET ${setClauses} WHERE id = ${id};`;
-//     try{
-//         await conn.query('START TRANSACTION');
-//         // update author 
-//         let currAuthorID = []
-//         const getCurrentAuthor = await conn.query('SELECT * FROM user_curriculum WHERE cid = ?', [id]);
-//         for(var i = 0; i < getCurrentAuthor[0].length; i++){
-//             currAuthorID.push(getCurrentAuthor[0][i].uid)
-//         }
-//         const toRemoveID = findMissingID(currAuthorID, author_id_list)
-//         const newID = findNewID(currAuthorID, author_id_list)
-//         for(var i = 0; i < toRemoveID.length; i++){
-//             await conn.query('DELETE FROM user_curriculum WHERE uid = ? AND cid = ?', [toRemoveID[i], id]);
-//         }
-//         for(var i = 0; i < newID.length; i++){
-//             await conn.query('INSERT INTO user_curriculum (uid, cid) VALUES (?, ?)', [newID[i], id]);    
-//         }
-
-//         // update basic info
-//         const [result] = await conn.execute(query);
-//         if(result.affectedRows > 0){
-//             await conn.query('COMMIT');
-//             return {
-//                 "message": "Success",
-//                 "code": "000",
-//                 "info": query
-//             }
-//         }else{
-//             return {
-//                 "message": 'Server Response Error',
-//                 "code": "999"
-//             }
-//         }
-//     }catch (error) {
-//         await conn.query('ROLLBACK');
-//         return {
-//             "message": {error},
-//             "code": "999"
-//         }
-//     } finally {
-//         await conn.release();
-//     }
-// }
-
 const updateCurriculum = async (id, curriculum) => {
     const conn = await pool.getConnection();
     try {
