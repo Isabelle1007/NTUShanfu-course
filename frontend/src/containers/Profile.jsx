@@ -5,8 +5,8 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { api } from '../utils/api'
 
-import { Card, Form, Spin, Button, Image, Avatar, Anchor, Col, Row, Space } from 'antd';
-import { LoadingOutlined, EditOutlined, HeartOutlined, EllipsisOutlined, FileTextOutlined, IdcardOutlined} from '@ant-design/icons';
+import { Card, Form, Spin, Button, Image, Avatar, Anchor, Col, Row, Space, message, Upload } from 'antd';
+import { LoadingOutlined, EditOutlined, HeartOutlined, EllipsisOutlined, FileTextOutlined, IdcardOutlined, UploadOutlined, FileImageOutlined} from '@ant-design/icons';
 const { Meta } = Card;
 import Swal from 'sweetalert2'
 
@@ -23,14 +23,18 @@ const Profile = () => {
 
   const { colors, loading, setLoading, userInfo } = useContext(FilterContext);
   const [ myCurricula, setMyCurricula] = useState([]);
+  const [ pictureExist, setPictureExist ] = useState(false);
+  const [ pictureURL, setPictureURL ] = useState('');
   const [ favCurricula ] = useState([]);
 
   useEffect(() => {
     checkLogIn();
+    setPictureExist(false);
   }, []);
 
   useEffect(() => {
     showCurricula();
+    // setPictureURL(userInfo.picture_url);
   }, [userInfo.name]);
 
   const checkLogIn = async () => {
@@ -65,6 +69,61 @@ const Profile = () => {
     });
 
   };
+
+  const handleBeforeUpload = (file) => {
+    // console.log(file)
+    const valid = file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg';
+    if (!valid) {
+      message.error(`${file.name} is not a png or jpeg file`);
+    }
+    setPictureURL(file);
+    return false;
+  };
+
+  const handleUpload = async (info) => {
+    if (info.fileList.length > 0) {
+      setPictureExist(true)      
+    } else {
+      setPictureExist(false)
+    }
+  };
+
+  const confirmUpload = async () => {
+    const formData = new FormData();
+    formData.append('file', pictureURL);
+    formData.append('name', userInfo.name);
+    formData.append('format', pictureURL.type.split('/')[1]);
+    try {
+      const uploadNewPic = await api.postFile(formData, 'i');
+      if(uploadNewPic.code === '000'){
+        console.log(uploadNewPic.data)
+        Swal.fire({
+          title: 'Success!',
+          text: ' 圖片更新成功',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          allowOutsideClick: false 
+        }).then((result) => {
+          if(result.isConfirmed){
+            setPictureExist(false);
+            window.location.href = '/myProfile';
+          }
+        })
+      }else{
+        Swal.fire('Opps!', '上傳圖片失敗!', 'error').then((result) => {
+          if (result.isConfirmed) {
+              window.location.href = '/myProfile';
+          }
+        });
+        return;
+      }
+    }catch(error){
+      console.log(error);
+      message.error('上傳失敗');
+      return;
+    }
+  };
+
 
   const handleEditProfile = async () => {
       window.location.href = '/myProfile/edit';
@@ -123,13 +182,43 @@ const Profile = () => {
             </Col>
             <Col span={23}>
               <div className="profile__sec" id="profile">
-                <div className='image__container'>
-                  <Image
-                    width={200}
-                    height={200}
-                    style={{borderRadius: '100%'}}
-                    src={userInfo.picture_url}
-                  />
+                <div className="image__sec">
+                  <div className='image__container'>
+                    <Image
+                      width={200}
+                      height={200}
+                      style={{borderRadius: '100%'}}
+                      src={userInfo.picture_url}
+                    />
+                  </div>
+                    <Upload 
+                      beforeUpload={handleBeforeUpload}
+                      onChange={handleUpload}
+                      accept=".png, .jpeg, .jpg"
+                      maxCount={1}
+                    >
+                      <Button 
+                        icon={<FileImageOutlined />}
+                        style={{
+                          color: colors.colorPrimary,
+                          marginTop: '15px',
+                          width: '100%',
+                        }}
+                      >更換新頭貼</Button>
+                    </Upload>
+                  {pictureExist? 
+                    <Button
+                      icon={<UploadOutlined />} 
+                      style={{ 
+                        color: colors.colorPrimary,
+                        marginTop: '15px',
+                        height: '32px',
+                        marginLeft: '3px',
+                      }}
+                      onClick={ confirmUpload } 
+                    > 確認上傳新頭貼</Button>: 
+                    (<></>)
+                  }
                 </div>
                 <div className='profile__container'>
                   <Card

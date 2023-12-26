@@ -7,9 +7,23 @@
   border-bottom: 20px solid #FAAC58;
 }
 
+.image__sec{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .image__container{
   margin-top: 240px;
 } 
+
+.button__container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 
 .profile__container{
   /* margin: 0px auto; */
