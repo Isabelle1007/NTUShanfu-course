@@ -93,7 +93,7 @@ exports.deleteFileFromS3 = async (input) => {
     for (let fileURL of input) {
       // Extract the key from the URL
       // The key includes the folder (docx or pdf) and the file name
-      const key = fileURL.split('amazonaws.com/')[1];
+      const key = decodeURIComponent(fileURL.split('amazonaws.com/')[1]);
 
       const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
