@@ -1,10 +1,10 @@
 export const api = {
     //production
-    server_url: 'https://ntushanfu-search-curricula.onrender.com', 
-    app_url: 'https://ntushanfu.onrender.com', 
+    // server_url: 'https://ntushanfu-search-curricula.onrender.com', 
+    // app_url: 'https://ntushanfu.onrender.com',
     //development
-    // server_url: 'http://localhost:4000', 
-    // app_url: 'http://localhost:3000', 
+    server_url: 'http://localhost:4000',
+    app_url: 'http://localhost:3000', 
 
     getAllHomes() {
         return fetch(`${this.server_url}/home/all`).then(response => response.json());
@@ -42,8 +42,13 @@ export const api = {
                 body: formdata,
                 method: 'POST',
               }).then(response => response.json());
-        }else{
+        }else if(type === 'p'){
             return fetch(`${this.server_url}/file/upload/type/pdf`, {
+                body: formdata,
+                method: 'POST',
+              }).then(response => response.json());
+        }else{
+            return fetch(`${this.server_url}/file/upload/type/image`, {
                 body: formdata,
                 method: 'POST',
               }).then(response => response.json());
@@ -58,9 +63,6 @@ export const api = {
             method: 'POST',
           }).then(response => response.json());
     },
-    // insertContent(cid){
-    //     return fetch(`${this.server_url}/curriculum/fileContent/id/${cid}`).then(response => response.json());
-    // },
     signUp(data){
         return fetch(`${this.server_url}/user/signup`, {
             body: JSON.stringify(data),
