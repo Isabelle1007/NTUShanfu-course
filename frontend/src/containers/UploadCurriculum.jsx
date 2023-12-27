@@ -157,8 +157,8 @@ const UploadCurriculum = () => {
       const fileUploadResponse_word = await api.postFile(formdata_word, 'w');
       const fileUploadResponse_pdf = await api.postFile(formdata_pdf, 'p');
       if (fileUploadResponse_word.code === '000' && fileUploadResponse_pdf.code === '000') {
-        url1 = fileUploadResponse_word.data.file_info.Location;
-        url2 = fileUploadResponse_pdf.data.file_info.Location;
+        url1 = fileUploadResponse_word.data.response.Location;
+        url2 = fileUploadResponse_pdf.data.response.Location;
         handleInputChange('file_word', url1);
         handleInputChange('file_pdf', url2);
         setWordUploadDone(true)
