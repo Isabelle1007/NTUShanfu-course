@@ -149,8 +149,6 @@ const UploadCurriculum = () => {
     formdata_pdf.append('file', pdfFileData);
     formdata_word.append('name', formValues.title)
     formdata_pdf.append('name', formValues.title)
-    // formdata_word.append('format', 'docx')
-    // formdata_pdf.append('format', 'pdf')
   
     let url1, url2;
     try {
