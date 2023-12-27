@@ -106,6 +106,7 @@ const postFile = async (req, res) => {
                     res.json({
                         "message": "Success",
                         "code": "000",
+                        "data": result.data
                     });
                 }
             } else {
