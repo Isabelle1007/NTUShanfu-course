@@ -17,8 +17,10 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 exports.s3Uploadv2 = async (file, name, type) => {
-    const s3 = new S3()
-    if(type === 'docx'){
+  const s3 = new S3();
+  let param;
+
+  if (type === 'docx') {
       // Save locally first
       const filePath = join(__dirname, `${name}.${type}`);
       await fsPromises.writeFile(filePath, file.buffer);
@@ -27,33 +29,43 @@ exports.s3Uploadv2 = async (file, name, type) => {
       // Encode the file buffer to Base64
       const base64File = base64.encode(fileBuffer.toString('latin1'));
 
-      const param = {
+      param = {
           Bucket: AWS_BUCKET_NAME,
           Key: `${type}/${name}.${type}`,
           Body: base64File
-      }
+      };
+
+      // Upload to S3
       const uploadResponse = await s3.upload(param).promise();
       // Delete the local file after uploading
       await fsPromises.unlink(filePath);
 
-      return uploadResponse
+      return {
+          "message": "Success",
+          "code": "000",
+          "data": {
+              "response": uploadResponse
+          }
+      };
+  } else {
+      param = {
+          Bucket: AWS_BUCKET_NAME,
+          Key: `${type === 'pdf' ? type : 'image'}/${name}.${type}`,
+          Body: file.buffer
+      };
 
-    }else if(type === 'pdf'){
-      const param = {
-        Bucket: AWS_BUCKET_NAME,
-        Key: `${type}/${name}.${type}`,
-        Body: file.buffer
-      }
-      return await s3.upload(param).promise();
-    }else{
-      const param = {
-        Bucket: AWS_BUCKET_NAME,
-        Key: `image/${name}.${type}`,
-        Body: file.buffer
-      }
-      return await s3.upload(param).promise();
-    }
-}
+      // Upload to S3
+      const uploadResponse = await s3.upload(param).promise();
+      return {
+          "message": "Success",
+          "code": "000",
+          "data": {
+              "response": uploadResponse
+          }
+      };
+  }
+};
+
 
 exports.readFileFromS3 = async (input) => {
 

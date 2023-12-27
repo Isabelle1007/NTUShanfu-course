@@ -1,6 +1,7 @@
 require('dotenv').config();
 const multer = require('multer');
 const { s3Uploadv2 } = require('../utils/s3Service');
+const { getInfoOfUser, updateInfoByEmail } = require('../models/user_model');
 const File = require('../models/file_model');
 
 const storage = multer.memoryStorage();
@@ -68,18 +69,32 @@ const postFile = async (req, res) => {
         await multerUpload(uploadType)(req, res, async () => {
             const fileType = type === 'word' ? 'docx' : (type === 'pdf' ? 'pdf' : req.body.format);
             const result = await s3Uploadv2(req.file, req.body.name, fileType);
-            res.json({
-                "message": "Success",
-                "code": "000",
-                "data": {
-                    "file_info": result
+            if (result.code === '000') {
+                const url = result.data.response.Location;
+                const updateDb = await updateInfoByEmail(req.body.user_email, { "picture_url": url });
+                if (updateDb.code === '000') {
+                    res.json({
+                        "message": "Success",
+                        "code": "000",
+                    });
+                } else {
+                    res.json({
+                        "message": updateDb.message,
+                        "code": "999"
+                    });
                 }
-            });
+            } else {
+                res.json({
+                    "message": result.message,
+                    "code": "999"
+                });
+            }
         });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
+
 
 const getFileUrlByID = async (req, res) => {
     const id = req.params.id

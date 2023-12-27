@@ -93,10 +93,10 @@ const Profile = () => {
     formData.append('file', pictureURL);
     formData.append('name', userInfo.name);
     formData.append('format', pictureURL.type.split('/')[1]);
+    formData.append('user_email', userInfo.email);
     try {
       const uploadNewPic = await api.postFile(formData, 'i');
       if(uploadNewPic.code === '000'){
-        console.log(uploadNewPic.data)
         Swal.fire({
           title: 'Success!',
           text: ' 圖片更新成功',

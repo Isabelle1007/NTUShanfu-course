@@ -106,35 +106,67 @@ const getUserProfile = async (req, res) => {
     return;
 }
 
-const updateProfile = async (req, res) => {
-    let { name, home, group, join_semester, gender, department } = req.body;
+// const updateProfile = async (req, res) => {
+//     let { name, home, group, join_semester, gender, department } = req.body;
     
-    let homeID;
-    const getHomeID = await Home.getIdByHomeName(home);
-    if(getHomeID.code != '000')
-        return res.json(getHomeID)
-    else
-        homeID = getHomeID.data.id
+//     let homeID;
+//     const getHomeID = await Home.getIdByHomeName(home);
+//     if(getHomeID.code != '000')
+//         return res.json(getHomeID)
+//     else
+//         homeID = getHomeID.data.id
 
-    let groupID;
-    const getGroupID = await Group.getIdByGroupName(group);
-    if(getGroupID.code != '000')
-        return res.json(getGroupID)
-    else
-        groupID = getGroupID.data.id
+//     let groupID;
+//     const getGroupID = await Group.getIdByGroupName(group);
+//     if(getGroupID.code != '000')
+//         return res.json(getGroupID)
+//     else
+//         groupID = getGroupID.data.id
     
-    const profile = {
-        u_name: name,
-        home_id: homeID,
-        group_id: groupID,
-        join_semester: join_semester,
-        gender: gender === "男"? "M" : "F",
-        department: department
+//     const profile = {
+//         u_name: name,
+//         home_id: homeID,
+//         group_id: groupID,
+//         join_semester: join_semester,
+//         gender: gender === "男"? "M" : "F",
+//         department: department
+//     }
+//     const updatedUserProfile = await User.updateInfoByEmail(req.user.email, profile);
+//     res.json(updatedUserProfile);
+//     return;
+// }
+
+const updateProfile = async (req, res) => {
+    const { name, home, group, join_semester, gender, department } = req.body;
+    const profile = {};
+
+    if (name) profile.u_name = name;
+    
+    if (home) {
+        const getHomeID = await Home.getIdByHomeName(home);
+        if (getHomeID.code != '000') return res.json(getHomeID);
+        profile.home_id = getHomeID.data.id;
     }
+
+    if (group) {
+        const getGroupID = await Group.getIdByGroupName(group);
+        if (getGroupID.code != '000') return res.json(getGroupID);
+        profile.group_id = getGroupID.data.id;
+    }
+
+    if (join_semester) profile.join_semester = join_semester;
+    if (gender) profile.gender = gender === "男" ? "M" : "F";
+    if (department) profile.department = department;
+
+    // Ensure there's at least one field to update
+    if (Object.keys(profile).length === 0) {
+        return res.status(400).json({ message: "No fields provided for update." });
+    }
+
     const updatedUserProfile = await User.updateInfoByEmail(req.user.email, profile);
     res.json(updatedUserProfile);
-    return;
 }
+
 
 module.exports = {
     getInfoOfUser,
