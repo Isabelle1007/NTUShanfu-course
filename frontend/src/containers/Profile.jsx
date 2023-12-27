@@ -94,9 +94,11 @@ const Profile = () => {
     formData.append('name', userInfo.name);
     formData.append('format', pictureURL.type.split('/')[1]);
     formData.append('user_email', userInfo.email);
+    setLoading(true);
     try {
       const uploadNewPic = await api.postFile(formData, 'i');
       if(uploadNewPic.code === '000'){
+        setLoading(false);
         Swal.fire({
           title: 'Success!',
           text: ' 圖片更新成功',
@@ -110,6 +112,7 @@ const Profile = () => {
           }
         })
       }else{
+        setLoading(false);
         Swal.fire('Opps!', '上傳圖片失敗!', 'error').then((result) => {
           if (result.isConfirmed) {
               window.location.href = '/myProfile';
