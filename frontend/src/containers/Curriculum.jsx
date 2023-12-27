@@ -3,13 +3,13 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { FilterContext } from "../App";
 import Header from "../components/header";
 import Footer from "../components/footer";
+import PdfFile from '../components/pdfFile';
 import { api } from '../utils/api'
 
 import { Card, Form, Button, Space} from 'antd';
 import { EyeOutlined, EyeInvisibleOutlined, DownloadOutlined, EditOutlined, FileTextOutlined } from '@ant-design/icons';
 
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
-// import FileViewer from 'react-file-viewer-fix';
 
 import Swal from 'sweetalert2'
 
@@ -66,40 +66,42 @@ const Curriculum = () => {
     linkRef.current.click();
   }
 
-  // const viewFileClick = async () => {
+  const viewFileClick = async () => {
 
-  //   if(curriculum.file_pdf === null){
-  //     Swal.fire({
-  //       title: 'Error!',
-  //       text: '該教案目前無提供檔案',
-  //       icon: 'error',
-  //       confirmButtonText: 'OK',
-  //       allowOutsideClick: false 
-  //     })
-  //     return
-  //   }
+    if(curriculum.file_pdf === null){
+      Swal.fire({
+        title: 'Error!',
+        text: '該教案目前無提供檔案',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false 
+      })
+      return
+    }
 
-  //   setOpenView(!openView)
-  //   const command = new GetObjectCommand({
-  //     Bucket: "doc-file-uploads",
-  //     Key: `pdf/${curriculum.title}.pdf`
-  //   });
+    setOpenView(!openView)
+    const command = new GetObjectCommand({
+      Bucket: "doc-file-uploads",
+      Key: `pdf/${curriculum.title}.pdf`
+    });
 
-  //   try {
-  //     const response = await client.send(command);
-  //     const reader = response.Body.getReader();
-  //     const chunks = [];
-  //     let chunk;
-  //     while (!(chunk = await reader.read()).done) {
-  //       chunks.push(chunk.value);
-  //     }
-  //     const fileBlob = new Blob(chunks, { type: 'application/octet-stream' });
-  //     const fileUrl = URL.createObjectURL(fileBlob);
-  //     setDownloadedFile(fileUrl);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
+    try {
+      const response = await client.send(command);
+      if (response.Body instanceof ReadableStream) {
+        // If response.Body is a ReadableStream
+        const newResponse = new Response(response.Body);
+        const blob = await newResponse.blob();
+        const fileUrl = URL.createObjectURL(blob);
+        setDownloadedFile(fileUrl);
+        setOpenView(true);
+      } else {
+        // Handle other possible types of response.Body
+        console.error("Unsupported response body type:", typeof response.Body);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   useEffect(() => {
     api.getCurriculumByID(id).then((json) => {
@@ -174,13 +176,12 @@ const Curriculum = () => {
             type="dashed" 
             icon={<DownloadOutlined />} 
             size='large' 
-            // style={{ width: '440px'}}
-            style={{ width: '900px'}}
+            style={{ width: '440px'}}
             onClick={ downloadClick } 
           >
             下載教案紙
           </Button>
-          {/* <Button 
+          <Button 
             type="dashed" 
             icon={ openView ? <EyeInvisibleOutlined /> : <EyeOutlined /> } 
             size='large' 
@@ -188,18 +189,13 @@ const Curriculum = () => {
             onClick={ viewFileClick } 
           >
             { openView ? '收起預覽教案紙': '預覽教案紙'}
-          </Button> */}
+          </Button>
         </div>
-        {/* { downloadedFile && openView &&(
+        { downloadedFile && openView && (
           <div style={{ width: '900px'}}>
-            <FileViewer
-              fileType='pdf'
-              filePath={downloadedFile}
-              onError={console.error}
-              zoom="2"
-            />
+            <PdfFile file={downloadedFile} />
           </div>
-        )} */}
+        )}
         <a ref={linkRef} href={curriculum.file_pdf} target="_blank" rel="noopener noreferrer" style={{ display: 'none' }}/>
       </div>
       <Footer/>
