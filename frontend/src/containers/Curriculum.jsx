@@ -79,7 +79,7 @@ const Curriculum = () => {
       return
     }
 
-    setOpenView(!openView)
+    // setOpenView(!openView)
     const command = new GetObjectCommand({
       Bucket: "doc-file-uploads",
       Key: `pdf/${curriculum.title}.pdf`
@@ -186,9 +186,11 @@ const Curriculum = () => {
             icon={ openView ? <EyeInvisibleOutlined /> : <EyeOutlined /> } 
             size='large' 
             style={{ width: '440px'}}
-            onClick={ viewFileClick } 
+            onClick={ viewFileClick }
+            disabled={openView} 
           >
-            { openView ? '收起預覽教案紙': '預覽教案紙'}
+            {/* { openView ? '收起預覽教案紙': '預覽教案紙'} */}
+            預覽教案紙
           </Button>
         </div>
         { downloadedFile && openView && (
