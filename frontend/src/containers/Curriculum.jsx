@@ -79,7 +79,8 @@ const Curriculum = () => {
       return
     }
 
-    // setOpenView(!openView)
+    setOpenView(!openView)
+
     const command = new GetObjectCommand({
       Bucket: "doc-file-uploads",
       Key: `pdf/${curriculum.title}.pdf`
@@ -93,7 +94,6 @@ const Curriculum = () => {
         const blob = await newResponse.blob();
         const fileUrl = URL.createObjectURL(blob);
         setDownloadedFile(fileUrl);
-        setOpenView(true);
       } else {
         // Handle other possible types of response.Body
         console.error("Unsupported response body type:", typeof response.Body);
@@ -187,10 +187,8 @@ const Curriculum = () => {
             size='large' 
             style={{ width: '440px'}}
             onClick={ viewFileClick }
-            disabled={openView} 
           >
-            {/* { openView ? '收起預覽教案紙': '預覽教案紙'} */}
-            預覽教案紙
+            { openView ? '收起預覽教案紙': '預覽教案紙'}
           </Button>
         </div>
         { downloadedFile && openView && (

@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-import './pdfFile.css';
-
 const PdfFile = ({ file }) => {
   const [numPages, setNumPages] = useState(null);
 
@@ -22,7 +20,7 @@ const PdfFile = ({ file }) => {
     <div style={pdfContainerStyle}>
       <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
         {numPages && Array.from(new Array(numPages), (el, index) => (
-          <Page key={`page_${index + 1}`} pageNumber={index + 1} renderTextLayer={false} scale={1.8} />
+          <Page key={`page_${index + 1}`} pageNumber={index + 1} renderTextLayer={false} renderAnnotationLayer={false} scale={1.8} />
         ))}
       </Document>
     </div>
