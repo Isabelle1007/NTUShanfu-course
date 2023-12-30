@@ -30,5 +30,5 @@ const getUrlByID = async (id) => {
 }
 
 module.exports = {
-    getUrlByID,
+    getUrlByID
 };

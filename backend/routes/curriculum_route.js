@@ -11,7 +11,6 @@ router.route('/semester/:semester').get(wrapAsync(getCurriculumBySemester))
 router.route('/search/:kw').get(wrapAsync(getCurriculumByKeyword))
 router.route('/id/:id').get(wrapAsync(getCurriculumByID))
 router.route('/user/:id').get(wrapAsync(getCurriculumByUser))
-// router.route('/fileContent/id/:id').get(wrapAsync(getFileContentByID))
 
 router.route('/upload').post(wrapAsync(postCurriculum))
 
