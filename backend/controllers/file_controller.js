@@ -84,10 +84,11 @@ const postFile = async (req, res) => {
                     // }
                     const updateDb = await updateInfoByEmail(req.body.user_email, { "picture_url": url });
                     if (updateDb.code === '000') {
-                        res.json({
-                            "message": updateDb.message,
-                            "code": "000"
-                        });
+                        // res.json({
+                        //     "message": updateDb.message,
+                        //     "code": "000"
+                        // });
+                        res.json(updateDb)
                         // if(old_url != default_picture_url){
                         //     // const deleteOldPic = await deleteFileFromS3(old_url);
                         //     // if(deleteOldPic.code === '000'){
@@ -108,23 +109,26 @@ const postFile = async (req, res) => {
                         //     });
                         // }
                     } else {
-                        res.json({
-                            "message": updateDb.message,
-                            "code": "999"
-                        });
+                        // res.json({
+                        //     "message": updateDb.message,
+                        //     "code": "999"
+                        // });
+                        res.json(updateDb)
                     }
                 }else{
-                    res.json({
-                        "message": "Success",
-                        "code": "000",
-                        "data": uploadFileToS3.data
-                    });
+                    res.json(uploadFileToS3)
+                    // res.json({
+                    //     "message": "Success",
+                    //     "code": "000",
+                    //     "data": uploadFileToS3.data
+                    // });
                 }
             } else {
-                res.json({
-                    "message": uploadFileToS3.message,
-                    "code": "999"
-                });
+                res.json(uploadFileToS3)
+                // res.json({
+                //     "message": uploadFileToS3.message,
+                //     "code": "999"
+                // });
             }
         });
     } catch (err) {
