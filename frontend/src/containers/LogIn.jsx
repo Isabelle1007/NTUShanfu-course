@@ -10,41 +10,9 @@ import { api } from '../utils/api'
 
 import './LogIn.css'
 
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 8,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-    },
-  },
-};
-
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-  },
-};
-
 const LogIn = () => {
 
-  const { colors, userInfo, setUserInfo } = useContext(FilterContext);
+  const { colors, setUserInfo } = useContext(FilterContext);
 
   const [form] = Form.useForm();
 
@@ -76,7 +44,6 @@ const LogIn = () => {
                 const jwtToken = json.data.access_token;
                 window.localStorage.setItem('jwtToken', jwtToken);
                 if(jwtToken){
-                    // setIsLogin(true)
                     api.getUserInfo(jwtToken).then((json) => {
                         if(json.code === "000"){
                             const newInfo = {

@@ -15,7 +15,7 @@ const SignUp = () => {
 
   const { colors, semesters } = useContext(FilterContext);
 
-  const [form] = Form.useForm();
+  const [ form ] = Form.useForm();
 
   const [ formValues, setFormValues ] = useState({
     'name': '',

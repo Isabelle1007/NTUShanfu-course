@@ -13,7 +13,7 @@ import { api } from '../utils/api'
 
 const EditProfile = () => {
 
-  const { colors, semesters } = useContext(FilterContext);
+  const { semesters } = useContext(FilterContext);
 
   const [ formValues, setFormValues ] = useState({
     'name': '',

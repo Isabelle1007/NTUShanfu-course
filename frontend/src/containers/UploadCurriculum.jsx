@@ -21,7 +21,7 @@ const antIcon = (
 
 const UploadCurriculum = () => {
 
-  const { colors, semesters, types } = useContext(FilterContext);
+  const { semesters, types } = useContext(FilterContext);
   const [ nameList, setNameList ] = useState([]);
   const [ wordFileData, setWordFileData ] = useState([]);
   const [ pdfFileData, setPdfFileData ] = useState([]);

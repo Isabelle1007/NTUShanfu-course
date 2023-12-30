@@ -47,11 +47,6 @@ function App() {
     "department": "",
     "picture_url": ""
   });
-
-
-  useEffect(() => {
-    // console.log('useEffect in App.jsx')
-  }, [])
   
   return (
     <FilterContext.Provider 

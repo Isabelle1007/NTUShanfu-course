@@ -34,7 +34,6 @@ const Profile = () => {
 
   useEffect(() => {
     showCurricula();
-    // setPictureURL(userInfo.picture_url);
   }, [userInfo.name]);
 
   const checkLogIn = async () => {
@@ -71,7 +70,6 @@ const Profile = () => {
   };
 
   const handleBeforeUpload = (file) => {
-    // console.log(file)
     const valid = file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg';
     if (!valid) {
       message.error(`${file.name} is not a png or jpeg file`);
