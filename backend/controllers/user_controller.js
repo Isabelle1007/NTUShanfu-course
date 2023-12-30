@@ -57,13 +57,7 @@ const signUp = async (req, res) => {
     name = validator.escape(name);
 
     const result = await User.signUp(name, User.USER_ROLE[role], email, password, picture_url, home, group, join_semester, gender, birthday, department, student_id);
-    if (result.code != "000") {
-        return res.json(result)
-        // return res.json({
-        //     "message": result.message,
-        //     "code": result.code
-        // });
-    }
+    if (result.code != "000") return res.json(result);
 
     const user = result.data;
     if (!user) {
