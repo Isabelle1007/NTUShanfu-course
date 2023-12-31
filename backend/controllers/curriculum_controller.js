@@ -1,12 +1,43 @@
 require('dotenv').config();
+const fsPromises = require('fs').promises;
+const multer = require('multer');
+
 const Curriculum = require('../models/curriculum_model');
 const User = require('../models/user_model');
 const Home = require('../models/home_model');
 const Type = require('../models/type_model');
 
-const { readFileFromS3, deleteFileFromS3 } = require('../utils/s3Service');
+const { readFileFromS3, s3Uploadv2, deleteFileFromS3 } = require('../utils/s3Service');
+const { createWordCloudImg } = require('../utils/wordCloud');
 
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_BUCKET_NAME } = process.env;
+
+const storage = multer.memoryStorage();
+
+const fileFilter_image = (req, file, cb) => {
+    const allowedMimeTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    if (allowedMimeTypes.includes(file.mimetype)) {
+        cb(null, true); // Accept the file
+    } else {
+        cb(new Error("File is not of a permitted type (PNG, JPEG, JPG)"), false); // Reject the file
+    }
+};
+
+const upload_img = multer({ storage, fileFilter_image });
+
+const multerUpload = (uploadType) => {
+    return (req, res, next) => {
+        uploadType.single('file')(req, res, (err) => {
+            if (err instanceof multer.MulterError) {
+                res.status(400).json({ error: err.message });
+            } else if (err) {
+                res.status(500).json({ error: err.message });
+            } else {
+                next();
+            }
+        });
+    };
+};
 
 // get data from db
 const getCurricula = async (req, res) => {
@@ -92,16 +123,47 @@ const postCurriculum = async (req, res) => {
         const filePath = `docx/${createNewCurriculum.data.title}.docx`
         const fileContent = await readFileFromS3(filePath);
         if(fileContent.code === '000'){
-            console.log(fileContent)
             const data = {
                 "content": fileContent.data.content
             }
             const addContent = await Curriculum.updateCurriculum(cid, data);
             if(addContent.code === '000'){
                 createNewCurriculum.data.content = fileContent.data.content
-            }else console.log(addContent)
-        }else console.log(fileContent)
-        return res.json(createNewCurriculum)
+                // Create a word cloud image
+                const wordCloudResponse = await createWordCloudImg(cid, fileContent.data.content);
+                const imagePath = wordCloudResponse.data.location; // The path of the generated image
+                try {
+                    const imageBuffer = await fsPromises.readFile(imagePath); // Read the image file
+                    const fileObject = {
+                        buffer: imageBuffer,
+                        name: wordCloudResponse.data.image_name.split('.')[0], // Name without extension
+                        type: 'png' // Assuming the file type is png
+                    };
+        
+                    const s3UploadResponse = await s3Uploadv2(fileObject, fileObject.name, fileObject.type);
+                    if (s3UploadResponse.code === '000') {
+                        // Delete the local file after successful upload
+                        await fsPromises.unlink(imagePath);
+
+                        // Update the curriculum with the image URL
+                        const url = s3UploadResponse.data.response.Location;
+                        const updateDb = await Curriculum.updateCurriculum(cid, { "pic_url": url });
+                        return res.json(updateDb)
+                    } else {
+                        return res.json(s3UploadResponse)
+                    }
+                } catch (err) {
+                    console.error("\nFailed to uploading to S3");
+                    return res.status(500).json({ error: err.message });
+                }
+            }else{
+                console.log(addContent)
+                return res.json(addContent)
+            }
+        }else{
+            console.log(fileContent)
+            return res.json(fileContent)
+        }
     }
 };
 
@@ -147,9 +209,7 @@ const deleteCurriculum = async (req, res) => {
             const url_docx = curri_info.data.file_word
             const url_pdf = curri_info.data.file_pdf
             const deleteFileInS3 = await deleteFileFromS3([url_docx, url_pdf]);
-            if(deleteFileInS3.code != '000'){
-                console.log(deleteFileInS3)
-            }
+            if(deleteFileInS3.code != '000') console.log(deleteFileInS3)
             res.json(deleteFileInS3)
         }else{
             console.log(deleteResult)
