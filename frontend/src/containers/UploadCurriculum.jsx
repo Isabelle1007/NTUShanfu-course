@@ -204,7 +204,6 @@ const UploadCurriculum = () => {
       setLoading(true)
       api.postCurriculum(formValues)
       .then((json) => {
-        console.log(json);
         if (json.code != '000'){
           Swal.fire({
             title: 'Error!',
@@ -212,7 +211,14 @@ const UploadCurriculum = () => {
             icon: 'error',
             confirmButtonText: 'OK',
             allowOutsideClick: false 
+          }).then((result) => {
+            if(result.isConfirmed){
+              setFormValues({})
+              setLoading(false)
+              window.location.href = '/curriculum/upload'
+            }
           })
+          
         }else{
           Swal.fire({
             title: 'Success!',
