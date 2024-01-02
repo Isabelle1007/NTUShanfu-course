@@ -5,8 +5,8 @@ exports.createWordCloudImg = async (cid, fileContent) => {
     return new Promise((resolve, reject) => {
         const outputFileName = `wordcloud_${cid}.png`;
         const outputFilePath = path.join(__dirname, outputFileName);
-        const pythonExecutable = '/Library/Frameworks/Python.framework/Versions/3.10/bin/python3'; // Replace with the path you got from `which python3`
-        
+        const pythonExecutable = 'python3';
+
         const pythonScriptPath = path.join(__dirname, 'createWordCloud.py');
 
         exec(`${pythonExecutable} "${pythonScriptPath}" "${fileContent}" "${outputFilePath}"`, (error, stdout, stderr) => {
