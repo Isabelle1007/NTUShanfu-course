@@ -3,7 +3,7 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { FilterContext } from "../App";
 import Header from "../components/header";
 import Footer from "../components/footer";
-// import PdfFile from '../components/pdfFile';
+import PdfFile from '../components/pdfFile';
 import { api } from '../utils/api'
 
 import { Card, Form, Button, Space} from 'antd';
@@ -20,6 +20,9 @@ const Curriculum = () => {
   const [ displayName, setDisplayName ] = useState('');
   const [ displayDate, setDisplayDate ] = useState('');
   const [ openView, setOpenView ] = useState(false); 
+  const [ semesterNumber, setSemesterNumber ] = useState('');
+  const [ semesterChar, setSemesterChar ] = useState('');
+  const [ pureDate, setPureDate ] = useState(''); 
   const id = new URLSearchParams(location.search).get('id');
 
   const [downloadedFile, setDownloadedFile] = useState(null);
@@ -107,6 +110,18 @@ const Curriculum = () => {
         setCurriculum(json.data);
         setDisplayName(json.data.author.join(', '));
         setDisplayDate(json.data.last_update.split(' ')[0]);
+
+        // Splitting the curriculum.semester into two parts
+        const semesterRegex = /(\d+)([\u4e00-\u9fa5])/;
+        const match = json.data.semester.match(semesterRegex);
+        if (match) {
+          setSemesterNumber(match[1]); // The numeric part
+          setSemesterChar(match[2]); // The Chinese character
+        }
+
+        // Splitting the date
+        let dateOnly = json.data.last_update.split(' ')[0];
+        setPureDate(dateOnly.replace(/-/g, ''));
       }
     });
   },[]);
@@ -119,7 +134,7 @@ const Curriculum = () => {
           title={
             <Space>
               <FileTextOutlined style={{ fontSize: '24px', marginTop: '5px' }}/>
-              <span className="custom-card-title-curri">教案紙 #{id}</span>
+              <span className="custom-card-title-curri">20{semesterNumber} 台大山服{semesterChar}令營_{curriculum.home}家_{curriculum.type}_{curriculum.title}_{displayName}_{pureDate}</span>
             </Space>
           }
           bordered={true}
@@ -174,13 +189,13 @@ const Curriculum = () => {
             type="dashed" 
             icon={<DownloadOutlined />} 
             size='large' 
-            // style={{ width: '440px'}}
-            style={{ width: '900px'}}
+            style={{ width: '440px'}}
+            // style={{ width: '900px'}}
             onClick={ downloadClick } 
           >
             下載教案紙
           </Button>
-          {/* <Button 
+          <Button 
             type="dashed" 
             icon={ openView ? <EyeInvisibleOutlined /> : <EyeOutlined /> } 
             size='large' 
@@ -188,13 +203,13 @@ const Curriculum = () => {
             onClick={ viewFileClick } 
           >
             { openView ? '收起預覽教案紙': '預覽教案紙'}
-          </Button> */}
+          </Button>
         </div>
-        {/* { downloadedFile && openView && (
+        { downloadedFile && openView && (
           <div style={{ width: '900px'}}>
             <PdfFile file={downloadedFile} />
           </div>
-        )} */}
+        )}
         <a ref={linkRef} href={curriculum.file_pdf} target="_blank" rel="noopener noreferrer" style={{ display: 'none' }}/>
       </div>
       <Footer/>
