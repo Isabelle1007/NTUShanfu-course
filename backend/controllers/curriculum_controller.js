@@ -206,10 +206,11 @@ const deleteCurriculum = async (req, res) => {
         const deleteResult = await Curriculum.delCurriculum(id, curri_info.data.file_word);
         if(deleteResult.code === "000"){
             // Delete files in S3
-            const url_docx = curri_info.data.file_word
-            const url_pdf = curri_info.data.file_pdf
-            const url_img = curri_info.data.pic_url
-            const deleteFileInS3 = await deleteFileFromS3([url_docx, url_pdf, url_img]);
+            const urls = [];
+            if(curri_info.data.file_word) urls.push(curri_info.data.file_word);
+            if(curri_info.data.file_pdf) urls.push(curri_info.data.file_pdf);
+            if(curri_info.data.pic_url) urls.push(curri_info.data.pic_url);
+            const deleteFileInS3 = await deleteFileFromS3(urls);
             if(deleteFileInS3.code != '000') console.log(deleteFileInS3)
             res.json(deleteFileInS3)
         }else{
