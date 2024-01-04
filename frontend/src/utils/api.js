@@ -1,7 +1,7 @@
 export const api = {
     //production
     server_url: 'https://ntushanfu-server.onrender.com',
-    app_url: 'https://ntushanfu.onrender.com',
+    app_url: 'https://ntushanfu-xojf.onrender.com',
     //development
     // server_url: 'http://localhost:4000',
     // app_url: 'http://localhost:3000',
