@@ -1,0 +1,7 @@
+.curriculum {
+    width: 320px;
+    height: 340px;
+    padding: 30px 30px;
+    flex-shrink: 0;
+    text-decoration: none;
+  }

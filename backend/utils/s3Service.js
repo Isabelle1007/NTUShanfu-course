@@ -97,6 +97,10 @@ exports.readFileFromS3 = async (input) => {
     }
   } catch (error) {
     console.log('Error reading file from S3:', error);
+    // return {
+    //   "message": error,
+    //   "code": "999",
+    // }
     throw error;
   }
 }

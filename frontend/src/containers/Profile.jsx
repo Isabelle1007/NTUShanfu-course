@@ -3,9 +3,11 @@ import { useState, useEffect, useContext } from "react";
 import { FilterContext } from "../App";
 import Header from "../components/header";
 import Footer from "../components/footer";
+import CurriculumCard from "../components/curriculum_card";
+
 import { api } from '../utils/api'
 
-import { Card, Form, Spin, Button, Image, Avatar, Anchor, Col, Row, Space, message, Upload } from 'antd';
+import { Card, Form, Spin, Button, Image, Anchor, Col, Row, Space, message, Upload } from 'antd';
 import { LoadingOutlined, EditOutlined, HeartOutlined, EllipsisOutlined, FileTextOutlined, IdcardOutlined, UploadOutlined, FileImageOutlined} from '@ant-design/icons';
 const { Meta } = Card;
 import Swal from 'sweetalert2'
@@ -93,6 +95,7 @@ const Profile = () => {
     formData.append('format', pictureURL.type.split('/')[1]);
     formData.append('user_email', userInfo.email);
     setLoading(true);
+    console.log(formData);
     try {
       const uploadNewPic = await api.postFile(formData, 'i');
       if(uploadNewPic.code === '000'){
@@ -129,21 +132,6 @@ const Profile = () => {
   const handleEditProfile = async () => {
       window.location.href = '/myProfile/edit';
   };
-
-  const AvatarWithText = ({ array }) => (
-    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-       <div style={{display: 'flex', alignItems: 'center'}}>
-        {
-          array.map((user, index) => (
-            <div key={index} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-              <Avatar src={user.picture_url} style={{ marginLeft: '8px', marginRight: '8px' }} />
-              <span style={{fontSize:'12px'}}>{user.name}</span>
-            </div>
-          ))
-        }
-       </div>
-    </div>
-  );
 
   return (
     <div>
@@ -290,30 +278,7 @@ const Profile = () => {
                 <div className="curriculum__con">
                 {
                   myCurricula.map((curriculum) => (
-                    <a
-                      className="curriculum"
-                      key={curriculum.id}
-                      href={`${api.app_url}/curriculum?id=${curriculum.id}`}
-                    >
-                      <Card
-                        cover={
-                          <img
-                              alt="picture_example"
-                              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                          />
-                        }
-                        actions={[
-                            <HeartOutlined key="favorite"/>,
-                            <EllipsisOutlined key="ellipsis" />
-                        ]}
-                      >
-                          <Meta
-                              avatar={<AvatarWithText array={curriculum.author}/>}
-                              title={curriculum.title}
-                              description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
-                            /> 
-                      </Card>
-                    </a>
+                    < CurriculumCard curriculum={curriculum} key={curriculum.id} />
                   ))
                 }
                 </div>

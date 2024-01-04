@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { FilterContext } from "../App";
 import Header from "../components/header";
 import Footer from "../components/footer";
+import CurriculumCard from "../components/curriculum_card";
 
 import { Avatar, Card, Divider, Spin } from 'antd';
 const { Meta } = Card;
@@ -36,7 +37,7 @@ function ShowCurrirula() {
       const semester = new URLSearchParams(location.search).get('semester');
       const keyword = new URLSearchParams(location.search).get('keyword');
 
-      function fetchProducts() {
+      function fetchCurricula() {
         if (home) {
           return api.getCurriculaByHome(home);
         }
@@ -52,7 +53,7 @@ function ShowCurrirula() {
         return api.getAllCurricula();
       }
 
-      fetchProducts().then((json) => {
+      fetchCurricula().then((json) => {
         if(json.data){
           setCurricula((prev) => [...prev, ...json.data]);
         }
@@ -62,21 +63,6 @@ function ShowCurrirula() {
     });
     intersectionObserver.observe(document.querySelector('.waypoint'));
   }, []);
-  
-  const AvatarWithText = ({ array }) => (
-    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-       <div style={{display: 'flex', alignItems: 'center'}}>
-        {
-          array.map((user, index) => (
-            <div key={index} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-              <Avatar src={user.picture_url} style={{ marginLeft: '8px', marginRight: '8px' }} />
-              <span style={{fontSize:'12px'}}>{user.name}</span>
-            </div>
-          ))
-        }
-       </div>
-    </div>
-  );
 
   return (
     <>
@@ -88,30 +74,7 @@ function ShowCurrirula() {
                 <div className="curricula__container">
                   {
                     curricula.map((curriculum) => (
-                        <a
-                          className="curriculum"
-                          key={curriculum.id}
-                          href={`${api.app_url}/curriculum?id=${curriculum.id}`}
-                        >
-                          <Card
-                            cover={
-                              <img
-                                  alt="picture_example"
-                                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                              />
-                            }
-                            actions={[
-                                <HeartOutlined key="favorite"/>,
-                                <EllipsisOutlined key="ellipsis" />
-                            ]}
-                          >
-                            <Meta
-                              avatar={<AvatarWithText array={curriculum.author}/>}
-                              title={curriculum.title}
-                              description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
-                            /> 
-                          </Card>
-                        </a>
+                      < CurriculumCard curriculum={curriculum} key={curriculum.id} />
                     ))
                   }
                   </div>

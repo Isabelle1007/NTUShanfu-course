@@ -267,7 +267,9 @@ const login = async (email, password) => {
         if (users.length === 0) {
             await conn.query('COMMIT');
             console.log("Email does not exist")
-            return { error: 'Email does not exist' };
+            return {
+                code: "001", 
+                message: 'Error: Email does not exist' };
         }
         const user = users[0];
 

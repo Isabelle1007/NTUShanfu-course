@@ -1,6 +1,6 @@
 export const api = {
     //production
-    server_url: 'https://ntushanfu-search-curricula.onrender.com',
+    server_url: 'https://ntushanfu-server.onrender.com',
     app_url: 'https://ntushanfu.onrender.com',
     //development
     // server_url: 'http://localhost:4000',
