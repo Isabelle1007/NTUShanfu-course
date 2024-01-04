@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install-python": "pip install -r requirements.txt",
     "start": "node index.js",
-    "postinstall": "npm run install-python",
     "build": "npm i",
     "dev": "nodemon index.js"
   },
