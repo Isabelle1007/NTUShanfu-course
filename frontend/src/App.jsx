@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-// import Home from './containers/Home'
+import Home from './containers/Home'
 import Curricula from './containers/Curricula'
 import Curriculum from './containers/Curriculum'
 import UploadCurriculum from './containers/UploadCurriculum'
@@ -56,7 +56,7 @@ function App() {
     > 
       <BrowserRouter>
         <Routes>
-          {/* <Route exact path="/" element={<Home/>} /> */}
+          <Route exact path="/" element={<Home/>} />
           <Route exact path="/" element={<Curricula/>} />
           <Route exact path="/curricula/all" element={<Curricula/>} />
           <Route exact path="/curricula/*" element={<Curricula/>} />

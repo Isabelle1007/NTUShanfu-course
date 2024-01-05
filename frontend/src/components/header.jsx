@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 
 import { Menu, Input, Button, Drawer } from 'antd';
-import { FileTextOutlined, HomeOutlined, TagsOutlined, FieldTimeOutlined, UserOutlined, HeartOutlined, IdcardOutlined, CloudUploadOutlined, DesktopOutlined, SettingOutlined, DoubleLeftOutlined } from '@ant-design/icons';
+import { FileTextOutlined, HomeOutlined, TagsOutlined, CalendarOutlined, UserOutlined, HeartOutlined, IdcardOutlined, CloudUploadOutlined, DesktopOutlined, SettingOutlined, DoubleLeftOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2'
 
 import { FilterContext } from "../App";
@@ -10,7 +10,7 @@ import { api } from '../utils/api'
 
 import './header.css' 
 
-const Header = () => {
+const Header = ({ ref1, ref2, ref3, ref4 }) => {
 
     const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, setUserInfo } = useContext(FilterContext);
 
@@ -145,25 +145,29 @@ const Header = () => {
           ),
           key: 'all',
           icon: <FileTextOutlined/>,
+          ref: ref1
+        },
+        {
+            label: '期數',
+            key: 'semester',
+            icon: <CalendarOutlined />,
+            children: semesters,
+            ref: ref2
         },
         {
           label: '家別',
           key: 'home',
           icon: <HomeOutlined/>,
-          children: homes
+          children: homes,
+          ref: ref3
         },
         {
             label: '科別',
             key: 'type',
             icon: <TagsOutlined />,
-            children: types
-        },
-        {
-            label: '期數',
-            key: 'semester',
-            icon: <FieldTimeOutlined />,
-            children: semesters
-        },
+            children: types,
+            ref: ref4
+        }
     ]
 
     const refresh = () => {
@@ -289,13 +293,13 @@ const Header = () => {
                             onClick={() => console.log('Click 後台管理') }
                         >後台管理</Button>
 
-                        <Button 
+                        {/* <Button 
                             className='userMenu__btn'
                             type="text"
                             size="large"
                             icon={<SettingOutlined />} 
                             onClick={() => console.log('Click 設定') }
-                        >設定</Button>
+                        >設定</Button> */}
                     </div>
 
                 </Drawer>

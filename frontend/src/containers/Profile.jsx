@@ -7,7 +7,7 @@ import CurriculumCard from "../components/curriculum_card";
 
 import { api } from '../utils/api'
 
-import { Card, Form, Spin, Button, Image, Anchor, Col, Row, Space, message, Upload } from 'antd';
+import { Card, Form, Spin, Button, Image, Anchor, Col, Row, Space, message, Upload, Empty } from 'antd';
 import { LoadingOutlined, EditOutlined, HeartOutlined, EllipsisOutlined, FileTextOutlined, IdcardOutlined, UploadOutlined, FileImageOutlined} from '@ant-design/icons';
 const { Meta } = Card;
 import Swal from 'sweetalert2'
@@ -273,7 +273,7 @@ const Profile = () => {
                   <p>我的教案紙</p>
                 </Space>
                 {
-                  myCurricula.length === 0 ? (<p style={{alignSelf: 'center', fontSize: 20}}>尚未撰寫任何教案紙</p>) : (<></>)
+                  myCurricula.length === 0 ? (<Empty style={{alignSelf: 'center'}}/>) : (<></>)
                 }
                 <div className="curriculum__con">
                 {
@@ -289,7 +289,7 @@ const Profile = () => {
                   <p>我的收藏</p>
                 </Space>
                 {
-                  favCurricula.length === 0 ? (<p style={{alignSelf: 'center', fontSize: 20}}>尚未收藏任何教案紙</p>) : (<></>)
+                  favCurricula.length === 0 ? (<Empty style={{alignSelf: 'center'}}/>) : (<></>)
                 }
                 <div className="favorite__con">
                 {

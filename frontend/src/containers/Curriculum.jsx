@@ -6,23 +6,35 @@ import Footer from "../components/footer";
 import PdfFile from '../components/pdfFile';
 import { api } from '../utils/api'
 
-import { Card, Form, Button, Space} from 'antd';
-import { EyeOutlined, EyeInvisibleOutlined, DownloadOutlined, EditOutlined, FileTextOutlined } from '@ant-design/icons';
+import { FloatButton, Spin, Popover } from 'antd';
+import { LoadingOutlined, DownloadOutlined, EditOutlined, InfoCircleOutlined, CalendarOutlined, HomeOutlined, TagsOutlined } from '@ant-design/icons';
 
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 import Swal from 'sweetalert2'
 
+const antIcon = (
+  <LoadingOutlined
+    style={{
+      fontSize: 48,
+    }}
+    spin
+  />
+);
+
 const Curriculum = () => {
 
   const { colors, userInfo } = useContext(FilterContext);
   const [ curriculum, setCurriculum ] = useState([]);
+  const [ loading, setLoading ] = useState(true);
   const [ displayName, setDisplayName ] = useState('');
-  const [ displayDate, setDisplayDate ] = useState('');
-  const [ openView, setOpenView ] = useState(false); 
   const [ semesterNumber, setSemesterNumber ] = useState('');
   const [ semesterChar, setSemesterChar ] = useState('');
   const [ pureDate, setPureDate ] = useState(''); 
+  const [ fileName, setFileName ] = useState(''); 
+  const [ infoTitle, setInfoTitle ] = useState('');
+  const [ content, setContent] = useState(null);
+  const [ noEdit, setNoEdit ] = useState(true); 
   const id = new URLSearchParams(location.search).get('id');
 
   const [downloadedFile, setDownloadedFile] = useState(null);
@@ -36,22 +48,8 @@ const Curriculum = () => {
   })
 
   const handleEdit = async () => {
-    if(curriculum.author.includes(userInfo.name)){
-      window.location.href = `/curriculum/edit?id=${id}`;
-    }
-    else{
-      Swal.fire({
-        title: 'Oops!',
-        text: '沒有編輯權限',
-        icon: 'error',
-        confirmButtonText: 'OK',
-        allowOutsideClick: false 
-      })
-      return
-    }
+    window.location.href = `/curriculum/edit?id=${id}`;
   };
-
-  const linkRef = useRef(null);
 
   const downloadClick = async () => {
 
@@ -64,25 +62,13 @@ const Curriculum = () => {
         allowOutsideClick: false 
       })
       return
-    }
-      
+    } 
     linkRef.current.click();
   }
 
-  const viewFileClick = async () => {
+  const linkRef = useRef(null);
 
-    if(curriculum.file_pdf === null){
-      Swal.fire({
-        title: 'Error!',
-        text: '該教案目前無提供檔案',
-        icon: 'error',
-        confirmButtonText: 'OK',
-        allowOutsideClick: false 
-      })
-      return
-    }
-
-    setOpenView(!openView)
+  const showPdf = async () => {
     const command = new GetObjectCommand({
       Bucket: "doc-file-uploads",
       Key: `pdf/${curriculum.title}.pdf`
@@ -99,6 +85,7 @@ const Curriculum = () => {
       const fileBlob = new Blob(chunks, { type: 'application/octet-stream' });
       const fileUrl = URL.createObjectURL(fileBlob);
       setDownloadedFile(fileUrl);
+      setLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -109,7 +96,6 @@ const Curriculum = () => {
       if(json.data){
         setCurriculum(json.data);
         setDisplayName(json.data.author.join(', '));
-        setDisplayDate(json.data.last_update.split(' ')[0]);
 
         // Splitting the curriculum.semester into two parts
         const semesterRegex = /(\d+)([\u4e00-\u9fa5])/;
@@ -122,99 +108,85 @@ const Curriculum = () => {
         // Splitting the date
         let dateOnly = json.data.last_update.split(' ')[0];
         setPureDate(dateOnly.replace(/-/g, ''));
+
+        // Set editing permissions based on the curriculum author and user info
+        if (json.data.author.includes(userInfo.name)) {
+          setNoEdit(false);
+        } else {
+          setNoEdit(true);
+        }
       }
     });
   },[]);
 
+  useEffect(() => {
+    if (curriculum.id) { // Check if curriculum.id is available
+      showPdf();
+      setFileName(`20${semesterNumber}台大山服${semesterChar}令營_${curriculum.home}家_${curriculum.type}_${curriculum.title}_${displayName}_${pureDate}`)
+      setInfoTitle(`${curriculum.title}（${displayName}）`)
+      setContent(
+        <div>
+          <p><CalendarOutlined /> 期數：{curriculum.semester}</p>
+          <p><HomeOutlined /> 家別：{curriculum.home}</p>
+          <p><TagsOutlined /> 科別：{curriculum.type}</p>
+        </div>
+      );
+    }
+  }, [curriculum]);
+
+  useEffect(() => {
+    // Check edit permissions when curriculum or userInfo changes
+    if (curriculum && curriculum.author && userInfo && userInfo.name) {
+      setNoEdit(!curriculum.author.includes(userInfo.name));
+    }
+  }, [curriculum, userInfo]); // Dependencies on curriculum and userInfo
+  
+
   return (
     <>
       <Header/>
-      <div className='curriculum__container'>
-        <Card
-          title={
-            <Space>
-              <FileTextOutlined style={{ fontSize: '24px', marginTop: '5px' }}/>
-              <span className="custom-card-title-curri">20{semesterNumber} 台大山服{semesterChar}令營_{curriculum.home}家_{curriculum.type}_{curriculum.title}_{displayName}_{pureDate}</span>
-            </Space>
-          }
-          bordered={true}
-          style={{
-            width: 900,
-          }}
-        >
-          <Form
-            className="custom-form-c"
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 24 }}
-            layout="horizontal"
-            style={{
-              maxWidth: 600,
-            }}
-          >
-            <Form.Item label="教案名稱" >
-              <div className='input' >{curriculum.title}</div>
-            </Form.Item>
-            <Form.Item label="作者">
-              <div className='input'>{displayName}</div>
-            </Form.Item>
-            <Form.Item label="家別">
-              <div className='input' >{curriculum.home}</div>
-            </Form.Item>
-            <Form.Item label="期數">
-              <div className='input' >{curriculum.semester}</div>
-            </Form.Item>
-            <Form.Item label="科別">
-              <div className='input' >{curriculum.type}</div>
-            </Form.Item>
-            <Form.Item label="最後編輯日">
-              <div className='input' >{displayDate}</div>
-            </Form.Item>
-          </Form>
-        </Card>
-        <Button 
-          type="dashed" 
-          shape="circle"
-          icon={<EditOutlined />} 
-          size='large' 
-          style={{
-            color: colors.colorPrimary,
-            alignSelf: 'end',
-            marginTop: '-60px',
-            marginRight: '20px'
-          }}
-          onClick={ handleEdit } 
-        />
-        <div style={{display: 'flex', justifyContent:'space-between', alignItems: 'center', marginTop: '30px'}}>
-          <Button 
-            type="dashed" 
-            icon={<DownloadOutlined />} 
-            size='large' 
-            style={{ width: '440px'}}
-            // style={{ width: '900px'}}
-            onClick={ downloadClick } 
-          >
-            下載教案紙
-          </Button>
-          <Button 
-            type="dashed" 
-            icon={ openView ? <EyeInvisibleOutlined /> : <EyeOutlined /> } 
-            size='large' 
-            style={{ width: '440px'}}
-            onClick={ viewFileClick } 
-          >
-            { openView ? '收起預覽教案紙': '預覽教案紙'}
-          </Button>
-        </div>
-        { downloadedFile && openView && (
-          <div style={{ width: '900px'}}>
-            <PdfFile file={downloadedFile} />
-          </div>
-        )}
-        <a ref={linkRef} href={curriculum.file_pdf} target="_blank" rel="noopener noreferrer" style={{ display: 'none' }}/>
-      </div>
+      {
+        loading ? <Spin indicator={antIcon} size="large"/> : (
+          <>
+            <FloatButton.Group
+              style={{ position: 'fixed', bottom: '100px', right: '50px' }}
+            >
+              <Popover content={content} title={infoTitle} trigger="click" placement="topLeft">
+                <FloatButton 
+                  icon={<InfoCircleOutlined style={{ color: colors.colorPrimary}}/>} 
+                  tooltip={<div>查看教案基本資訊</div>}
+                  size='large' 
+                />
+              </Popover>
+              <FloatButton 
+                icon={<EditOutlined style={{ color: colors.colorPrimary}}/>} 
+                tooltip={ noEdit ? <div>沒有編輯權限</div> : <div>編輯教案基本資訊</div> }
+                size='large'
+                onClick={ handleEdit } 
+                disabled={ noEdit }
+                style={{ opacity: noEdit ? 0.5 : 1 }} // Apply transparency when disabled
+              />
+              <FloatButton 
+                icon={<DownloadOutlined style={{ color: colors.colorPrimary }}/>} 
+                tooltip={<div>下載教案紙</div>}
+                size='large'
+                onClick={ downloadClick } 
+              />
+            </FloatButton.Group>
+            <div className='curriculum__container'>
+              { downloadedFile && (
+                <div style={{ width: '900px', marginTop: '-50px'}}>
+                  <PdfFile file={downloadedFile} />
+                </div>
+              )}
+            </div>
+            <a ref={linkRef} href={curriculum.file_pdf} target="_blank" rel="noopener noreferrer" style={{ display: 'none' }}/>
+          </>
+        )
+      }
       <Footer/>
     </>
-  );
+  );  
 }
 
 export default Curriculum;
