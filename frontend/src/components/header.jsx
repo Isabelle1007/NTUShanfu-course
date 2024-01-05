@@ -10,7 +10,7 @@ import { api } from '../utils/api'
 
 import './header.css' 
 
-const Header = () => {
+const Header = ({ ref1, ref2, ref3, ref4 }) => {
 
     const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, setUserInfo } = useContext(FilterContext);
 
@@ -145,24 +145,28 @@ const Header = () => {
           ),
           key: 'all',
           icon: <FileTextOutlined/>,
+          ref: ref1
         },
         {
             label: '期數',
             key: 'semester',
             icon: <CalendarOutlined />,
-            children: semesters
+            children: semesters,
+            ref: ref2
         },
         {
           label: '家別',
           key: 'home',
           icon: <HomeOutlined/>,
-          children: homes
+          children: homes,
+          ref: ref3
         },
         {
             label: '科別',
             key: 'type',
             icon: <TagsOutlined />,
-            children: types
+            children: types,
+            ref: ref4
         }
     ]
 
