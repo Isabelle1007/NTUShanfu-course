@@ -6,7 +6,7 @@ import Footer from "../components/footer";
 import PdfFile from '../components/pdfFile';
 import { api } from '../utils/api'
 
-import { FloatButton, Spin, Popover, Image} from 'antd';
+import { FloatButton, Spin, Popover } from 'antd';
 import { LoadingOutlined, DownloadOutlined, EditOutlined, InfoCircleOutlined, CalendarOutlined, HomeOutlined, TagsOutlined } from '@ant-design/icons';
 
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
@@ -34,7 +34,7 @@ const Curriculum = () => {
   const [ fileName, setFileName ] = useState(''); 
   const [ infoTitle, setInfoTitle ] = useState('');
   const [ content, setContent] = useState(null);
-  const [ wordCloudPic, setWordCloudPic ] = useState(''); // Default wordcloud pic
+  const [ noEdit, setNoEdit ] = useState(true); 
   const id = new URLSearchParams(location.search).get('id');
 
   const [downloadedFile, setDownloadedFile] = useState(null);
@@ -48,19 +48,7 @@ const Curriculum = () => {
   })
 
   const handleEdit = async () => {
-    if(curriculum.author.includes(userInfo.name)){
-      window.location.href = `/curriculum/edit?id=${id}`;
-    }
-    else{
-      Swal.fire({
-        title: 'Oops!',
-        text: '沒有編輯權限',
-        icon: 'error',
-        confirmButtonText: 'OK',
-        allowOutsideClick: false 
-      })
-      return
-    }
+    window.location.href = `/curriculum/edit?id=${id}`;
   };
 
   const downloadClick = async () => {
@@ -121,7 +109,12 @@ const Curriculum = () => {
         let dateOnly = json.data.last_update.split(' ')[0];
         setPureDate(dateOnly.replace(/-/g, ''));
 
-        
+        // Set editing permissions based on the curriculum author and user info
+        if (json.data.author.includes(userInfo.name)) {
+          setNoEdit(false);
+        } else {
+          setNoEdit(true);
+        }
       }
     });
   },[]);
@@ -138,9 +131,16 @@ const Curriculum = () => {
           <p><TagsOutlined /> 科別：{curriculum.type}</p>
         </div>
       );
-      setWordCloudPic(curriculum.pic_url)
     }
   }, [curriculum]);
+
+  useEffect(() => {
+    // Check edit permissions when curriculum or userInfo changes
+    if (curriculum && curriculum.author && userInfo && userInfo.name) {
+      setNoEdit(!curriculum.author.includes(userInfo.name));
+    }
+  }, [curriculum, userInfo]); // Dependencies on curriculum and userInfo
+  
 
   return (
     <>
@@ -154,15 +154,17 @@ const Curriculum = () => {
               <Popover content={content} title={infoTitle} trigger="click" placement="topLeft">
                 <FloatButton 
                   icon={<InfoCircleOutlined style={{ color: colors.colorPrimary}}/>} 
-                  tooltip={<div>教案基本資訊</div>}
+                  tooltip={<div>查看教案基本資訊</div>}
                   size='large' 
                 />
               </Popover>
               <FloatButton 
                 icon={<EditOutlined style={{ color: colors.colorPrimary}}/>} 
-                tooltip={<div>編輯教案</div>}
+                tooltip={ noEdit ? <div>沒有編輯權限</div> : <div>編輯教案基本資訊</div> }
                 size='large'
                 onClick={ handleEdit } 
+                disabled={ noEdit }
+                style={{ opacity: noEdit ? 0.5 : 1 }} // Apply transparency when disabled
               />
               <FloatButton 
                 icon={<DownloadOutlined style={{ color: colors.colorPrimary }}/>} 

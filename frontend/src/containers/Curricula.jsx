@@ -4,7 +4,7 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import CurriculumCard from "../components/curriculum_card";
 
-import { Avatar, Card, Divider, Spin } from 'antd';
+import { Avatar, Card, Divider, Spin, Empty } from 'antd';
 const { Meta } = Card;
 import { HeartOutlined, EllipsisOutlined, LoadingOutlined } from '@ant-design/icons';
 
@@ -69,7 +69,7 @@ function ShowCurrirula() {
           {
             loading ? ( <Spin indicator={antIcon} size="large"/>):(
               curricula.length === 0 ? (
-                <p style={{fontSize: '24px'}}>尚無教案紙</p>
+                <Empty />
               ):(
                 <div className="curricula__container">
                   {
