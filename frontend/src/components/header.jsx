@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 
 import { Menu, Input, Button, Drawer } from 'antd';
-import { FileTextOutlined, HomeOutlined, TagsOutlined, FieldTimeOutlined, UserOutlined, HeartOutlined, IdcardOutlined, CloudUploadOutlined, DesktopOutlined, SettingOutlined, DoubleLeftOutlined } from '@ant-design/icons';
+import { FileTextOutlined, HomeOutlined, TagsOutlined, CalendarOutlined, UserOutlined, HeartOutlined, IdcardOutlined, CloudUploadOutlined, DesktopOutlined, SettingOutlined, DoubleLeftOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2'
 
 import { FilterContext } from "../App";
@@ -147,6 +147,12 @@ const Header = () => {
           icon: <FileTextOutlined/>,
         },
         {
+            label: '期數',
+            key: 'semester',
+            icon: <CalendarOutlined />,
+            children: semesters
+        },
+        {
           label: '家別',
           key: 'home',
           icon: <HomeOutlined/>,
@@ -157,13 +163,7 @@ const Header = () => {
             key: 'type',
             icon: <TagsOutlined />,
             children: types
-        },
-        {
-            label: '期數',
-            key: 'semester',
-            icon: <FieldTimeOutlined />,
-            children: semesters
-        },
+        }
     ]
 
     const refresh = () => {
@@ -289,13 +289,13 @@ const Header = () => {
                             onClick={() => console.log('Click 後台管理') }
                         >後台管理</Button>
 
-                        <Button 
+                        {/* <Button 
                             className='userMenu__btn'
                             type="text"
                             size="large"
                             icon={<SettingOutlined />} 
                             onClick={() => console.log('Click 設定') }
-                        >設定</Button>
+                        >設定</Button> */}
                     </div>
 
                 </Drawer>
