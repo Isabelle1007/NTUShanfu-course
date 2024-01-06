@@ -6,3 +6,12 @@
   flex-wrap: wrap;
   flex-direction: column;
 }
+
+.icon-wrapper {
+  width: 2em;  /* Adjust the size as needed */
+  height: 2em; /* Adjust the size as needed */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
