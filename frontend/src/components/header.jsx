@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import React,{ useState, useEffect, useContext, useRef } from 'react';
 
 import { Menu, Input, Button, Drawer } from 'antd';
 import { FileTextOutlined, HomeOutlined, TagsOutlined, CalendarOutlined, UserOutlined, HeartOutlined, IdcardOutlined, CloudUploadOutlined, DesktopOutlined, SettingOutlined, DoubleLeftOutlined } from '@ant-design/icons';
@@ -10,14 +10,11 @@ import { api } from '../utils/api'
 
 import './header.css' 
 
-const Header = ({ ref1, ref2, ref3, ref4 }) => {
+const Header = () => {
 
-    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, setUserInfo } = useContext(FilterContext);
-
+    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, setUserInfo, ref1, ref2, ref3, ref4} = useContext(FilterContext);
     const [inputValue, setInputValue] = useState('');
-
     const [open, setOpen] = useState(false);
-
     const [userID, setUserID] = useState(1)
 
     const showDrawer = () => {

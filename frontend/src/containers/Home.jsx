@@ -1,12 +1,21 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import Header from "../components/header";
 import Footer from "../components/footer";
+import ref1Image from '../images/ref1.png';
+import ref2Image from '../images/ref2.png';
+import ref3Image from '../images/ref3.png';
+import ref4Image from '../images/ref4.png';
+import ref5Image from '../images/ref5.png';
+import ref6Image from '../images/ref6.png';
+import ref7Image from '../images/ref7.png';
 
-import { Spin, Carousel, Image, Button, Tour } from 'antd';
+import { FilterContext } from "../App";
+
+import { Spin, Carousel, Image, Tour, FloatButton } from 'antd';
 
 import { S3Client, ListObjectsCommand } from "@aws-sdk/client-s3";
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 
 import "./Home.css";
 
@@ -21,10 +30,7 @@ const antIcon = (
 
 const Home = () => {
 
-  const ref1 = useRef(null);
-  const ref2 = useRef(null);
-  const ref3 = useRef(null);
-  const ref4 = useRef(null);
+  const { colors } = useContext(FilterContext);
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -34,22 +40,79 @@ const Home = () => {
     {
       title: '所有教案紙',
       description: '查看平台上所有教案紙',
-      target: () => ref1.current,
+      cover: (
+        <img
+          alt="ref1"
+          src={ref1Image}
+        />
+      ),
+      // target: () => ref1.current,
     },
     {
-      title: '期數',
-      description: '依據期數篩選教案紙',
-      target: () => ref2.current,
+      title: '期數/家別/科別',
+      description: '依據不同分類項目篩選教案紙',
+      cover: (
+        <img
+          alt="ref2"
+          src={ref2Image}
+        />
+      ),
+      // target: () => ref2.current,
     },
     {
-      title: '家別',
-      description: '依據各家篩選教案紙',
-      target: () => ref3.current,
+      title: '搜尋關鍵字',
+      description: '輸入關鍵字尋找相關教案',
+      cover: (
+        <img
+          alt="ref3"
+          src={ref3Image}
+        />
+      ),
+      // target: () => ref3.current,
     },
     {
-      title: '科別',
-      description: '依據科目篩選教案紙',
-      target: () => ref4.current,
+      title: '登入/註冊',
+      description: '登入會員後即可查看個人檔案及上傳教案',
+      cover: (
+        <img
+          alt="ref4"
+          src={ref4Image}
+        />
+      ),
+      // target: () => ref4.current,
+    },
+    {
+      title: '更多功能',
+      description: '展開使用者選單',
+      cover: (
+        <img
+          alt="ref5"
+          src={ref5Image}
+        />
+      ),
+      // target: () => ref5.current,
+    },
+    {
+      title: '個人頁面',
+      description: '查看頭像、基本資料以及所有上傳及收藏之教案',
+      cover: (
+        <img
+          alt="ref6"
+          src={ref6Image}
+        />
+      ),
+      // target: () => ref6.current,
+    },
+    {
+      title: '上傳教案',
+      description: '上傳新教案紙',
+      cover: (
+        <img
+          alt="ref7"
+          src={ref7Image}
+        />
+      ),
+      // target: () => ref7.current,
     }
   ];
 
@@ -89,8 +152,8 @@ const Home = () => {
   
 
   return (
-    <>
-          <Header ref1={ref1} ref2={ref2} ref3={ref3} ref4={ref4}/>
+      <>
+          <Header/>
           {
             loading ? ( <Spin indicator={antIcon} size="large"/>):(
               <div className="carousel-container">
@@ -101,15 +164,29 @@ const Home = () => {
                     </div>
                   ))}
                 </Carousel>
-                {/* <Button type="primary" onClick={() => setOpen(true)}>
-                  Begin Tour
-                </Button> */}
+                <FloatButton 
+                  tooltip="導覽"
+                  icon={
+                    <span id="tour-icon-wrapper">
+                      <QuestionCircleOutlined style={{ fontSize: '2em' }}/>
+                    </span>
+                  }
+                  style={{
+                    backgroundColor: colors.colorPrimary,
+                    height: '80px',
+                    width: '80px',
+                    bottom: '150px',
+                    right: '70px',
+                    fontSize: '75px'
+                  }}
+                  onClick={() => setOpen(true)} 
+                />
               </div>
             )
           }
           <Tour open={open} onClose={() => setOpen(false)} steps={steps} />
           <Footer/>
-    </>
+          </>
   );
 }
 

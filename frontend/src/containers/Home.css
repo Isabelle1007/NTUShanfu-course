@@ -1,4 +1,17 @@
 .carousel-container {
     margin-top: 60px;
 }
+
+.ant-float-btn-description {
+    height: 20px !important; /* Use !important sparingly */
+}
+   
+#tour-icon-wrapper {
+    width: 2em;  /* Adjust the size as needed */
+    height: 2em; /* Adjust the size as needed */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
   
