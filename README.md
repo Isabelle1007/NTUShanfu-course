@@ -29,7 +29,7 @@ Users of the NTU Shanfu Curricula Platform have the ability to easily access a w
 ![Alt text](./frontend/src/images/readme-guide/image-3.png)
 ![Alt text](./frontend/src/images/readme-guide/image-7.png)
 
-### 4. View curriculum detailed information
+### 4. View course detailed information
 
 By clicking on a course card, the user is directed to a page displaying the complete content of the course. This includes a preview of the curriculum paper along with essential basic information such as the title, author, division, subject, and the teaching semester it is associated with. Additionally, for those who are signed in, there is an added convenience of being able to download the curriculum paper directly from the platform. This option is available through a download button located at the bottom-right of the page, allowing users to easily save and reference the material offline.
 
@@ -48,7 +48,7 @@ Once logged in, the user can reach to personal page. There are three sections, p
 
 ![Alt text](./frontend/src/images/readme-guide/image-6.png)
 
-### 7. Upload/Edit/Delete a post
+### 7. Upload/Edit/Delete a course
 
 Users on the NTU Shanfu Curricula Platform have the ability to contribute their own courses by creating a course card. This process begins by clicking the "上傳教案 Upload Courses" button, conveniently located on the right side of the navigation bar. Users are then guided through a straightforward process to fill in the required information for their course. Once a course is successfully uploaded, it becomes visible on the platform, accessible to other users for viewing. If a user wishes to modify or delete their course at any point, they can do so by clicking on "編輯教案基本資訊 Edit Basic Information". This option is available provided they are signed in and recognized as the author of the course.
 
