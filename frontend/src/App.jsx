@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Home from './containers/Home'
@@ -47,11 +47,17 @@ function App() {
     "department": "",
     "picture_url": ""
   });
+
+  const ref1 = useRef();
+  const ref2 = useRef();
+  const ref3 = useRef();
+  const ref4 = useRef();
   
   return (
     <FilterContext.Provider 
       value={{
-        loading, setLoading, colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, userInfo, setUserInfo
+        loading, setLoading, colors, homes, setHomes, types, setTypes, semesters, setSemesters, 
+        isLogin, setIsLogin, isAdmin, setIsAdmin, userInfo, setUserInfo, ref1, ref2, ref3, ref4
       }}
     > 
       <BrowserRouter>

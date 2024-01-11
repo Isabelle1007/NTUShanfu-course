@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import React,{ useState, useEffect, useContext, useRef } from 'react';
 
 import { Menu, Input, Button, Drawer } from 'antd';
 import { FileTextOutlined, HomeOutlined, TagsOutlined, CalendarOutlined, UserOutlined, HeartOutlined, IdcardOutlined, CloudUploadOutlined, DesktopOutlined, SettingOutlined, DoubleLeftOutlined } from '@ant-design/icons';
@@ -10,14 +10,11 @@ import { api } from '../utils/api'
 
 import './header.css' 
 
-const Header = ({ ref1, ref2, ref3, ref4 }) => {
+const Header = () => {
 
-    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, setUserInfo } = useContext(FilterContext);
-
+    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, setUserInfo, ref1, ref2, ref3, ref4} = useContext(FilterContext);
     const [inputValue, setInputValue] = useState('');
-
     const [open, setOpen] = useState(false);
-
     const [userID, setUserID] = useState(1)
 
     const showDrawer = () => {
@@ -141,7 +138,7 @@ const Header = ({ ref1, ref2, ref3, ref4 }) => {
     const items = [
         {
           label: (
-            <a href={`${api.app_url}/curricula/all`} target="_self" rel="noreferrer">所有教案紙</a>
+            <a href={`${api.app_url}/curricula/all`} target="_self" rel="noreferrer">所有教案</a>
           ),
           key: 'all',
           icon: <FileTextOutlined/>,
@@ -188,11 +185,11 @@ const Header = ({ ref1, ref2, ref3, ref4 }) => {
         if(isLogin){
             Swal.fire({
                 title: 'Are You Sure?',
-                text: '登出帳號嗎',
+                text: '登出帳號嗎？ Log out?',
                 icon: 'warning',
-                confirmButtonText: '登出',
+                confirmButtonText: '登出 Log out',
                 showCancelButton: true,
-                cancelButtonText: '取消',
+                cancelButtonText: '取消 Cancel',
                 allowOutsideClick: true 
               }).then((result) => {
                 if(result.isConfirmed){
@@ -210,7 +207,7 @@ const Header = ({ ref1, ref2, ref3, ref4 }) => {
                 <a className="header__logo" onClick={() => refresh()} />
                 <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} className='menu'/>
                 <Search
-                    placeholder="請輸入關鍵字搜尋..."
+                    placeholder="請輸入關鍵字 Input Keywords"
                     allowClear
                     size="large"
                     onChange={(e) => setInputValue(e.target.value)}
@@ -221,7 +218,7 @@ const Header = ({ ref1, ref2, ref3, ref4 }) => {
                         }
                     }}
                     style={{
-                        width: 300,
+                        width: 350,
                         color: colors.colorDarkOrange,
                         margin: '0px 20px'
                     }}
@@ -237,7 +234,7 @@ const Header = ({ ref1, ref2, ref3, ref4 }) => {
                     }}
                     icon={<UserOutlined />} 
                     onClick={ handleLogIn }
-                >{isLogin ? "登出" : "註冊/登入"}</Button>
+                >{isLogin ? "登出 Log Out" : "登入 Log In"}</Button>
                 <Button 
                     icon={<DoubleLeftOutlined />}
                     type="ghost"
@@ -250,7 +247,7 @@ const Header = ({ ref1, ref2, ref3, ref4 }) => {
                     onClick={ showDrawer }
                 ></Button>
                 <Drawer
-                    title="使用者選單"
+                    title="使用者選單 User Menu"
                     placement='right'
                     closable={false}
                     onClose={onClose}
@@ -265,7 +262,7 @@ const Header = ({ ref1, ref2, ref3, ref4 }) => {
                             size="large"
                             icon={<IdcardOutlined />} 
                             onClick={ () => window.location.href = '/myProfile'}
-                        >個人頁面</Button>
+                        >個人頁面 Personal Page</Button>
 
                         {/* <Button 
                             className='userMenu__btn'
@@ -281,7 +278,7 @@ const Header = ({ ref1, ref2, ref3, ref4 }) => {
                             size="large"
                             icon={<CloudUploadOutlined />} 
                             onClick={ () => window.location.href = `/curriculum/upload`}
-                        >上傳教案</Button>
+                        >上傳教案 Upload Courses</Button>
 
                         <Button 
                             className='userMenu__btn'
@@ -291,7 +288,7 @@ const Header = ({ ref1, ref2, ref3, ref4 }) => {
                             disabled={!isAdmin}
                             title={!isAdmin ? "屬於管理帳號權限" : ""}
                             onClick={() => console.log('Click 後台管理') }
-                        >後台管理</Button>
+                        >後台管理 Management</Button>
 
                         {/* <Button 
                             className='userMenu__btn'

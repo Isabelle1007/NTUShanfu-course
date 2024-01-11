@@ -105,10 +105,34 @@ const EditCurriculum = () => {
       }
     }
 
+    const text_missing_data = `
+      <div>
+        <span>請填入教案紙完整資訊</span><br>
+        <span>Please fill in all the information</span>
+      </div>
+    `
+    const text_confirm_edit = `
+      <div>
+        <span>確定完成編輯？</span><br>
+        <span>Sure to confirm edit?</span>
+      </div>
+    `
+    const text_edit_fail = `
+      <div>
+        <span>教案編輯失敗</span><br>
+        <span>Failed to edit the course</span>
+      </div>
+    `
+    const text_edit_success = `
+      <div>
+        <span>教案編輯成功</span><br>
+        <span>Successfully Edited</span>
+      </div>
+    `
     if(!isFormValuesComplete){
       Swal.fire({
         title: 'Error!',
-        text: '請填入教案紙完整資訊',
+        html: text_missing_data,
         icon: 'error',
         confirmButtonText: 'OK',
         allowOutsideClick: false 
@@ -119,11 +143,11 @@ const EditCurriculum = () => {
 
     Swal.fire({
       title: 'Warning!',
-      text: '確定完成編輯？',
+      html: text_confirm_edit,
       icon: 'warning',
-      confirmButtonText: '確認編輯',
+      confirmButtonText: '確認編輯 Confirm Edit',
       showCancelButton: true,
-      cancelButtonText: '取消',
+      cancelButtonText: '取消 Cancel',
       allowOutsideClick: false 
     }).then((result) => {
       if(result.isConfirmed){
@@ -132,11 +156,10 @@ const EditCurriculum = () => {
           const jwtToken = window.localStorage.getItem('jwtToken');
           api.putCurriculum(jwtToken, id, formValues)
           .then((json) => {
-            // console.log(json)
             if (json.code != '000'){
               Swal.fire({
                 title: 'Error!',
-                text: '教案編輯失敗',
+                html: text_edit_fail,
                 icon: 'error',
                 confirmButtonText: 'OK',
                 allowOutsideClick: false 
@@ -145,7 +168,7 @@ const EditCurriculum = () => {
             }else{
               Swal.fire({
                 title: 'Success!',
-                text: '教案編輯成功',
+                html: text_edit_success,
                 icon: 'success',
                 confirmButtonText: 'OK',
                 allowOutsideClick: false 
@@ -167,14 +190,20 @@ const EditCurriculum = () => {
     }) 
   }
 
+  const cancel_edit = `
+    <div>
+      <span>確定取消編輯？所有更動將不會保存</span><br>
+      <span>Sure to cancel edit? Changes will not be saved</span>
+    </div>
+  `
   const backClick = async () => {
     Swal.fire({
       title: 'Warning!',
-      text: '確定取消編輯？所有更動將不會保存',
+      html: cancel_edit,
       icon: 'warning',
-      confirmButtonText: '確定取消',
+      confirmButtonText: '確定取消 Confirm Cencel',
       showCancelButton: true,
-      cancelButtonText: '繼續編輯',
+      cancelButtonText: '繼續編輯 Keep Editing',
       allowOutsideClick: false 
     }).then((result) => {
       if(result.isConfirmed)
@@ -183,14 +212,32 @@ const EditCurriculum = () => {
     
   }
 
+  const text_delete = `
+    <div>
+      <span>確定刪除教案？將無法復原</span><br>
+      <span>Sure to delete the course? Cannot be undone</span>
+    </div>
+  `
+  const text_delete_failed = `
+    <div>
+      <span>教案刪除失敗</span><br>
+      <span>Failed to delete the course</span>
+    </div>
+  `
+  const text_delete_success = `
+    <div>
+      <span>教案已成功刪除</span><br>
+      <span>Successfully Deleted</span>
+    </div>
+  `
   const handleDelete = async () => {
     Swal.fire({
       title: 'Warning!',
-      text: '確定刪除教案？將無法復原',
+      html: text_delete,
       icon: 'warning',
-      confirmButtonText: '確定刪除',
+      confirmButtonText: '確定刪除 Confirm Delete',
       showCancelButton: true,
-      cancelButtonText: '取消',
+      cancelButtonText: '取消 Cencel',
       allowOutsideClick: false 
     }).then((result) => {
       if(result.isConfirmed)
@@ -201,7 +248,7 @@ const EditCurriculum = () => {
             if(json.code != '000'){
               Swal.fire({
                 title: 'Error!',
-                text: '教案刪除失敗',
+                html: text_delete_failed,
                 icon: 'error',
                 confirmButtonText: 'OK',
                 allowOutsideClick: false 
@@ -210,7 +257,7 @@ const EditCurriculum = () => {
             }else{
               Swal.fire({
                 title: 'Success!',
-                text: '教案已成功刪除',
+                html: text_delete_success,
                 icon: 'success',
                 confirmButtonText: 'OK',
                 allowOutsideClick: false 
@@ -252,38 +299,40 @@ const EditCurriculum = () => {
         loading ? <Spin indicator={antIcon} size="large"/> : (
           <div className='edit__container'>
             <Card
-              title={`編輯教案紙${id}`} 
+              title="編輯教案 Edit Course"  
               bordered={true}
               style={{
-                width: 900
+                width: 1000
               }}
             >
               <Form
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span: 24 }}
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
                 layout="horizontal"
+                labelAlign="left"
                 style={{
-                  maxWidth: 600,
+                  maxWidth: 800,
+                  padding: '10px 20px',
                 }}
               >
-                <Form.Item label={<span className="custom-label-upload">教案名稱</span>}>
+                <Form.Item label={<span className="custom-label-upload">教案名稱 Title</span>}>
                   <Input 
                     className='input__box' 
                     value={formValues['title']} 
                     onChange={(e) => handleInputChange('title', e.target.value)}
                   />
                 </Form.Item>
-                <Form.Item label={<span className="custom-label-upload">作者</span>}>
+                <Form.Item label={<span className="custom-label-upload">作者 Author</span>}>
                   <Select
                     mode="multiple"
                     size='middle'
                     value={formValues['author']}
                     onChange={(e) => handleInputChange('author', e)}
-                    style={{ width: '600px', marginLeft: '20px'}}
+                    style={{ width: '600px'}}
                     options={nameList}
                   />        
                 </Form.Item>
-                <Form.Item label={<span className="custom-label-upload">家別</span>}>
+                <Form.Item label={<span className="custom-label-upload">家別 Division</span>}>
                   <Radio.Group 
                     style={{ marginLeft: '-70px' }} 
                     value={formValues['home']}
@@ -296,8 +345,8 @@ const EditCurriculum = () => {
                     <Radio value="電光"><span className="custom-option-upload">電光</span></Radio>
                   </Radio.Group>
                 </Form.Item>
-                <Form.Item label={<span className="custom-label-upload">期數</span>}>
-                  <div style={{display: 'flex', flexDirection:'row', marginLeft: '20px', width: '240px'}}>
+                <Form.Item label={<span className="custom-label-upload">期數 Semester</span>}>
+                  <div style={{display: 'flex', flexDirection:'row', width: '240px'}}>
                     <Select
                       value={formValues['semester']} 
                       onChange={(value) => handleInputChange('semester', value)}
@@ -310,8 +359,8 @@ const EditCurriculum = () => {
                     </Select>
                   </div>
                 </Form.Item>
-                <Form.Item label={<span className="custom-label-upload">科別</span>}>
-                  <div style={{display: 'flex', flexDirection:'row', marginLeft: '20px', width: '240px'}}>
+                <Form.Item label={<span className="custom-label-upload">科別 Subject</span>}>
+                  <div style={{display: 'flex', flexDirection:'row', width: '240px'}}>
                     <Select 
                       value={formValues['type']}
                       onChange={(value) => handleInputChange('type', value)}
@@ -325,11 +374,15 @@ const EditCurriculum = () => {
                   </div>
                 </Form.Item>
                 <Form.Item 
-                  label={<span className="custom-label-upload">最後編輯日</span>}
+                  label={<span className="custom-label-upload">最後編輯日 Last Update</span>}
                 >
                   <DatePicker 
                     // defaultValue={moment(formValues['last_update'])}
-                    style={{marginLeft: '-170px', width: '240px'}} 
+                    style={{ 
+                      width: '240px',
+                      display: 'flex',
+                      justifyContent: 'flex-start'
+                    }}
                     onChange={handleDatePickerChange}
                     placeholder='請選擇日期'
                   />
@@ -345,28 +398,28 @@ const EditCurriculum = () => {
                 color: 'red',
                 alignSelf: 'end',
                 marginTop: '-60px',
-                marginRight: '20px'
+                marginRight: '-10px'
               }}
               onClick={ handleDelete } 
             />
-            <div style={{display: 'flex', justifyContent:'space-between', alignItems: 'center', marginTop: '30px'}}>
+            <div style={{display: 'flex', justifyContent:'space-between', alignItems: 'center', marginTop: '30px', width: '1000px'}}>
                 <Button 
                   type="dashed" 
                   icon={<CloseSquareOutlined />} 
                   size='large' 
-                  style={{ width: '440px'}}
+                  style={{ width: '490px'}}
                   onClick={ backClick } 
                 >
-                  取消編輯
+                  取消編輯 Cancel
                 </Button>
                 <Button 
                   type="dashed" 
                   icon={<CheckCircleOutlined />} 
                   size='large' 
-                  style={{ width: '440px'}}
+                  style={{ width: '490px'}}
                   onClick={ editedClick } 
                 >
-                  完成編輯
+                  完成編輯 Confirm
                 </Button>
               </div>
           </div>

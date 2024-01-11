@@ -47,10 +47,16 @@ const EditProfile = () => {
       }
     }
 
+    const text_info_missing = `
+    <div>
+      <span>請填入完整個人資訊</span><br>
+      <span>Please fill in all information</span>
+    </div>
+  `
     if(!isFormValuesComplete){
       Swal.fire({
         title: 'Error!',
-        text: '請填入完整個人資訊',
+        html: text_info_missing,
         icon: 'error',
         confirmButtonText: 'OK',
         allowOutsideClick: false 
@@ -58,13 +64,31 @@ const EditProfile = () => {
       return
     }
 
+    const text_finish_edit = `
+      <div>
+        <span>確定完成編輯？</span><br>
+        <span>Finished editing?</span>
+      </div>
+    `
+    const text_edit_fail = `
+      <div>
+        <span>個資編輯失敗</span><br>
+        <span>Failed to edit personal information</span>
+      </div>
+    `
+    const text_edit_success = `
+      <div>
+        <span>個資編輯成功</span><br>
+        <span>Successfully Edited</span>
+      </div>
+    `
     Swal.fire({
       title: 'Warning!',
-      text: '確定完成編輯？',
+      html: text_finish_edit,
       icon: 'warning',
-      confirmButtonText: '確認編輯',
+      confirmButtonText: '確認編輯 Confirm Edit',
       showCancelButton: true,
-      cancelButtonText: '取消',
+      cancelButtonText: '取消 Cancel',
       allowOutsideClick: false 
     }).then((result) => {
       if(result.isConfirmed){
@@ -75,7 +99,7 @@ const EditProfile = () => {
             if (json.code != '000'){
               Swal.fire({
                 title: 'Error!',
-                text: '個資編輯失敗',
+                html: text_edit_fail,
                 icon: 'error',
                 confirmButtonText: 'OK',
                 allowOutsideClick: false 
@@ -83,7 +107,7 @@ const EditProfile = () => {
             }else{
               Swal.fire({
                 title: 'Success!',
-                text: '個資編輯成功',
+                html: text_edit_success,
                 icon: 'success',
                 confirmButtonText: 'OK',
                 allowOutsideClick: false 
@@ -105,14 +129,20 @@ const EditProfile = () => {
     
   };
 
+  const cancel_edit = `
+    <div>
+      <span>確定取消編輯？所有更動將不會保存</span><br>
+      <span>Sure to cancel edit? Changes will not be saved</span>
+    </div>
+  `
   const backToProfile = () => {
     Swal.fire({
       title: 'Warning!',
-      text: '確定取消編輯？所有更動將不會保存',
+      html: cancel_edit,
       icon: 'warning',
-      confirmButtonText: '確定取消',
+      confirmButtonText: '確定取消 Confirm Cancel',
       showCancelButton: true,
-      cancelButtonText: '繼續編輯',
+      cancelButtonText: '繼續編輯 Keep Editing',
       allowOutsideClick: false 
     }).then((result) => {
       if(result.isConfirmed)
@@ -140,10 +170,10 @@ const EditProfile = () => {
       <Header/>
       <div className="editProfile__container">
       <Card
-        title={<span className="custom-card-title-editProfile">編輯個人資料</span>}
+        title={<span className="custom-card-title-editProfile">編輯個人資料 Edit Personal Information</span>}
         bordered={true}
         style={{
-          width: 900,
+          width: 1000,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -151,16 +181,16 @@ const EditProfile = () => {
         }}
       >
         <Form
-          labelCol={{ span: 3 }}
-          wrapperCol={{ span: 27 }}
+          labelCol={{ span: 8 }}
+          labelAlign='left'
           layout="horizontal"
           style={{
-            width: 700,
+            width: 800,
           }}
         >
            <Form.Item
-            label={<span className="custom-label-editProfile">姓名</span>}
-            tooltip="請填寫真實姓名"
+            label={<span className="custom-label-editProfile">姓名 Name</span>}
+            tooltip="請填寫真實姓名 Please fill in your real name"
           >
             <Input 
               value={formValues['name']}  
@@ -169,9 +199,10 @@ const EditProfile = () => {
           </Form.Item>
 
           <Form.Item
-            label={<span className="custom-label-editProfile">家別</span>}
+            label={<span className="custom-label-editProfile">家別 Division</span>}
           >
             <Radio.Group 
+              className="custom-radio-group"
               value={formValues['home']}
               onChange={(e) => handleInputChange('home', e.target.value)}
             >
@@ -183,9 +214,10 @@ const EditProfile = () => {
           </Form.Item>
 
           <Form.Item
-            label={<span className="custom-label-editProfile">功能組</span>}
+            label={<span className="custom-label-editProfile">功能組 Group</span>}
           >
             <Radio.Group 
+              className="custom-radio-group"
               value={formValues['group']}
               onChange={(e) => handleInputChange('group', e.target.value)}
             >
@@ -200,7 +232,7 @@ const EditProfile = () => {
           </Form.Item>
 
           <Form.Item
-            label={<span className="custom-label-editProfile">入團期別</span>}
+            label={<span className="custom-label-editProfile">入團期別 Semester</span>}
           >
              <Select
                 value={formValues['join_semester']} 
@@ -215,9 +247,10 @@ const EditProfile = () => {
           </Form.Item>
 
           <Form.Item
-            label={<span className="custom-label-editProfile">生理性別</span>}
+            label={<span className="custom-label-editProfile">生理性別 Gender</span>}
           >
             <Radio.Group 
+              className="custom-radio-group"
               value={formValues['gender']}
               onChange={(e) => handleInputChange('gender', e.target.value)}
             >
@@ -227,7 +260,7 @@ const EditProfile = () => {
           </Form.Item>
 
           <Form.Item
-            label={<span className="custom-label-editProfile">系級</span>}
+            label={<span className="custom-label-editProfile">系級 Grade</span>}
           >
             <Input 
               value={formValues['department']} 
@@ -245,7 +278,7 @@ const EditProfile = () => {
               marginTop: '10px',
             }}
             onClick={onSubmit}
-          >完成編輯</Button>
+          >完成編輯 Confirm Edit</Button>
 
           <Button 
             type="dashed"
@@ -258,7 +291,7 @@ const EditProfile = () => {
               marginBottom: '20px'
             }}
             onClick={backToProfile}
-          >取消編輯</Button>
+          >取消編輯 Cancel Edit</Button>
 
         </Form>
         </Card>

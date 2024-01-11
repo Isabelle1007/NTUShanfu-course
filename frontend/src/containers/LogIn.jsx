@@ -81,15 +81,33 @@ const LogIn = () => {
     }
   };
 
+  const text_temp_account = `
+    <div>
+      <span>註冊功能暫不開放，請使用以下帳號密碼登入</span><br>
+      <span>Currently not allowed. Please use the following</span><br>
+      <span>信箱 Email: guest@ntushanfu.com</span><br>
+      <span>密碼 Password: checkoutcourses</span>
+    </div>
+  `
+  const SignedUpNotAllowed = async () => {
+    Swal.fire({
+      title: 'Warning!',
+      html: text_temp_account,
+      icon: 'warning',
+      confirmButtonText: 'OK',
+      allowOutsideClick: false 
+    })
+  }
+
   return (
     <>
       <Header/>
       <div className="login__container">
       <Card
-        title={<span className="custom-card-title-login">登入</span>}
+        title={<span className="custom-card-title-login">登入 Log In</span>}
         bordered={true}
         style={{
-          width: 900,
+          width: 1000,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -97,19 +115,19 @@ const LogIn = () => {
         }}
       >
         <Form
-          labelCol={{ span: 2 }}
-          wrapperCol={{ span: 28 }}
+          labelCol={{ span: 5 }}
+          labelAlign="left"
           layout="horizontal"
           form={form}
           style={{
-            width: 700,
+            width: 800,
           }}
           scrollToFirstError
         >
 
           <Form.Item
             name="email"
-            label={<span className="custom-label-login">信箱</span>}
+            label={<span className="custom-label-login">信箱 Email</span>}
             rules={[
               {
                 type: 'email',
@@ -128,7 +146,7 @@ const LogIn = () => {
 
           <Form.Item
             name="password"
-            label={<span className="custom-label-login">密碼</span>}
+            label={<span className="custom-label-login">密碼 Password</span>}
             rules={[
               {
                 required: true,
@@ -153,12 +171,16 @@ const LogIn = () => {
                 marginBottom: '20px'
               }}
               onClick={onSubmit}
-          >登入</Button>
-
+          >登入 Log In</Button>
           <Button 
-              type="link"
-              size="large"
-            ><a href={`${api.app_url}/signup`} target="_self" rel="noreferrer">尚未註冊？</a></Button>
+            type="link"
+            size="large"
+            onClick={ SignedUpNotAllowed}
+          ><a target="_self" rel="noreferrer">尚未註冊？ Not registered yet?</a></Button>
+          {/* <Button 
+            type="link"
+            size="large"
+          ><a href={`${api.app_url}/signup`} target="_self" rel="noreferrer">尚未註冊？ Not registered yet?</a></Button> */}
         </Form>
         </Card>
       </div>

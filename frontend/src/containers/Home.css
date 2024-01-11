@@ -1,4 +1,37 @@
 .carousel-container {
     margin-top: 60px;
 }
+   
+#tour-icon-wrapper {
+    width: 3em;  /* Adjust the size as needed */
+    height: 3em; /* Adjust the size as needed */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.carousel-container .ant-float-btn-body {
+    height: 100px !important; 
+    width: 100px !important; 
+}
+
+.ant-tour-content {
+    width: 1000px; /* Set your desired width */
+    /* padding: 50px 50px 50px 50px; */
+}
+
+.ant-tour-title {
+    font-size: 20px !important;
+    padding: 0px 0px 0px 20px !important;
+}
+
+.ant-tour-description {
+    font-size: 16px;
+    padding: 0px 40px 0px 40px !important;
+}
+
+.ant-tour-indicators {
+    padding: 0px 0px 0px 20px !important;
+}
   

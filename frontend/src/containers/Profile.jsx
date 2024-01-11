@@ -38,6 +38,12 @@ const Profile = () => {
     showCurricula();
   }, [userInfo.name]);
 
+  const text_login_first = `
+    <div>
+      <span>請先登入</span><br>
+      <span>Please log in first</span>
+    </div>
+  `
   const checkLogIn = async () => {
     setLoading(true);
     const jwtToken = window.localStorage.getItem('jwtToken');
@@ -46,7 +52,11 @@ const Profile = () => {
         setLoading(false);
       }, 1000);
     }else{
-      Swal.fire('Opps!', '請先登入!', 'error').then((result) => {
+      Swal.fire({
+        title: 'Opps!', 
+        html: text_login_first, 
+        icon: 'error'
+      }).then((result) => {
           if (result.isConfirmed) {
               window.location.href = '/login';
           }
@@ -95,7 +105,12 @@ const Profile = () => {
     formData.append('format', pictureURL.type.split('/')[1]);
     formData.append('user_email', userInfo.email);
     setLoading(true);
-    console.log(formData);
+    const text_uploadimg_fail = `
+      <div>
+        <span>上傳圖片失敗！</span><br>
+        <span>Failed to upload image!</span>
+      </div>
+    `
     try {
       const uploadNewPic = await api.postFile(formData, 'i');
       if(uploadNewPic.code === '000'){
@@ -114,7 +129,11 @@ const Profile = () => {
         })
       }else{
         setLoading(false);
-        Swal.fire('Opps!', '上傳圖片失敗!', 'error').then((result) => {
+        Swal.fire({
+          title: 'Opps!', 
+          html: text_uploadimg_fail, 
+          icon: 'error'
+        }).then((result) => {
           if (result.isConfirmed) {
               window.location.href = '/myProfile';
           }
@@ -153,17 +172,17 @@ const Profile = () => {
                     {
                       key: 'myProfile',
                       href: '#profile',
-                      title: '個人資訊',
+                      title: '個人資訊 Personal Information',
                     },
                     {
                       key: 'myCurriculum',
                       href: '#curri',
-                      title: '我的教案紙',
+                      title: '我的教案 My Courses',
                     },
                     {
                       key: 'myFavorite',
                       href: '#favorite',
-                      title: '我的收藏',
+                      title: '我的收藏 My Favorite',
                     },
                   ]}
                 />
@@ -193,7 +212,7 @@ const Profile = () => {
                           marginTop: '15px',
                           width: '100%',
                         }}
-                      >更換新頭貼</Button>
+                      >更換新頭貼 Change Picture</Button>
                     </Upload>
                   {pictureExist? 
                     <Button
@@ -205,49 +224,49 @@ const Profile = () => {
                         marginLeft: '3px',
                       }}
                       onClick={ confirmUpload } 
-                    > 確認上傳新頭貼</Button>: 
+                    > 確認上傳新頭貼 Upload</Button>: 
                     (<></>)
                   }
                 </div>
                 <div className='profile__container'>
                   <Card
                     title={
-                      // <span className="custom-card-title-profile">個人資訊</span>
                       <Space>
                         <IdcardOutlined style={{ fontSize: '24px', marginTop: '5px' }}/>
-                        <span className="custom-card-title-profile">個人資訊</span>
+                        <span className="custom-card-title-profile">個人資訊 Personal Information</span>
                       </Space>
                     }
                     bordered={true}
                     style={{
                       width: 700,
+                      padding: '10px 50px',
                     }}
                   >
                     <Form
                       className="custom-form-p"
-                      labelCol={{ span: 6 }}
-                      wrapperCol={{ span: 24 }}
+                      labelCol={{ span: 8 }}
+                      labelAlign="left"
                       layout="horizontal"
                       style={{
                         maxWidth: 600,
                       }}
                     >
-                      <Form.Item label="姓名" >
+                      <Form.Item label="姓名 Name" >
                         <div className='input' >{userInfo.name}</div>
                       </Form.Item>
-                      <Form.Item label="性別" >
+                      <Form.Item label="性別 Gender" >
                         <div className='input' >{userInfo.gender === 'M'? '男' : '女'}</div>
                       </Form.Item>
-                      <Form.Item label="系級" >
+                      <Form.Item label="系級 Grade" >
                         <div className='input' >{userInfo.department}</div>
                       </Form.Item>
-                      <Form.Item label="入團期別">
+                      <Form.Item label="入團期別 Semester">
                         <div className='input'>{userInfo.join_semester}</div>
                       </Form.Item>
-                      <Form.Item label="家別">
+                      <Form.Item label="家別 Division">
                         <div className='input' >{userInfo.home}</div>
                       </Form.Item>
-                      <Form.Item label="功能組">
+                      <Form.Item label="功能組 Group">
                         <div className='input' >{userInfo.group}</div>
                       </Form.Item>
                     </Form>
@@ -270,7 +289,7 @@ const Profile = () => {
               <div className="curricula__sec" id="curri">
                 <Space style={{ marginTop: '20px', fontSize: '28px', marginLeft: '20px' }}>
                   <FileTextOutlined />
-                  <p>我的教案紙</p>
+                  <p>我的教案 My Courses</p>
                 </Space>
                 {
                   myCurricula.length === 0 ? (<Empty style={{alignSelf: 'center'}}/>) : (<></>)
@@ -286,7 +305,7 @@ const Profile = () => {
               <div className="favorite__sec" id="favorite">
               <Space style={{ marginTop: '20px', fontSize: '28px', marginLeft: '20px' }}>
                   <HeartOutlined />
-                  <p>我的收藏</p>
+                  <p>我的收藏 My Favorite</p>
                 </Space>
                 {
                   favCurricula.length === 0 ? (<Empty style={{alignSelf: 'center'}}/>) : (<></>)
