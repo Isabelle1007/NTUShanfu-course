@@ -79,5 +79,5 @@ Only listing the main package:
     - chensyuan.huang@gmail.com
     - chen-syuan@wustl.edu
   - phone: 
-    - (314)296-8317 (USA)
-    - 0921438836 (Taiwan)
+    - +1 (314)296-8317 (USA)
+    - +886 921-438-836 (Taiwan)
