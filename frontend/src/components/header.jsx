@@ -207,7 +207,7 @@ const Header = () => {
                 <a className="header__logo" onClick={() => refresh()} />
                 <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} className='menu'/>
                 <Search
-                    placeholder="請輸入關鍵字 Input Keywords"
+                    placeholder="請輸入關鍵字 Enter Keywords"
                     allowClear
                     size="large"
                     onChange={(e) => setInputValue(e.target.value)}
