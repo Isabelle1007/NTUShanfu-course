@@ -156,7 +156,6 @@ const EditCurriculum = () => {
           const jwtToken = window.localStorage.getItem('jwtToken');
           api.putCurriculum(jwtToken, id, formValues)
           .then((json) => {
-            // console.log(json)
             if (json.code != '000'){
               Swal.fire({
                 title: 'Error!',
