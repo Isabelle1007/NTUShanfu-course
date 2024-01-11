@@ -1,4 +1,4 @@
-# NTU Shanfu Course Platform
+# [NTU Shanfu Course Platform](https://ntushanfu-course.onrender.com/)
 
 The NTU Shanfu Course Platform offers a unique space for Shanfu members to share and discover courses. Operating as a volunteer student club that organizes summer and winter camps for elementary school children, it is crucial for our members to create engaging and educational courses. The platform's ease of access to diverse course designs can foster creativity and inspiration, encouraging the exchange of ideas and learning from one another. This dynamic interaction is viewed as an essential element for the positive development of our club. 
 
