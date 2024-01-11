@@ -81,6 +81,24 @@ const LogIn = () => {
     }
   };
 
+  const text_temp_account = `
+    <div>
+      <span>註冊功能暫不開放，請使用以下帳號密碼登入</span><br>
+      <span>Currently not allowed. Please use the following</span><br>
+      <span>信箱 Email: guest@ntushanfu.com</span><br>
+      <span>密碼 Password: checkoutcourses</span>
+    </div>
+  `
+  const SignedUpNotAllowed = async () => {
+    Swal.fire({
+      title: 'Warning!',
+      html: text_temp_account,
+      icon: 'warning',
+      confirmButtonText: 'OK',
+      allowOutsideClick: false 
+    })
+  }
+
   return (
     <>
       <Header/>
@@ -154,11 +172,15 @@ const LogIn = () => {
               }}
               onClick={onSubmit}
           >登入 Log In</Button>
-
           <Button 
-              type="link"
-              size="large"
-            ><a href={`${api.app_url}/signup`} target="_self" rel="noreferrer">尚未註冊？ Not registered yet?</a></Button>
+            type="link"
+            size="large"
+            onClick={ SignedUpNotAllowed}
+          ><a target="_self" rel="noreferrer">尚未註冊？ Not registered yet?</a></Button>
+          {/* <Button 
+            type="link"
+            size="large"
+          ><a href={`${api.app_url}/signup`} target="_self" rel="noreferrer">尚未註冊？ Not registered yet?</a></Button> */}
         </Form>
         </Card>
       </div>
