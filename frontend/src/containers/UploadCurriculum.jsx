@@ -119,10 +119,22 @@ const UploadCurriculum = () => {
       }
     }
 
+    const text_missing_data = `
+      <div>
+        <span>請填入教案紙完整資訊</span><br>
+        <span>Please fill in all information</span>
+      </div>
+    `
+    const text_missing_files = `
+      <div>
+        <span>word 及 pdf 檔案未完整上傳</span><br>
+        <span>Missing word or pdf files</span>
+      </div>
+    `
     if(!isFormValuesComplete){
       Swal.fire({
         title: 'Error!',
-        text: '請填入教案紙完整資訊',
+        html: text_missing_data,
         icon: 'error',
         confirmButtonText: 'OK',
         allowOutsideClick: false 
@@ -134,7 +146,7 @@ const UploadCurriculum = () => {
     if(isFormValuesComplete && (wordFileData.length === 0 || pdfFileData.length === 0)){
       Swal.fire({
         title: 'Oops!',
-        text: 'word 及 pdf 檔案未完整上傳',
+        html: text_missing_files,
         icon: 'warning',
         confirmButtonText: 'OK',
         allowOutsideClick: false 
@@ -174,6 +186,12 @@ const UploadCurriculum = () => {
     }
   }
 
+  const text_login_first = `
+    <div>
+      <span>請先登入</span><br>
+      <span>Please log in first</span>
+    </div>
+  `
   const checkLogIn = async () => {
     setLoading(true);
     const jwtToken = window.localStorage.getItem('jwtToken');
@@ -182,7 +200,11 @@ const UploadCurriculum = () => {
         setLoading(false);
       }, 1000);
     }else{
-      Swal.fire('Opps!', '請先登入!', 'error').then((result) => {
+      Swal.fire({
+        title: 'Opps!', 
+        html: text_login_first, 
+        icon: 'error'
+      }).then((result) => {
           if (result.isConfirmed) {
               window.location.href = '/login';
           }
@@ -198,6 +220,12 @@ const UploadCurriculum = () => {
     }, []
   );
 
+  const text_create_fail = `
+    <div>
+      <span>教案新增失敗</span><br>
+      <span>Failed to upload a course</span>
+    </div>
+  `
   useEffect(() => {
     // create new curriculum
     if( wordUploadDone && pdfUploadDone ){
@@ -207,7 +235,7 @@ const UploadCurriculum = () => {
         if (json.code != '000'){
           Swal.fire({
             title: 'Error!',
-            text: '教案新增失敗',
+            html: text_create_fail,
             icon: 'error',
             confirmButtonText: 'OK',
             allowOutsideClick: false 
@@ -222,7 +250,7 @@ const UploadCurriculum = () => {
         }else{
           Swal.fire({
             title: 'Success!',
-            text: '教案新增成功',
+            text: '教案新增成功 Successfully Uploaded',
             icon: 'success',
             confirmButtonText: 'OK',
             allowOutsideClick: false 
@@ -250,41 +278,45 @@ const UploadCurriculum = () => {
                title={
                 <Space>
                   <FileTextOutlined style={{ fontSize: '24px', marginTop: '5px' }}/>
-                  <span className="custom-card-title-upload">新教案紙</span>
+                  <span className="custom-card-title-upload">新教案 New Course</span>
                 </Space>
               }
               bordered={true}
               style={{
-                width: 900
+                width: 1000
               }}
             >
               <Form
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span: 24 }}
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
+                labelAlign="left"
                 layout="horizontal"
                 style={{
-                  maxWidth: 600,
+                  maxWidth: 800,
+                  padding: '10px 20px',
                 }}
               >
-                <Form.Item label={<span className="custom-label-upload">教案名稱</span>}>
+                <Form.Item 
+                  label={<span className="custom-label-upload">教案名稱 Title</span>}
+                  height='100px'
+                >
                   <Input 
-                    className='input__box' 
                     value={formValues['title']} 
                     onChange={(e) => handleInputChange('title', e.target.value)}
                   />
                 </Form.Item>
-                <Form.Item label={<span className="custom-label-upload">作者</span>}>
+                <Form.Item label={<span className="custom-label-upload">作者 Author</span>}>
                   <Select
+                    
                     mode="multiple"
                     size='middle'
                     onChange={(e) => handleInputChange('author', e)}
-                    style={{ width: '600px', marginLeft: '20px'}}
                     options={nameList}
                   />        
                 </Form.Item>
-                <Form.Item label={<span className="custom-label-upload">家別</span>}>
+                <Form.Item label={<span className="custom-label-upload">家別 Division</span>}>
                   <Radio.Group 
-                    style={{ marginLeft: '-70px' }} 
+                    className="custom-radio-group"
                     value={formValues['home']}
                     onChange={(e) => handleInputChange('home', e.target.value)}
                   >
@@ -295,8 +327,8 @@ const UploadCurriculum = () => {
                     <Radio value="電光"><span className="custom-option-upload">電光</span></Radio>
                   </Radio.Group>
                 </Form.Item>
-                <Form.Item label={<span className="custom-label-upload">期數</span>}>
-                  <div style={{display: 'flex', flexDirection:'row', marginLeft: '20px', width: '240px'}}>
+                <Form.Item label={<span className="custom-label-upload">期數 Semester</span>}>
+                  <div style={{display: 'flex', flexDirection:'row', width: '240px'}}>
                     <Select
                       value={formValues['semester']} 
                       onChange={(value) => handleInputChange('semester', value)}
@@ -309,8 +341,8 @@ const UploadCurriculum = () => {
                     </Select>
                   </div>
                 </Form.Item>
-                <Form.Item label={<span className="custom-label-upload">科別</span>}>
-                  <div style={{display: 'flex', flexDirection:'row', marginLeft: '20px', width: '240px'}}>
+                <Form.Item label={<span className="custom-label-upload">科別 Subject</span>}>
+                  <div style={{display: 'flex', flexDirection:'row', width: '240px'}}>
                     <Select 
                       value={formValues['type']}
                       onChange={(value) => handleInputChange('type', value)}
@@ -323,15 +355,20 @@ const UploadCurriculum = () => {
                     </Select>
                   </div>
                 </Form.Item>
-                <Form.Item label={<span className="custom-label-upload">最後編輯日</span>}>
-                  <DatePicker 
-                    style={{marginLeft: '-170px', width: '240px'}} 
-                    onChange={handleDatePickerChange}
-                    placeholder='請選擇日期'
-                  />
+                <Form.Item label={<span className="custom-label-upload">最後編輯日 Last Update</span>}>
+                    <DatePicker 
+                      // className='custom-radio-group'
+                      style={{ 
+                        width: '240px',
+                        display: 'flex',
+                        justifyContent: 'flex-start'
+                      }}
+                      onChange={handleDatePickerChange}
+                      placeholder='請選擇日期 Select the date'
+                    />
                 </Form.Item>
                 <Form.Item>
-                  <div style={{ marginLeft: '500px', marginTop: '-185px', width: '240px'}}>
+                  <div style={{ marginLeft: '540px', marginTop: '-185px', width: '240px'}}>
                     <Upload
                       accept=".doc, .docx"
                       listType="text"
@@ -342,10 +379,10 @@ const UploadCurriculum = () => {
                         setWordUploadDone(false)
                       }}
                     >
-                      <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳教案紙 word</Button>
+                      <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳 Upload (word)</Button>
                     </Upload>
                   </div>
-                  <div style={{ marginLeft: '500px', marginTop: '25px', width: '240px'}}>
+                  <div style={{ marginLeft: '540px', marginTop: '25px', width: '240px'}}>
                     <Upload
                       accept=".pdf"
                       listType="text"
@@ -356,7 +393,7 @@ const UploadCurriculum = () => {
                         setPdfUploadDone(false)
                       }}
                     >
-                      <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳教案紙 pdf</Button>
+                      <Button icon={<UploadOutlined />} style={{ width: '200px'}}>上傳 Upload (pdf)</Button>
                     </Upload>
                   </div>
                 </Form.Item>
@@ -368,7 +405,7 @@ const UploadCurriculum = () => {
                   style={{ width: '850px'}}
                   onClick={ uploadClick } 
                 >
-                  確認上傳
+                  確認上傳 Confirm Upload
                 </Button>
             </Card>
           </div>

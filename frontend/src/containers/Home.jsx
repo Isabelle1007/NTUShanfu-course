@@ -38,8 +38,8 @@ const Home = () => {
 
   const steps = [
     {
-      title: '所有教案紙',
-      description: '查看平台上所有教案紙',
+      title: '所有教案 All Courses',
+      description: '查看平台上所有教案紙及其基本資訊 View curriculum papers and their basic information',
       cover: (
         <img
           alt="ref1"
@@ -49,8 +49,8 @@ const Home = () => {
       // target: () => ref1.current,
     },
     {
-      title: '期數/家別/科別',
-      description: '依據不同分類項目篩選教案紙',
+      title: '期數/家別/科別 semester/division/subject',
+      description: '依據不同分類項目篩選教案紙 Filter courses according to different categories',
       cover: (
         <img
           alt="ref2"
@@ -60,8 +60,8 @@ const Home = () => {
       // target: () => ref2.current,
     },
     {
-      title: '搜尋關鍵字',
-      description: '輸入關鍵字尋找相關教案',
+      title: '搜尋關鍵字 Search keywords',
+      description: '輸入關鍵字尋找相關教案紙 Enter keywords to find relevant curriculum papers',
       cover: (
         <img
           alt="ref3"
@@ -71,8 +71,8 @@ const Home = () => {
       // target: () => ref3.current,
     },
     {
-      title: '登入/註冊',
-      description: '登入會員後即可查看個人檔案及上傳教案',
+      title: '登入/註冊 Sign in / Sign up',
+      description: '登入會員後即可查看個人檔案及上傳/下載教案 After logging in, members can view their personal profile and upload/download curriculum papers',
       cover: (
         <img
           alt="ref4"
@@ -82,8 +82,8 @@ const Home = () => {
       // target: () => ref4.current,
     },
     {
-      title: '更多功能',
-      description: '展開使用者選單',
+      title: '更多功能 More Functions',
+      description: '展開使用者選單 Expand the user menu',
       cover: (
         <img
           alt="ref5"
@@ -93,8 +93,8 @@ const Home = () => {
       // target: () => ref5.current,
     },
     {
-      title: '個人頁面',
-      description: '查看頭像、基本資料以及所有上傳及收藏之教案',
+      title: '個人頁面 Personal Page',
+      description: '查看頭像、基本資料以及所有上傳之教案 View avatar, basic information, and all uploaded courses',
       cover: (
         <img
           alt="ref6"
@@ -104,8 +104,8 @@ const Home = () => {
       // target: () => ref6.current,
     },
     {
-      title: '上傳教案',
-      description: '上傳新教案紙',
+      title: '上傳教案 Upload Courses',
+      description: '輸入教案基本資訊、上傳教案紙 Enter course information and upload curriculum papers',
       cover: (
         <img
           alt="ref7"
@@ -165,7 +165,7 @@ const Home = () => {
                   ))}
                 </Carousel>
                 <FloatButton 
-                  tooltip="導覽"
+                  tooltip="導覽 Tour"
                   icon={
                     <span id="tour-icon-wrapper">
                       <QuestionCircleOutlined style={{ fontSize: '2em' }}/>

@@ -24,7 +24,7 @@ const antIcon = (
 
 const Curriculum = () => {
 
-  const { colors, userInfo } = useContext(FilterContext);
+  const { colors, userInfo, isLogin, setIsLogin } = useContext(FilterContext);
   const [ curriculum, setCurriculum ] = useState([]);
   const [ loading, setLoading ] = useState(true);
   const [ displayName, setDisplayName ] = useState('');
@@ -51,12 +51,18 @@ const Curriculum = () => {
     window.location.href = `/curriculum/edit?id=${id}`;
   };
 
+  const text_no_data = `
+    <div>
+      <span>該教案目前無提供檔案預覽</span><br>
+      <span>No data preview for this course</span>
+    </div>
+  `
   const downloadClick = async () => {
 
     if(curriculum.file_pdf === null){
       Swal.fire({
         title: 'Oops!',
-        text: '該教案目前無提供檔案',
+        html: text_no_data,
         icon: 'error',
         confirmButtonText: 'OK',
         allowOutsideClick: false 
@@ -91,7 +97,18 @@ const Curriculum = () => {
     }
   }
 
+  const checkLogIn = async () => {
+    const jwtToken = window.localStorage.getItem('jwtToken');
+    if(jwtToken){
+        setIsLogin(true)
+    }   
+    else{
+        setIsLogin(false)
+    }  
+}
+
   useEffect(() => {
+    checkLogIn();
     api.getCurriculumByID(id).then((json) => {
       if(json.data){
         setCurriculum(json.data);
@@ -118,6 +135,11 @@ const Curriculum = () => {
       }
     });
   },[]);
+
+  useEffect(() => {
+    checkLogIn();
+    }, [isLogin]
+);
 
   useEffect(() => {
     if (curriculum.id) { // Check if curriculum.id is available
@@ -147,40 +169,65 @@ const Curriculum = () => {
       <Header/>
       {
         loading ? <Spin indicator={antIcon} size="large"/> : (
-          <>
-            <FloatButton.Group
-              style={{ position: 'fixed', bottom: '100px', right: '50px' }}
-            >
-              <Popover content={content} title={infoTitle} trigger="click" placement="topLeft">
-                <FloatButton 
-                  icon={<InfoCircleOutlined style={{ color: colors.colorPrimary}}/>} 
-                  tooltip={<div>查看教案基本資訊</div>}
-                  size='large' 
-                />
-              </Popover>
+        <>
+          <div className='curriculum__container'>
+            { downloadedFile && (
+              <div style={{ width: '900px', marginTop: '-50px'}}>
+                <PdfFile file={downloadedFile} />
+              </div>
+            )}
+          </div>
+          <FloatButton.Group
+            style={{ position: 'fixed', bottom: '100px', right: '50px' }}
+          >
+            <Popover content={content} title={infoTitle} trigger="click" placement="topLeft">
               <FloatButton 
-                icon={<EditOutlined style={{ color: colors.colorPrimary}}/>} 
-                tooltip={ noEdit ? <div>沒有編輯權限</div> : <div>編輯教案基本資訊</div> }
-                size='large'
-                onClick={ handleEdit } 
-                disabled={ noEdit }
-                style={{ opacity: noEdit ? 0.5 : 1 }} // Apply transparency when disabled
+                icon={<InfoCircleOutlined style={{ color: colors.colorPrimary}}/>} 
+                tooltip={
+                  <div>
+                    <span>查看教案基本資訊</span><br/>
+                    <span>View basic information</span>
+                  </div>
+                }
+                size='large' 
               />
-              <FloatButton 
-                icon={<DownloadOutlined style={{ color: colors.colorPrimary }}/>} 
-                tooltip={<div>下載教案紙</div>}
-                size='large'
-                onClick={ downloadClick } 
-              />
-            </FloatButton.Group>
-            <div className='curriculum__container'>
-              { downloadedFile && (
-                <div style={{ width: '900px', marginTop: '-50px'}}>
-                  <PdfFile file={downloadedFile} />
+            </Popover>
+            <FloatButton 
+              icon={<EditOutlined style={{ color: colors.colorPrimary}}/>} 
+              tooltip={ noEdit ? 
+                <div>
+                  <span>沒有編輯權限</span><br/>
+                  <span>No Edit Permission</span>
+                </div> : 
+                <div>
+                  <span>編輯教案基本資訊</span><br/>
+                  <span>Edit basic information</span>
                 </div>
-              )}
-            </div>
-            <a ref={linkRef} href={curriculum.file_pdf} target="_blank" rel="noopener noreferrer" style={{ display: 'none' }}/>
+              }
+              size='large'
+              disabled={ noEdit }
+              style={{ opacity: noEdit ? 0.5 : 1 }} // Apply transparency when disabled
+              onClick={ handleEdit }
+            />
+            <FloatButton 
+              icon={<DownloadOutlined style={{ color: colors.colorPrimary }}/>} 
+              tooltip={ isLogin ? 
+                <div>
+                  <span>下載教案紙</span><br/>
+                  <span>Download Curriculum Paper</span>
+                </div> : 
+                <div>
+                  <span>沒有下載權限</span><br/>
+                  <span>No Download Permission</span>
+                </div>
+              }
+              size='large'
+              disabled={ isLogin ? false : true }
+              style={{ opacity: isLogin ? 1 : 0.5 }}
+              onClick={ downloadClick } 
+            />
+          </FloatButton.Group>
+          <a ref={linkRef} href={curriculum.file_pdf} target="_blank" rel="noopener noreferrer" style={{ display: 'none' }}/>
           </>
         )
       }
