@@ -14,4 +14,23 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
+.ant-tour-content {
+    width: 1000px; /* Set your desired width */
+    /* padding: 50px 50px 50px 50px; */
+}
+
+.ant-tour-title {
+    font-size: 20px !important;
+    padding: 0px 0px 0px 20px !important;
+}
+
+.ant-tour-description {
+    font-size: 16px;
+    padding: 0px 40px 0px 40px !important;
+}
+
+.ant-tour-indicators {
+    padding: 0px 0px 0px 20px !important;
+}
   

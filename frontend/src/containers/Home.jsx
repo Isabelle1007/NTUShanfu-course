@@ -38,8 +38,22 @@ const Home = () => {
 
   const steps = [
     {
+      title: '首頁 Home Page',
+      description: (
+        <div>
+          <span>點擊左上角 NTU Shanfu 之 logo 即可回到平台首頁，瀏覽社團照片及觀看導覽。</span><br/>
+          <span>Click on the NTU Shanfu logo in the top left corner to return to the platform's homepage, where you can browse club photos and view a tour.</span>  
+        </div>
+      )
+    },
+    {
       title: '所有教案 All Courses',
-      description: '查看平台上所有教案紙及其基本資訊 View curriculum papers and their basic information',
+      description: (
+        <div>
+          <span>點擊查看平台上所有教案，每份教案將會以卡片呈現，圖為教案紙內關鍵字生成之文字雲。點擊每張卡片即可進入預覽教案紙及查看其基本資訊。</span><br/>
+          <span>Click to view all the courses on the platform. Each course will be presented in a card format, with the image showing a word cloud generated from keywords in the curriculum paper. Click on each card to preview the curriculum paper and view its basic information.</span>  
+        </div>
+      ),
       cover: (
         <img
           alt="ref1"
@@ -50,7 +64,12 @@ const Home = () => {
     },
     {
       title: '期數/家別/科別 semester/division/subject',
-      description: '依據不同分類項目篩選教案紙 Filter courses according to different categories',
+      description: (
+        <div>
+          <span>若欲依據不同分類項目篩選教案，可分別點擊期數/家別/科別來尋找</span><br/>
+          <span>If you want to filter the courses based on different categories, you can click on 期數/家別/科別 (semester/division/subject) respectively to search.</span>  
+        </div>
+      ),
       cover: (
         <img
           alt="ref2"
@@ -61,7 +80,12 @@ const Home = () => {
     },
     {
       title: '搜尋關鍵字 Search keywords',
-      description: '輸入關鍵字尋找相關教案紙 Enter keywords to find relevant curriculum papers',
+      description: (
+        <div>
+          <span>輸入關鍵字尋找相關教案，搜尋標的除了教案基本資訊，也包含教案紙內所有文字，如呈現在教案卡片上之關鍵字。</span><br/>
+          <span>Enter keywords to find relevant courses. The search targets not only the basic information of the course but also includes all text within the curriculum papers, such as the keywords displayed on the course cards.</span>
+        </div>
+      ),
       cover: (
         <img
           alt="ref3"
@@ -71,8 +95,13 @@ const Home = () => {
       // target: () => ref3.current,
     },
     {
-      title: '登入/註冊 Sign in / Sign up',
-      description: '登入會員後即可查看個人檔案及上傳/下載教案 After logging in, members can view their personal profile and upload/download curriculum papers',
+      title: '登入 Log in (登出 Log Out)',
+      description: (
+        <div>
+          <span>點擊後依照指示進行登入（若為登入狀態下點擊則進行登出），若為新用戶，在登入頁面也可跳轉至註冊頁面。登入後即可查看個人檔案、上傳自己的教案以及下載他人教案紙。</span><br/>
+          <span>After clicking, follow the instructions to log in (if you are already logged in, clicking will log you out). If you are a new user, you can also navigate to the registration page from the login page. Once logged in, you can view your personal profile, upload your own courses, and download others' curriculum papers.</span>
+        </div>
+      ),
       cover: (
         <img
           alt="ref4"
@@ -83,7 +112,12 @@ const Home = () => {
     },
     {
       title: '更多功能 More Functions',
-      description: '展開使用者選單 Expand the user menu',
+      description: (
+        <div>
+          <span>點擊此符號展開使用者選單，查看更多登入後的用戶功能。</span><br/>
+          <span>Click on this icon to expand the user menu and view more functions available to users after logging in.</span>
+        </div>
+      ),
       cover: (
         <img
           alt="ref5"
@@ -94,7 +128,12 @@ const Home = () => {
     },
     {
       title: '個人頁面 Personal Page',
-      description: '查看頭像、基本資料以及所有上傳之教案 View avatar, basic information, and all uploaded courses',
+      description: (
+        <div>
+          <span>查看個人頁面，包含頭像、家別、入團期數等基本資料以及所有上傳之教案。</span><br/>
+          <span>View the personal page, which includes basic information such as avatar, division, enrollment semester, and all uploaded courses.</span>
+        </div>
+      ),
       cover: (
         <img
           alt="ref6"
@@ -105,7 +144,12 @@ const Home = () => {
     },
     {
       title: '上傳教案 Upload Courses',
-      description: '輸入教案基本資訊、上傳教案紙 Enter course information and upload curriculum papers',
+      description: (
+        <div>
+          <span>上傳教案至平台，依照指示輸入教案基本資訊、並上傳 word 及 pdf 兩種格式之教案紙。</span><br/>
+          <span>Upload courses to the platform, following the instructions to enter the basic information of the course and upload the curriculum papers in both Word and PDF formats.</span>
+        </div>
+      ),
       cover: (
         <img
           alt="ref7"
