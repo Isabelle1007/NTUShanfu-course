@@ -1,19 +1,20 @@
 .carousel-container {
     margin-top: 60px;
 }
-
-.ant-float-btn-description {
-    height: 20px !important; /* Use !important sparingly */
-}
    
 #tour-icon-wrapper {
-    width: 2em;  /* Adjust the size as needed */
-    height: 2em; /* Adjust the size as needed */
+    width: 3em;  /* Adjust the size as needed */
+    height: 3em; /* Adjust the size as needed */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
+}
+
+.carousel-container .ant-float-btn-body {
+    height: 100px !important; 
+    width: 100px !important; 
+}
 
 .ant-tour-content {
     width: 1000px; /* Set your desired width */

@@ -7,11 +7,21 @@
   flex-direction: column;
 }
 
+.floatBtnGroup-c .ant-float-btn-body {
+  height: 60px !important; 
+  width: 60px !important; 
+}
+
 .icon-wrapper {
-  width: 2em;  /* Adjust the size as needed */
-  height: 2em; /* Adjust the size as needed */
+  width: 1.8em;  /* Adjust the size as needed */
+  height: 1.8em; /* Adjust the size as needed */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.floatBtn {
+  height: 60px;
+  width: 60px;
 }

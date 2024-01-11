@@ -212,16 +212,16 @@ const Home = () => {
                   tooltip="導覽 Tour"
                   icon={
                     <span id="tour-icon-wrapper">
-                      <QuestionCircleOutlined style={{ fontSize: '2em' }}/>
+                      <QuestionCircleOutlined style={{ fontSize: '3em' }}/>
                     </span>
                   }
                   style={{
                     backgroundColor: colors.colorPrimary,
-                    height: '80px',
-                    width: '80px',
-                    bottom: '150px',
+                    height: '100px',
+                    width: '100px',
+                    bottom: '200px',
                     right: '70px',
-                    fontSize: '75px'
+                    fontSize: '100px',
                   }}
                   onClick={() => setOpen(true)} 
                 />

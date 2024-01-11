@@ -178,22 +178,27 @@ const Curriculum = () => {
             )}
           </div>
           <FloatButton.Group
-            style={{ position: 'fixed', bottom: '100px', right: '50px' }}
+            className='floatBtnGroup-c'
+            style={{ position: 'fixed', bottom: '100px', right: '80px' }}
           >
             <Popover content={content} title={infoTitle} trigger="click" placement="topLeft">
-              <FloatButton 
-                icon={<InfoCircleOutlined style={{ color: colors.colorPrimary}}/>} 
+              <FloatButton
+                className='floatBtn' 
                 tooltip={
                   <div>
                     <span>查看教案基本資訊</span><br/>
                     <span>View basic information</span>
                   </div>
                 }
-                size='large' 
+                icon={
+                  <span className="icon-wrapper">
+                    <InfoCircleOutlined style={{ color: colors.colorPrimary, fontSize: '1.8em' }}/>
+                  </span>
+                }
               />
             </Popover>
             <FloatButton 
-              icon={<EditOutlined style={{ color: colors.colorPrimary}}/>} 
+              className='floatBtn' 
               tooltip={ noEdit ? 
                 <div>
                   <span>沒有編輯權限</span><br/>
@@ -204,13 +209,23 @@ const Curriculum = () => {
                   <span>Edit basic information</span>
                 </div>
               }
+              icon={
+                <span className="icon-wrapper">
+                  <EditOutlined style={{ color: colors.colorPrimary, fontSize: '1.8em' }}/>
+                </span>
+              }
               size='large'
               disabled={ noEdit }
               style={{ opacity: noEdit ? 0.5 : 1 }} // Apply transparency when disabled
               onClick={ handleEdit }
             />
             <FloatButton 
-              icon={<DownloadOutlined style={{ color: colors.colorPrimary }}/>} 
+              className='floatBtn' 
+              icon={
+                <span className='icon-wrapper'>
+                  <DownloadOutlined style={{ color: colors.colorPrimary, fontSize: '1.8em' }}/>
+                </span>
+              }
               tooltip={ isLogin ? 
                 <div>
                   <span>下載教案紙</span><br/>
