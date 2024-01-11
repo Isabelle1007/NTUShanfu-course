@@ -25,10 +25,10 @@ const Curriculum = () => {
   const [downloadedFile, setDownloadedFile] = useState(null);
 
   const client = new S3Client({ 
-    region: 'ap-northeast-1',
+    region: import.meta.env.VITE_AWS_REGION,
     credentials: {
-      accessKeyId: "AKIA4HQT7FC5HWVKMB7E",
-      secretAccessKey: "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",
+      accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
+      secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
     }
   })
 
@@ -82,7 +82,7 @@ const Curriculum = () => {
     setOpenView(!openView)
 
     const command = new GetObjectCommand({
-      Bucket: "doc-file-uploads",
+      Bucket: import.meta.env.VITE_AWS_BUCKET_NAME,
       Key: `pdf/${curriculum.title}.pdf`
     });
 
