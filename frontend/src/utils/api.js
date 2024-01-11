@@ -1,11 +1,6 @@
 export const api = {
-    //production
-    server_url: 'https://ntushanfu-server.onrender.com',
-    app_url: 'https://ntushanfu-xojf.onrender.com',
-    //development
-    // server_url: 'http://localhost:4000',
-    // app_url: 'http://localhost:3000',
-
+    app_url: import.meta.env.VITE_APP_URL,
+    server_url: import.meta.env.VITE_SERVER_URL,
     getAllHomes() {
         return fetch(`${this.server_url}/home/all`).then(response => response.json());
     },

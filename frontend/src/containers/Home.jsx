@@ -164,15 +164,15 @@ const Home = () => {
     const fetchImageUrls = async () => {
 
       const s3Client = new S3Client({ 
-        region: 'ap-northeast-1',
+        region: import.meta.env.VITE_AWS_REGION,
         credentials: {
-          accessKeyId: "AKIA4HQT7FC5HWVKMB7E",
-          secretAccessKey: "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",
+          accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
+          secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
         }
       });
   
       const command = new ListObjectsCommand({
-        Bucket: "doc-file-uploads",
+        Bucket: import.meta.env.VITE_AWS_BUCKET_NAME,
         Prefix: "cover-photo/"
       });
   
@@ -182,7 +182,7 @@ const Home = () => {
         const urls = data.Contents
           .filter(object => object.Key !== folderPath) // Filter out the folder path
           .map(object => 
-            `https://doc-file-uploads.s3.ap-northeast-1.amazonaws.com/${object.Key}`
+            `https://${import.meta.env.VITE_AWS_BUCKET_NAM}.s3.${import.meta.env.VITE_AWS_REGION}.amazonaws.com/${object.Key}`
           );
         setImageUrls(urls);
         setLoading(false);
