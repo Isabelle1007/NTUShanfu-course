@@ -10,8 +10,6 @@ const Type = require('../models/type_model');
 const { readFileFromS3, s3Uploadv2, deleteFileFromS3 } = require('../utils/s3Service');
 const { createWordCloudImg } = require('../utils/wordCloud');
 
-const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_BUCKET_NAME } = process.env;
-
 const storage = multer.memoryStorage();
 
 const fileFilter_image = (req, file, cb) => {
