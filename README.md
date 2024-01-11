@@ -67,7 +67,7 @@ Only listing the main package:
 
 ## Link
 
-- NTU Shanfu Curricula Platform Deployment Link: https://ntushanfu-xojf.onrender.com/
+- NTU Shanfu Curricula Platform Deployment Link: https://ntushanfu-course.onrender.com/
     An account used for reviewer:
     - email: guest@ntushanfu.com
     - password: checkoutcourses
