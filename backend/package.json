@@ -14,7 +14,7 @@
   "dependencies": {
     "aws-sdk": "^2.1382.0",
     "base-64": "^1.0.0",
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "docxtemplater": "^3.37.8",
     "dotenv": "^16.0.3",

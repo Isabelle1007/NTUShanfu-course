@@ -83,10 +83,14 @@ const login = async (req, res) => {
     }
     try {
         const result = await User.login(email, password);
-        const roleName = await Role.getRoleByID(result.data.role_id)
-        result.data.role = roleName.data.name
-        delete result.data.role_id
-        return res.json(result)
+        if (result.code != "000") 
+            return res.json(result);
+        else{
+            const roleName = await Role.getRoleByID(result.data.role_id)
+            result.data.role = roleName.data.name
+            delete result.data.role_id
+            return res.json(result)
+        }
     } catch (error) {
         return res.json({
             "message": error,

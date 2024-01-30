@@ -1,11 +1,8 @@
 require('dotenv').config();
-
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
 const pool = require('../db')
-
-const { BCRYPT_SALT, TOKEN_EXPIRE, TOKEN_SECRET } = process.env; // 30 days by seconds
+const { BCRYPT_SALT, TOKEN_EXPIRE, TOKEN_SECRET } = process.env; // 30 min by seconds
 const salt = parseInt(BCRYPT_SALT);
 
 const USER_ROLE = {
@@ -204,7 +201,7 @@ const signUp = async (name, roleId, email, password, picture_url, home, group, j
         const user = {
             u_name: name,
             email: email,
-            password: bcrypt.hashSync(password, salt),
+            password: await bcrypt.hash(password, salt),
             role_id: roleId,
             access_expired: TOKEN_EXPIRE,
             login_at: loginAt,
@@ -262,9 +259,8 @@ const login = async (email, password) => {
     const conn = await pool.getConnection();
     try {
         await conn.query('START TRANSACTION');
-
         const [users] = await conn.query('SELECT * FROM users WHERE email = ?', [email]);
-        if (users.length === 0) {
+        if (users.length === 0){
             await conn.query('COMMIT');
             console.log("Email does not exist")
             return {
@@ -272,15 +268,14 @@ const login = async (email, password) => {
                 message: 'Error: Email does not exist' };
         }
         const user = users[0];
-
-        if(!bcrypt.compare(password, user.password)){
+        pw_correct = await bcrypt.compare(password, user.password)
+        if(!pw_correct){
             await conn.query('COMMIT');
             return {
-                "message": "Password is wrong",
-                "code": "999" 
+                code: "002",
+                message: "Password is wrong",
             };
         }
-
         const loginAt = new Date();
         const accessToken = jwt.sign(
             {
@@ -293,13 +288,11 @@ const login = async (email, password) => {
 
         const queryStr = 'UPDATE users SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?';
         await conn.query(queryStr, [accessToken, TOKEN_EXPIRE, loginAt, user.id]);
-
         await conn.query('COMMIT');
 
         user.access_token = accessToken;
         user.login_at = loginAt;
         user.access_expired = TOKEN_EXPIRE;
-
         return {
             "message": "Success",
             "code": "000",
