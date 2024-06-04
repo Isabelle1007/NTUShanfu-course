@@ -37,7 +37,7 @@ function App() {
   const [userInfo, setUserInfo] = useState({
     "id": "",
     "name": "",
-    "email": "",
+    "account": "",
     "role": "",
     "home": "",
     "group": "",

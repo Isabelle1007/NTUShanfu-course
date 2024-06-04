@@ -37,7 +37,7 @@ By clicking on a course card, the user is directed to a page displaying the comp
 
 ### 5. Register / Login / Logout
 
-To register on the NTU Shanfu Curricula Platform, users are required to enter basic information such as their name, email, and password. Upon submitting the registration request, the platform ensures user security by encrypting the password before storing it in the database. Once the account is activated, users gain the ability to log in and utilize the platform's full range of features. This includes uploading their own curriculum papers and accessing a personal profile page where they can manage their contributions and settings. Additionally, for added convenience and security, the platform provides a logout option, enabling users to securely exit the platform after completing their activities.  
+To register on the NTU Shanfu Curricula Platform, users are required to enter basic information such as their name, account, and password. Upon submitting the registration request, the platform ensures user security by encrypting the password before storing it in the database. Once the account is activated, users gain the ability to log in and utilize the platform's full range of features. This includes uploading their own curriculum papers and accessing a personal profile page where they can manage their contributions and settings. Additionally, for added convenience and security, the platform provides a logout option, enabling users to securely exit the platform after completing their activities.  
 
 ![Alt text](./frontend/src/images/readme-guide/image-5.png)
 ![Alt text](./frontend/src/images/readme-guide/image-8.png)
@@ -87,7 +87,7 @@ Only listing the main package:
 
 - NTU Shanfu Curricula Platform Deployment Link: https://ntushanfu-course.onrender.com/
   - An account used for reviewer:
-    - email: guest@ntushanfu.com
+    - account: guest@ntushanfu.com
     - password: checkoutcourses
 
 ## Contirbutors

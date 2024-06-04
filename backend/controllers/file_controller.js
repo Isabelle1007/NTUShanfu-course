@@ -1,7 +1,7 @@
 require('dotenv').config();
 const multer = require('multer');
 const { s3Uploadv2, deleteFileFromS3 } = require('../utils/s3Service');
-const { getInfoByUserEmail, updateInfoByEmail } = require('../models/user_model');
+const { getInfoByUserAccount, updateInfoByAccount } = require('../models/user_model');
 const File = require('../models/file_model');
 
 const storage = multer.memoryStorage();
@@ -72,7 +72,7 @@ const postFile = async (req, res) => {
             if (uploadFileToS3.code === '000') {
                 if(type === 'image'){
                     const url = uploadFileToS3.data.response.Location;
-                    const userInfo = await getInfoByUserEmail(req.body.user_email);
+                    const userInfo = await getInfoByUserAccount(req.body.user_account);
                     let old_url
                     if(userInfo.code === '000'){
                         old_url = userInfo.data.picture_url; 
@@ -82,7 +82,7 @@ const postFile = async (req, res) => {
                             "code": "999"
                         });
                     }
-                    const updateDb = await updateInfoByEmail(req.body.user_email, { "picture_url": url });
+                    const updateDb = await updateInfoByAccount(req.body.user_account, { "picture_url": url });
                     if (updateDb.code === '000') {
                         res.json(updateDb)
                         const deleteOldPic = await deleteFileFromS3(old_url);

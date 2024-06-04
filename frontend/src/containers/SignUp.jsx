@@ -19,7 +19,7 @@ const SignUp = () => {
 
   const [ formValues, setFormValues ] = useState({
     'name': '',
-    'email': '',
+    'account': '',
     'password': '',
     "picture_url": '',
     "home": "",
@@ -128,11 +128,11 @@ const SignUp = () => {
           </Form.Item>
 
           <Form.Item
-            name="email"
-            label={<span className="custom-label-signup">信箱 Email</span>}
+            name="account"
+            label={<span className="custom-label-signup">信箱 account</span>}
             rules={[
               {
-                type: 'email',
+                type: 'account',
                 message: '電子信箱格式不符',
               },
               {
@@ -142,7 +142,7 @@ const SignUp = () => {
             ]}
           >
             <Input 
-              onChange={(e) => handleInputChange('email', e.target.value)}
+              onChange={(e) => handleInputChange('account', e.target.value)}
             />
           </Form.Item>
 

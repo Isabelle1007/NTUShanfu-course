@@ -10,10 +10,10 @@ const Group = require('../models/group_model');
 // get data from db
 const getInfoOfUser = async (req, res) => {
     const id = req.query.id;
-    const email = req.body.email
+    const account = req.body.account
     let data;
     if(id) data = await User.getInfoByUserId(id);
-    if(email) data = await User.getInfoByUserEmail(email);
+    if(account) data = await User.getInfoByUseraccount(account);
     res.json(data);
 };
 
@@ -38,25 +38,25 @@ const createNewUser = async (req, res) => {
 // sign up
 const signUp = async (req, res) => {
     let { name } = req.body;
-    const { role, email, password, picture_url, home, group, join_semester, gender, birthday, department, student_id } = req.body;
+    const { role, account, password, picture_url, home, group, join_semester, gender, birthday, department, student_id } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !account || !password) {
         return res.json({
-            "message": "Request Error: name, email and password are required.",
+            "message": "Request Error: name, account and password are required.",
             "code": "001"
         });
     }
 
-    if (!validator.isEmail(email)) {
+    if (!validator.isaccount(account)) {
         return res.json({
-            "message": "Request Error: Invalid email format",
+            "message": "Request Error: Invalid account format",
             "code": "001"
         });
     }
 
     name = validator.escape(name);
 
-    const result = await User.signUp(name, User.USER_ROLE[role], email, password, picture_url, home, group, join_semester, gender, birthday, department, student_id);
+    const result = await User.signUp(name, User.USER_ROLE[role], account, password, picture_url, home, group, join_semester, gender, birthday, department, student_id);
     if (result.code != "000") return res.json(result);
 
     const user = result.data;
@@ -74,15 +74,15 @@ const signUp = async (req, res) => {
 
 // sign in
 const login = async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { account, password } = req.body;
+    if (!account || !password) {
         return res.json({
-            "message": 'Request Error: email and password are required.',
+            "message": 'Request Error: account and password are required.',
             "code": "001",
         });
     }
     try {
-        const result = await User.login(email, password);
+        const result = await User.login(account, password);
         if (result.code != "000") 
             return res.json(result);
         else{
@@ -100,7 +100,7 @@ const login = async (req, res) => {
 };
 
 const getUserProfile = async (req, res) => {
-    const userProfile = await User.getInfoByUserEmail(req.user.email);
+    const userProfile = await User.getInfoByUseraccount(req.user.account);
     res.json(userProfile);
     return;
 }
@@ -132,7 +132,7 @@ const updateProfile = async (req, res) => {
         return res.status(400).json({ message: "No fields provided for update." });
     }
 
-    const updatedUserProfile = await User.updateInfoByEmail(req.user.email, profile);
+    const updatedUserProfile = await User.updateInfoByaccount(req.user.account, profile);
     res.json(updatedUserProfile);
 }
 

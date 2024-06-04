@@ -17,7 +17,7 @@ const LogIn = () => {
   const [form] = Form.useForm();
 
   const [ formValues, setFormValues ] = useState({
-    'email': '',
+    'account': '',
     'password': ''
   });
 
@@ -49,7 +49,7 @@ const LogIn = () => {
                             const newInfo = {
                                 "id": json.data.id,
                                 "name": json.data.name,
-                                "email": json.data.email,
+                                "account": json.data.account,
                                 "role": json.data.role,
                                 "home": json.data.home,
                                 "group": json.data.group,
@@ -85,7 +85,7 @@ const LogIn = () => {
     <div>
       <span>註冊功能暫不開放，請使用以下帳號密碼登入</span><br>
       <span>Currently not allowed. Please use the following</span><br>
-      <span>信箱 Email: guest@ntushanfu.com</span><br>
+      <span>信箱 account: guest@ntushanfu.com</span><br>
       <span>密碼 Password: checkoutcourses</span>
     </div>
   `
@@ -126,11 +126,11 @@ const LogIn = () => {
         >
 
           <Form.Item
-            name="email"
-            label={<span className="custom-label-login">信箱 Email</span>}
+            name="account"
+            label={<span className="custom-label-login">信箱 account</span>}
             rules={[
               {
-                type: 'email',
+                type: 'account',
                 message: 'The input is not valid E-mail!',
               },
               {
@@ -140,7 +140,7 @@ const LogIn = () => {
             ]}
           >
             <Input 
-              onChange={(e) => handleInputChange('email', e.target.value)}
+              onChange={(e) => handleInputChange('account', e.target.value)}
             />
           </Form.Item>
 

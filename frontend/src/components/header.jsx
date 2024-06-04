@@ -88,7 +88,7 @@ const Header = () => {
                     const newInfo = {
                         "id": json.data.id,
                         "name": json.data.name,
-                        "email": json.data.email,
+                        "account": json.data.account,
                         "role": json.data.role,
                         "home": json.data.home,
                         "group": json.data.group,
@@ -108,7 +108,7 @@ const Header = () => {
             setUserInfo({
                 "id": "",
                 "name": "",
-                "email": "",
+                "account": "",
                 "role": "",
                 "home": "",
                 "group": "",
