@@ -1,18 +1,18 @@
 require('dotenv').config();
-const Type = require('../models/type_model');
+const Subject = require('../models/subject_model');
 
 // get data from db
-const getTypes = async (req, res) => {
-    const data = await Type.getAllTypeName();
+const getSubjects = async (req, res) => {
+    const data = await Subject.getAllSubjectName();
     res.json(data)
 };
 
 // insert data into db
-const postNewType = async (req, res) => {
+const postNewSubject = async (req, res) => {
     res.json('TBC...')
 };
 
 module.exports = {
-    getTypes,
-    postNewType
+    getSubjects,
+    postNewSubject
 };

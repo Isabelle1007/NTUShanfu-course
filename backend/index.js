@@ -18,7 +18,7 @@ app.use(express.json())
 const basicRouter = require('./routes/basic_route');
 const curriculumRouter = require('./routes/curriculum_route');
 const userRouter = require('./routes/user_route');
-const typeRouter = require('./routes/type_route');
+const subjectRouter = require('./routes/subject_route');
 const homeRouter = require('./routes/home_route');
 const roleRouter = require('./routes/role_route');
 const fileRouter = require('./routes/file_route');
@@ -26,7 +26,7 @@ const fileRouter = require('./routes/file_route');
 app.use('/', basicRouter);
 app.use('/curriculum', curriculumRouter);
 app.use('/user', userRouter);
-app.use('/type', typeRouter);
+app.use('/subject', subjectRouter);
 app.use('/home', homeRouter);
 app.use('/role', roleRouter);
 app.use('/file', fileRouter);

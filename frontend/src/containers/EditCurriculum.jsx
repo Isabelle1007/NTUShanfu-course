@@ -21,7 +21,7 @@ const antIcon = (
 
 const EditCurriculum = () => {
 
-  const { colors, semesters, types } = useContext(FilterContext);
+  const { colors, semesters, subjects } = useContext(FilterContext);
 
   const id = new URLSearchParams(location.search).get('id');
 
@@ -34,7 +34,7 @@ const EditCurriculum = () => {
     'author': [],
     'semester': '',
     'home': '',
-    'type': '',
+    'subject': '',
     'last_update': '',
   });
 
@@ -285,7 +285,7 @@ const EditCurriculum = () => {
         handleInputChange("author", json.data.author)
         handleInputChange("home", json.data.home)
         handleInputChange("semester", json.data.semester)
-        handleInputChange("type", json.data.type)
+        handleInputChange("subject", json.data.subject)
       }
     });
     getUsers();
@@ -362,12 +362,12 @@ const EditCurriculum = () => {
                 <Form.Item label={<span className="custom-label-upload">科別 Subject</span>}>
                   <div style={{display: 'flex', flexDirection:'row', width: '240px'}}>
                     <Select 
-                      value={formValues['type']}
-                      onChange={(value) => handleInputChange('type', value)}
+                      value={formValues['subject']}
+                      onChange={(value) => handleInputChange('subject', value)}
                     >
                       {
-                        types.map((t) => (
-                          <Select.Option value={t.key} onChange={(value) => handleInputChange('type', value)}>{t.key}</Select.Option>
+                        subjects.map((t) => (
+                          <Select.Option value={t.key} onChange={(value) => handleInputChange('subject', value)}>{t.key}</Select.Option>
                         ))
                       }
                     </Select>

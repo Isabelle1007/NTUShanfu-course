@@ -27,8 +27,9 @@ const SignUp = () => {
     "join_semester": "",
     "gender": "",
     "birthday": "",
-    "department": "",
+    "major": "",
     "student_id": "",
+    "email": "",
   });
 
   const handleInputChange = (fieldName, value) => {
@@ -292,7 +293,7 @@ const SignUp = () => {
           </Form.Item> */}
 
           <Form.Item
-            name="department"
+            name="major"
             label={<span className="custom-label-signup">系級 Grade</span>}
             rules={[
               {
@@ -302,7 +303,7 @@ const SignUp = () => {
             ]}
           >
             <Input 
-              onChange={(e) => handleInputChange('department', e.target.value)}
+              onChange={(e) => handleInputChange('major', e.target.value)}
             />
           </Form.Item>
 

@@ -56,8 +56,9 @@ const LogIn = () => {
                                 "join_semester": json.data.join_semester,
                                 "gender": json.data.gender,
                                 "birthday": json.data.birthday,
-                                "department": json.data.department,
-                                "picture_url": json.data.picture_url
+                                "major": json.data.major,
+                                "picture_url": json.data.picture_url,
+                                "email": json.data.email,
                             }
                             setUserInfo(newInfo)
                         }

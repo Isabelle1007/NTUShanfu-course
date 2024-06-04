@@ -21,7 +21,7 @@ const antIcon = (
 
 const UploadCurriculum = () => {
 
-  const { semesters, types } = useContext(FilterContext);
+  const { semesters, subjects } = useContext(FilterContext);
   const [ nameList, setNameList ] = useState([]);
   const [ wordFileData, setWordFileData ] = useState([]);
   const [ pdfFileData, setPdfFileData ] = useState([]);
@@ -34,7 +34,7 @@ const UploadCurriculum = () => {
     'author': [],
     'semester': '',
     'home': '',
-    'type': '',
+    'subject': '',
     'last_update': '',
     'file_word': '',
     'file_pdf': ''
@@ -344,12 +344,12 @@ const UploadCurriculum = () => {
                 <Form.Item label={<span className="custom-label-upload">科別 Subject</span>}>
                   <div style={{display: 'flex', flexDirection:'row', width: '240px'}}>
                     <Select 
-                      value={formValues['type']}
-                      onChange={(value) => handleInputChange('type', value)}
+                      value={formValues['subject']}
+                      onChange={(value) => handleInputChange('subject', value)}
                     >
                       {
-                        types.map((t) => (
-                          <Select.Option value={t.key} onChange={(value) => handleInputChange('type', value)}>{t.key}</Select.Option>
+                        subjects.map((t) => (
+                          <Select.Option value={t.key} onChange={(value) => handleInputChange('subject', value)}>{t.key}</Select.Option>
                         ))
                       }
                     </Select>

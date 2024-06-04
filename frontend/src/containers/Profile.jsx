@@ -103,7 +103,7 @@ const Profile = () => {
     formData.append('file', pictureURL);
     formData.append('name', userInfo.name);
     formData.append('format', pictureURL.type.split('/')[1]);
-    formData.append('user_email', userInfo.email);
+    formData.append('user_account', userInfo.account);
     setLoading(true);
     const text_uploadimg_fail = `
       <div>
@@ -258,7 +258,7 @@ const Profile = () => {
                         <div className='input' >{userInfo.gender === 'M'? '男' : '女'}</div>
                       </Form.Item>
                       <Form.Item label="系級 Grade" >
-                        <div className='input' >{userInfo.department}</div>
+                        <div className='input' >{userInfo.major}</div>
                       </Form.Item>
                       <Form.Item label="入團期別 Semester">
                         <div className='input'>{userInfo.join_semester}</div>
@@ -333,7 +333,7 @@ const Profile = () => {
                           <Meta
                               avatar={<AvatarWithText array={curriculum.author}/>}
                               title={curriculum.title}
-                              description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
+                              description={`${curriculum.home} / ${curriculum.semester} / ${curriculum.subject}`}
                             /> 
                       </Card>
                     </a>

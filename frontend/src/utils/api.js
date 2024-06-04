@@ -4,8 +4,8 @@ export const api = {
     getAllHomes() {
         return fetch(`${this.server_url}/home/all`).then(response => response.json());
     },
-    getAllTypes() {
-        return fetch(`${this.server_url}/type/all`).then(response => response.json());
+    getAllSubjects() {
+        return fetch(`${this.server_url}/subject/all`).then(response => response.json());
     },
     getAllCurricula() {
         return fetch(`${this.server_url}/curriculum/all`).then(response => response.json());
@@ -13,8 +13,8 @@ export const api = {
     getCurriculaByHome(home){
         return fetch(`${this.server_url}/curriculum/home/${home}`).then(response => response.json());
     },
-    getCurriculaByType(type){
-        return fetch(`${this.server_url}/curriculum/type/${type}`).then(response => response.json());
+    getCurriculaBySubject(subject){
+        return fetch(`${this.server_url}/curriculum/subject/${subject}`).then(response => response.json());
     },
     getCurriculaBySemester(semester){
         return fetch(`${this.server_url}/curriculum/semester/${semester}`).then(response => response.json());

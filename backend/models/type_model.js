@@ -1,25 +1,25 @@
 require('dotenv').config();
 const pool = require('../db')
 
-const getAllTypeName = async () => {
-    const query = `SELECT types.t_name FROM types`;
+const getAllSubjectName = async () => {
+    const query = `SELECT subjects.s_name FROM subjects`;
     const [result] = await pool.execute(query);
     try{
         if(result.length > 0){
             let list = []
             for(var i = 0; i < result.length; i++){
-                list.push(result[i].t_name)
+                list.push(result[i].s_name)
             }
             return {
                 "message": "Success",
                 "code": "000",
                 "data": {
-                    "type_name_list": list
+                    "subject_name_list": list
                 }
             }
         }else if(result.length === 0){
             return {
-                "message": "No Types Existed",
+                "message": "No subjects Existed",
                 "code": "001"
             }
         }else{
@@ -33,9 +33,9 @@ const getAllTypeName = async () => {
     }
 };
 
-const getIdByTypeName = async (type_name) => {
+const getIdBySubjectName = async (subject) => {
 
-    const query = `SELECT id FROM types WHERE types.t_name = '${type_name}'`
+    const query = `SELECT id FROM subjects WHERE subjects.s_name = '${subject_name}'`
     const [result] = await pool.execute(query);
     try{
         if(result.length === 1){
@@ -48,7 +48,7 @@ const getIdByTypeName = async (type_name) => {
             }
         }else if(result.length === 0){
             return {
-                "message": "Invalid Type Name",
+                "message": "Invalid Subject Name",
                 "code": "001"
             }
         }else{
@@ -63,6 +63,6 @@ const getIdByTypeName = async (type_name) => {
 };
 
 module.exports = {
-    getAllTypeName,
-    getIdByTypeName
+    getAllSubjectName,
+    getIdBySubjectName
 };

@@ -144,13 +144,13 @@ const Curriculum = () => {
   useEffect(() => {
     if (curriculum.id) { // Check if curriculum.id is available
       showPdf();
-      setFileName(`20${semesterNumber}台大山服${semesterChar}令營_${curriculum.home}家_${curriculum.type}_${curriculum.title}_${displayName}_${pureDate}`)
+      setFileName(`20${semesterNumber}台大山服${semesterChar}令營_${curriculum.home}家_${curriculum.subject}_${curriculum.title}_${displayName}_${pureDate}`)
       setInfoTitle(`${curriculum.title}（${displayName}）`)
       setContent(
         <div>
           <p><CalendarOutlined /> 期數：{curriculum.semester}</p>
           <p><HomeOutlined /> 家別：{curriculum.home}</p>
-          <p><TagsOutlined /> 科別：{curriculum.type}</p>
+          <p><TagsOutlined /> 科別：{curriculum.subject}</p>
         </div>
       );
     }

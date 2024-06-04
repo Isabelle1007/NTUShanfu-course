@@ -12,7 +12,7 @@ import './header.css'
 
 const Header = () => {
 
-    const { colors, homes, setHomes, types, setTypes, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, setUserInfo, ref1, ref2, ref3, ref4} = useContext(FilterContext);
+    const { colors, homes, setHomes, subjects, setSubjects, semesters, setSemesters, isLogin, setIsLogin, isAdmin, setIsAdmin, setUserInfo, ref1, ref2, ref3, ref4} = useContext(FilterContext);
     const [inputValue, setInputValue] = useState('');
     const [open, setOpen] = useState(false);
     const [userID, setUserID] = useState(1)
@@ -41,17 +41,17 @@ const Header = () => {
         }
     }
 
-    const getTypes = async () => {
+    const getSubjects = async () => {
         try {
-            api.getAllTypes().then((json) => {
-                const list = json.data.type_name_list;
-                const transformedTypes = list.map((type) => ({
+            api.getAllSubjects().then((json) => {
+                const list = json.data.subject_name_list;
+                const transformedSubjects = list.map((subject) => ({
                     label: (
-                        <a href={`${api.app_url}/curricula?type=${type}`} target="_self" rel="noreferrer">{type}</a>
+                        <a href={`${api.app_url}/curricula?subject=${subject}`} target="_self" rel="noreferrer">{subject}</a>
                     ),
-                    key: `${type}`
+                    key: `${subject}`
                 }));
-                setTypes(transformedTypes)
+                setSubjects(transformedSubjects)
             })
         } catch (err) {
             console.log(err)
@@ -95,8 +95,9 @@ const Header = () => {
                         "join_semester": json.data.join_semester,
                         "gender": json.data.gender,
                         "birthday": json.data.birthday,
-                        "department": json.data.department,
-                        "picture_url": json.data.picture_url
+                        "major": json.data.major,
+                        "picture_url": json.data.picture_url,
+                        "email": json.data.email
                     }
                     setUserInfo(newInfo)
                 }
@@ -115,8 +116,9 @@ const Header = () => {
                 "join_semester": "",
                 "gender": "",
                 "birthday": "",
-                "department": "",
-                "picture_url": ""
+                "major": "",
+                "picture_url": "",
+                "email": "",
             })
         }  
     }
@@ -124,7 +126,7 @@ const Header = () => {
     useEffect(() => {
         checkLogIn();
         getHomes();
-        getTypes();
+        getSubjects();
         getSemester();
         }, []
     );
@@ -160,9 +162,9 @@ const Header = () => {
         },
         {
             label: '科別',
-            key: 'type',
+            key: 'subject',
             icon: <TagsOutlined />,
-            children: types,
+            children: subjects,
             ref: ref4
         }
     ]

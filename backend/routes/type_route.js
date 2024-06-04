@@ -2,10 +2,10 @@ const router = require('express').Router();
 
 const { wrapAsync } = require('../utils/util');
 
-const { getTypes, postNewType } = require('../controllers/type_controller');
+const { getSubjects, postNewSubject } = require('../controllers/subject_controller');
 
-router.route('/all').get(wrapAsync(getTypes))
+router.route('/all').get(wrapAsync(getSubjects))
 
-router.route('/insert').post(wrapAsync(postNewType))
+router.route('/insert').post(wrapAsync(postNewSubject))
 
 module.exports = router;

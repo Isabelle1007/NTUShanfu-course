@@ -4,14 +4,14 @@ const { changeDataFormat, findMissingID, findNewID } = require('../utils/util')
 
 const getCurricula = async () => {
     let curr = [];
-    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, s.s_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url
                    FROM curricula c 
                    JOIN user_curriculum u_c ON c.id = u_c.cid 
                    JOIN users u ON u_c.uid = u.id 
                    JOIN homes h ON c.home_id = h.id 
-                   JOIN types t ON c.type_id = t.id 
+                   JOIN subjects t ON c.subject_id = s.id 
                    LEFT JOIN files f ON c.file_id = f.id
-                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url`;
+                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, s.s_name, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url`;
     const [result] = await pool.execute(query);
     try {
         if (result.length > 0) {
@@ -36,7 +36,7 @@ const getCurricula = async () => {
                     "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
-                    "type": result[i].t_name,
+                    "subject": result[i].t_name,
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
@@ -66,15 +66,15 @@ const getCurricula = async () => {
 
 const getCurriculumByHome = async (home) => {
     let curr = []
-    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.pic_url
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, s.s_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.pic_url
                    FROM curricula c 
                    JOIN user_curriculum u_c ON c.id = u_c.cid 
                    JOIN users u ON u_c.uid = u.id 
                    JOIN homes h ON c.home_id = h.id 
-                   JOIN types t ON c.type_id = t.id 
+                   JOIN subjects s ON c.subject_id = s.id 
                    LEFT JOIN files f ON c.file_id = f.id
                    WHERE h.h_name = '${home}'
-                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at, c.pic_url`
+                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, s.s_name, f.url_word, f.url_pdf, c.created_at, c.pic_url`
     const [result] = await pool.execute(query);
     try{
         if(result.length > 0){
@@ -99,7 +99,7 @@ const getCurriculumByHome = async (home) => {
                     "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
-                    "type": result[i].t_name,
+                    "subject": result[i].t_name,
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
@@ -127,17 +127,17 @@ const getCurriculumByHome = async (home) => {
     }
 };
 
-const getCurriculumByType = async (type) => {
+const getCurriculumBySubject = async (subject) => {
     let curr = []
-    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.pic_url
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, s.s_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.pic_url
                    FROM curricula c 
                    JOIN user_curriculum u_c ON c.id = u_c.cid 
                    JOIN users u ON u_c.uid = u.id 
                    JOIN homes h ON c.home_id = h.id 
-                   JOIN types t ON c.type_id = t.id 
+                   JOIN subjects t ON c.subject_id = s.id 
                    LEFT JOIN files f ON c.file_id = f.id
-                   WHERE t.t_name = '${type}'
-                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at, c.pic_url`
+                   WHERE s.s_name = '${subject}'
+                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, s.s_name, f.url_word, f.url_pdf, c.created_at, c.pic_url`
     const [result] = await pool.execute(query);
     try{
         if(result.length > 0){
@@ -162,7 +162,7 @@ const getCurriculumByType = async (type) => {
                     "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
-                    "type": result[i].t_name,
+                    "subject": result[i].t_name,
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
@@ -181,7 +181,7 @@ const getCurriculumByType = async (type) => {
             }
         }else{
             return {
-                "message": `No Currirula of type '${type}'`,
+                "message": `No Currirula of subject '${subject}'`,
                 "code": "001"
             }
         }
@@ -192,15 +192,15 @@ const getCurriculumByType = async (type) => {
 
 const getCurriculumBySemester = async (semester) => {
     let curr = []
-    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.pic_url
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u_name) AS authors, GROUP_CONCAT(u.picture_url) AS author_picture_urls, c.semester, h.h_name, s.s_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.pic_url
                    FROM curricula c 
                    JOIN user_curriculum u_c ON c.id = u_c.cid 
                    JOIN users u ON u_c.uid = u.id 
                    JOIN homes h ON c.home_id = h.id 
-                   JOIN types t ON c.type_id = t.id 
+                   JOIN subjects t ON c.subject_id = s.id 
                    LEFT JOIN files f ON c.file_id = f.id
                    WHERE c.semester = '${semester}'
-                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at, c.pic_url`
+                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, s.s_name, f.url_word, f.url_pdf, c.created_at, c.pic_url`
     const [result] = await pool.execute(query);
     try{
         if(result.length > 0){
@@ -225,7 +225,7 @@ const getCurriculumBySemester = async (semester) => {
                     "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
-                    "type": result[i].t_name,
+                    "subject": result[i].t_name,
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
@@ -258,13 +258,13 @@ const getCurriculumByUserId = async (id) => {
     const query = `SELECT c.id, c.title, 
                   (SELECT GROUP_CONCAT(u_name) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id)) AS authors,
                   (SELECT GROUP_CONCAT(picture_url) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id)) AS author_picture_urls,
-                   c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url
+                   c.semester, h.h_name, s.s_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url
                    FROM curricula c 
                    JOIN homes h ON c.home_id = h.id 
-                   JOIN types t ON c.type_id = t.id 
+                   JOIN subjects t ON c.subject_id = s.id 
                    LEFT JOIN files f ON c.file_id = f.id
                    WHERE c.id IN (SELECT cid FROM user_curriculum WHERE uid = '${id}')
-                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url`;
+                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, s.s_name, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url`;
     const [result] = await pool.execute(query);
     try {
         if (result.length > 0) {
@@ -289,7 +289,7 @@ const getCurriculumByUserId = async (id) => {
                     "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
-                    "type": result[i].t_name,
+                    "subject": result[i].t_name,
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
@@ -322,16 +322,16 @@ const getCurriculumByKeyWord = async (kw) => {
     const query = `SELECT c.id, c.title, 
                   (SELECT GROUP_CONCAT(u_name) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id)) AS authors,
                   (SELECT GROUP_CONCAT(picture_url) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id)) AS author_picture_urls,
-                   c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url
+                   c.semester, h.h_name, s.s_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url
                    FROM curricula c 
                    JOIN homes h ON c.home_id = h.id 
-                   JOIN types t ON c.type_id = t.id 
+                   JOIN subjects t ON c.subject_id = s.id 
                    LEFT JOIN files f ON c.file_id = f.id
                    WHERE CONCAT(
-                    c.title, c.semester, h.h_name, t.t_name, c.content,
+                    c.title, c.semester, h.h_name, s.s_name, c.content,
                     (SELECT GROUP_CONCAT(u_name) FROM users WHERE id IN (SELECT uid FROM user_curriculum WHERE cid = c.id))
                    ) LIKE '%${kw}%' 
-                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url`;
+                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, s.s_name, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url`;
     const [result] = await pool.execute(query);
     try {
         if (result.length > 0) {
@@ -356,7 +356,7 @@ const getCurriculumByKeyWord = async (kw) => {
                     "author": authorObjects,
                     "semester": result[i].semester,
                     "home": result[i].h_name,
-                    "type": result[i].t_name,
+                    "subject": result[i].t_name,
                     "last_update": date_last,
                     "file_word": result[i].url_word,
                     "file_pdf": result[i].url_pdf,
@@ -385,15 +385,15 @@ const getCurriculumByKeyWord = async (kw) => {
 };
 
 const getCurriculumByID = async (id) => {
-    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, t.t_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url
+    const query = `SELECT c.id, c.title, GROUP_CONCAT(u.u_name) AS authors, c.semester, h.h_name, s.s_name, c.last_update, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url
                    FROM curricula c 
                    JOIN user_curriculum u_c ON c.id = u_c.cid 
                    JOIN users u ON u_c.uid = u.id 
                    JOIN homes h ON c.home_id = h.id 
-                   JOIN types t ON c.type_id = t.id 
+                   JOIN subjects t ON c.subject_id = s.id 
                    LEFT JOIN files f ON c.file_id = f.id
                    WHERE c.id = ${id}
-                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, t.t_name, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url`
+                   GROUP BY c.id, c.title, c.semester, c.last_update, h.h_name, s.s_name, f.url_word, f.url_pdf, c.created_at, c.content, c.pic_url`
     const [result] = await pool.execute(query);
     try{
         if(result.length === 1){
@@ -406,7 +406,7 @@ const getCurriculumByID = async (id) => {
                 "author": authors,
                 "semester": result[0].semester,
                 "home": result[0].h_name,
-                "type": result[0].t_name,
+                "subject": result[0].t_name,
                 "last_update": date_last,
                 "file_word": result[0].url_word,
                 "file_pdf": result[0].url_pdf,
@@ -442,7 +442,7 @@ const createCurriculum = async(c) => {
         title: c.title,
         semester: c.semester,
         home_id: c.home_id,
-        type_id: c.type_id,
+        subject_id: c.subject_id,
         last_update: c.last_update,
     }
     const conn = await pool.getConnection();
@@ -571,7 +571,7 @@ const delCurriculum = async (cid, file_word) => {
 module.exports = {
     getCurricula,
     getCurriculumByHome,
-    getCurriculumByType,
+    getCurriculumBySubject,
     getCurriculumBySemester,
     getCurriculumByKeyWord,
     getCurriculumByUserId,

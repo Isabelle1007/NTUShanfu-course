@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { TOKEN_SECRET } = process.env; // 30 days by seconds
+const { TOKEN_SECRET } = process.env;
 const { promisify } = require('util'); // util from native nodejs library
 const jwt = require('jsonwebtoken');
 
@@ -46,7 +46,7 @@ const authentication = () => {
 
         try {
             req.user = await promisify(jwt.verify)(accessToken, TOKEN_SECRET);
-            const userDetail = await User.getInfoByUserEmail(req.user.email);
+            const userDetail = await User.getInfoByUserAccount(req.user.account);
             if (!userDetail) {
                 res.status(403).send({ error: 'Forbidden' });
             } else {

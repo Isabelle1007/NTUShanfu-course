@@ -5,11 +5,11 @@ const pool = require('../db')
 const { BCRYPT_SALT, TOKEN_EXPIRE, TOKEN_SECRET } = process.env; // 30 min by seconds
 const salt = parseInt(BCRYPT_SALT);
 
-const USER_ROLE = {
-    admin: 1,
-    coordinator: 2,
-    member: 3
-};
+// const USER_ROLE = {
+//     admin: 1,
+//     coordinator: 2,
+//     member: 3
+// };
 
 const getUserByKey = async (key, value) => {
     let query;
@@ -34,16 +34,17 @@ const getUserByKey = async (key, value) => {
                 let info = {
                     "id": result[i].id,
                     "name": result[i].u_name,
-                    "email": result[i].email,
+                    "account": result[i].account,
                     "role": result[i].r_name,
                     "home": result[i].h_name,
                     "group": result[i].g_name,
                     "join_semester": result[i].join_semester,
                     "gender": result[i].gender,
                     "birthday": result[i].birthday,
-                    "department": result[i].department,
+                    "major": result[i].major,
                     "student id": result[i].student_id,
-                    "picture_url": result[i].picture_url
+                    "picture_url": result[i].picture_url,
+                    "email": result[i].email
                 }
                 return {
                     "message": "Success",
@@ -73,8 +74,8 @@ const getInfoByUserId = async (id) => {
     return getUserByKey('id', id);
 };
 
-const getInfoByUserEmail = async (email) => {
-    return getUserByKey('email', email);
+const getInfoByUserAccount = async (account) => {
+    return getUserByKey('account', account);
 };
 
 const getInfoOfAllUsers = async () => {
@@ -90,16 +91,17 @@ const getInfoOfAllUsers = async () => {
                 let user = {
                     "id": result[i].id,
                     "name": result[i].u_name,
-                    "email": result[i].email,
+                    "account": result[i].account,
                     "role": result[i].r_name,
                     "home": result[i].h_name,
                     "group": result[i].g_name,
                     "join semester": result[i].join_semester,
                     "gender": result[i].gender,
                     "birthday": result[i].birthday,
-                    "department": result[i].department,
+                    "major": result[i].major,
                     "student id": result[i].student_id,
-                    "picture_url": result[i].picture_url
+                    "picture_url": result[i].picture_url,
+                    "email": result[i].email
                 }
                 users.push(user)
             }
@@ -153,10 +155,10 @@ const getIdByUserName = async (name_list) => {
 };
 
 const postAnUser = async (req, homeID) => {
-    const { name, email, password, role_id, gender } = req.body
+    const { name, account, password, role_id, gender } = req.body
     const conn = await pool.getConnection();
     try{
-        const [result] = await conn.query('INSERT INTO users (u_name, email, password, role_id, home_id, gender ) VALUES (?,?,?,?,?,?)', [name, email, password, role_id, homeID, gender]);
+        const [result] = await conn.query('INSERT INTO users (u_name, account, password, role_id, home_id, gender ) VALUES (?,?,?,?,?,?)', [name, account, password, role_id, homeID, gender]);
         let newUserID = result.insertId
         if(newUserID != -1){
             return {
@@ -165,7 +167,7 @@ const postAnUser = async (req, homeID) => {
                 "data":{
                     "id": newUserID,
                     "name": name,
-                    "email": email,
+                    "account": account,
                     "home": req.body.home,
                     "gender": gender
                 }
@@ -181,17 +183,17 @@ const postAnUser = async (req, homeID) => {
     }
 };
 
-const signUp = async (name, roleId, email, password, picture_url, home, group, join_semester, gender, birthday, department, student_id) => {
+const signUp = async (name, roleId, account, password, picture_url, home, group, join_semester, gender, birthday, major, student_id, email) => {
     
     const conn = await pool.getConnection();
     try {
         await conn.query('START TRANSACTION');
 
-        const emails = await conn.query('SELECT email FROM users WHERE email = ? FOR UPDATE', [email]);
-        if (emails[0].length > 0) {
+        const accounts = await conn.query('SELECT account FROM users WHERE account = ? FOR UPDATE', [account]);
+        if (accounts[0].length > 0) {
             await conn.query('COMMIT');
             return {
-                "message": 'Email Already Exists', 
+                "message": 'account Already Exists', 
                 "code": "001"
             };
         }
@@ -200,7 +202,7 @@ const signUp = async (name, roleId, email, password, picture_url, home, group, j
 
         const user = {
             u_name: name,
-            email: email,
+            account: account,
             password: await bcrypt.hash(password, salt),
             role_id: roleId,
             access_expired: TOKEN_EXPIRE,
@@ -213,13 +215,14 @@ const signUp = async (name, roleId, email, password, picture_url, home, group, j
         if(group != "") user.group_id = group
         if(gender != "") user.gender = gender
         if(birthday != "") user.birthday = birthday
-        if(department != "") user.department = department
+        if(major != "") user.major = major
         if(student_id != "") user.student_id = student_id
+        if(email != "") user.email = email
 
         const accessToken = jwt.sign(
             {
                 name: user.name,
-                email: user.email,
+                account: user.account,
                 picture: user.picture,
             },
             TOKEN_SECRET
@@ -237,7 +240,7 @@ const signUp = async (name, roleId, email, password, picture_url, home, group, j
             "data": {
                 "userID": user.id,
                 "username": user.u_name,
-                "email": user.email,
+                "account": user.account,
                 "role_id": user.role_id
             }
         };
@@ -255,17 +258,17 @@ const signUp = async (name, roleId, email, password, picture_url, home, group, j
     }
 };
 
-const login = async (email, password) => {
+const login = async (account, password) => {
     const conn = await pool.getConnection();
     try {
         await conn.query('START TRANSACTION');
-        const [users] = await conn.query('SELECT * FROM users WHERE email = ?', [email]);
+        const [users] = await conn.query('SELECT * FROM users WHERE account = ?', [account]);
         if (users.length === 0){
             await conn.query('COMMIT');
-            console.log("Email does not exist")
+            console.log("account does not exist")
             return {
                 code: "001", 
-                message: 'Error: Email does not exist' };
+                message: 'Error: account does not exist' };
         }
         const user = users[0];
         pw_correct = await bcrypt.compare(password, user.password)
@@ -280,7 +283,7 @@ const login = async (email, password) => {
         const accessToken = jwt.sign(
             {
                 name: user.name,
-                email: user.email,
+                account: user.account,
                 picture: user.picture,
             },
             TOKEN_SECRET
@@ -299,7 +302,7 @@ const login = async (email, password) => {
             "data": {
                 "userID": user.id,
                 "username": user.u_name,
-                "email": user.email,
+                "account": user.account,
                 "role_id": user.role_id,
                 "login_at": user.login_at,
                 "access_token": user.access_token
@@ -319,9 +322,9 @@ const login = async (email, password) => {
     }
 };
 
-const updateInfoByEmail = async (email, profile) => {
+const updateInfoByAccount = async (account, profile) => {
     const setClauses = Object.entries(profile).map(([column, value]) => `${column} = '${value}'`).join(', ');
-    const query = `UPDATE users SET ${setClauses} WHERE email = '${email}';`;
+    const query = `UPDATE users SET ${setClauses} WHERE account = '${account}';`;
     
     try{
         const [result] = await pool.execute(query);
@@ -347,13 +350,13 @@ const updateInfoByEmail = async (email, profile) => {
 }
 
 module.exports = {
-    USER_ROLE,
+    // USER_ROLE,
     getInfoByUserId,
-    getInfoByUserEmail,
+    getInfoByUserAccount,
     getInfoOfAllUsers,
     getIdByUserName,
     postAnUser,
     signUp,
     login,
-    updateInfoByEmail
+    updateInfoByAccount
 };

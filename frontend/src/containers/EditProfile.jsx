@@ -21,7 +21,7 @@ const EditProfile = () => {
     "group": "",
     "join_semester": "",
     "gender": "",
-    "department": "",
+    "major": "",
   });
 
   const handleInputChange = (fieldName, value) => {
@@ -159,7 +159,7 @@ const EditProfile = () => {
         handleInputChange("group", json.data.group)
         handleInputChange("join_semester", json.data.join_semester)
         handleInputChange("gender", json.data.gender === "M"? "男" : "女")
-        handleInputChange("department", json.data.department)
+        handleInputChange("major", json.data.major)
       }
     });
     }, []
@@ -263,8 +263,8 @@ const EditProfile = () => {
             label={<span className="custom-label-editProfile">系級 Grade</span>}
           >
             <Input 
-              value={formValues['department']} 
-              onChange={(e) => handleInputChange('department', e.target.value)}
+              value={formValues['major']} 
+              onChange={(e) => handleInputChange('major', e.target.value)}
             />
           </Form.Item>
 

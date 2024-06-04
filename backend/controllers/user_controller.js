@@ -38,7 +38,7 @@ const createNewUser = async (req, res) => {
 // sign up
 const signUp = async (req, res) => {
     let { name } = req.body;
-    const { role, account, password, picture_url, home, group, join_semester, gender, birthday, department, student_id } = req.body;
+    const { role, account, password, picture_url, home, group, join_semester, gender, birthday, major, student_id, email } = req.body;
 
     if (!name || !account || !password) {
         return res.json({
@@ -47,7 +47,7 @@ const signUp = async (req, res) => {
         });
     }
 
-    if (!validator.isaccount(account)) {
+    if (!validator.isEmail(account)) {
         return res.json({
             "message": "Request Error: Invalid account format",
             "code": "001"
@@ -56,7 +56,7 @@ const signUp = async (req, res) => {
 
     name = validator.escape(name);
 
-    const result = await User.signUp(name, User.USER_ROLE[role], account, password, picture_url, home, group, join_semester, gender, birthday, department, student_id);
+    const result = await User.signUp(name, User.USER_ROLE[role], account, password, picture_url, home, group, join_semester, gender, birthday, major, student_id, email);
     if (result.code != "000") return res.json(result);
 
     const user = result.data;
@@ -106,7 +106,7 @@ const getUserProfile = async (req, res) => {
 }
 
 const updateProfile = async (req, res) => {
-    const { name, home, group, join_semester, gender, department } = req.body;
+    const { name, home, group, join_semester, gender, major } = req.body;
     const profile = {};
 
     if (name) profile.u_name = name;
@@ -125,7 +125,7 @@ const updateProfile = async (req, res) => {
 
     if (join_semester) profile.join_semester = join_semester;
     if (gender) profile.gender = gender === "男" ? "M" : "F";
-    if (department) profile.department = department;
+    if (major) profile.major = major;
 
     // Ensure there's at least one field to update
     if (Object.keys(profile).length === 0) {

@@ -30,7 +30,7 @@ function App() {
 
   const [loading, setLoading] = useState(false)
   const [homes, setHomes] = useState([]);
-  const [types, setTypes] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [semesters, setSemesters] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -44,8 +44,9 @@ function App() {
     "join_semester": "",
     "gender": "",
     "birthday": "",
-    "department": "",
-    "picture_url": ""
+    "major": "",
+    "picture_url": "",
+    "email": "",
   });
 
   const ref1 = useRef();
@@ -56,7 +57,7 @@ function App() {
   return (
     <FilterContext.Provider 
       value={{
-        loading, setLoading, colors, homes, setHomes, types, setTypes, semesters, setSemesters, 
+        loading, setLoading, colors, homes, setHomes, subjects, setSubjects, semesters, setSemesters, 
         isLogin, setIsLogin, isAdmin, setIsAdmin, userInfo, setUserInfo, ref1, ref2, ref3, ref4
       }}
     > 

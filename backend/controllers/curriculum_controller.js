@@ -5,7 +5,7 @@ const multer = require('multer');
 const Curriculum = require('../models/curriculum_model');
 const User = require('../models/user_model');
 const Home = require('../models/home_model');
-const Type = require('../models/type_model');
+const Subject = require('../models/subject_model');
 
 const { readFileFromS3, s3Uploadv2, deleteFileFromS3 } = require('../utils/s3Service');
 const { createWordCloudImg } = require('../utils/wordCloud');
@@ -49,9 +49,9 @@ const getCurriculumByHome = async (req, res) => {
     res.json(data)
 };
 
-const getCurriculumByType = async (req, res) => {
-    const type = req.params.type;
-    const data = await Curriculum.getCurriculumByType(type);
+const getCurriculumBySubject = async (req, res) => {
+    const subject = req.params.subject;
+    const data = await Curriculum.getCurriculumBySubject(subject);
     res.json(data);
 };
 
@@ -81,7 +81,7 @@ const getCurriculumByID = async (req, res) => {
 
 // insert data into db
 const postCurriculum = async (req, res) => {
-    const { title, author, semester, home, type, last_update, file_word, file_pdf } = req.body
+    const { title, author, semester, home, subject, last_update, file_word, file_pdf } = req.body
     let authors_id;
     const getUserID = await User.getIdByUserName(author);
     if(getUserID.code != '000')
@@ -96,19 +96,19 @@ const postCurriculum = async (req, res) => {
     else
         homeID = getHomeID.data.id
 
-    let typeID;
-    const getTypeID = await Type.getIdByTypeName(type);
-    if(getTypeID.code != '000')
-        return res.json(getTypeID)
+    let subjectID;
+    const getSubjectID = await Subject.getIdBySubjectName(subject);
+    if(getSubjectID.code != '000')
+        return res.json(getSubjectID)
     else
-        typeID = getTypeID.data.id
+        subjectID = getSubjectID.data.id
 
     const curriculum = {
         title: title,
         author_id_list: authors_id,
         semester: semester,
         home_id: homeID,
-        type_id: typeID,
+        subject_id: subjectID,
         file_url_word: file_word ? file_word : null,
         file_url_pdf: file_pdf ? file_pdf : null,
         last_update: last_update
@@ -185,10 +185,10 @@ const putCurriculum = async (req, res) => {
         curriculumUpdates.home_id = getHomeID.data.id;
     }
 
-    if (req.body.type) {
-        const getTypeID = await Type.getIdByTypeName(req.body.type);
-        if (getTypeID.code != '000') return res.json(getTypeID);
-        curriculumUpdates.type_id = getTypeID.data.id;
+    if (req.body.subject) {
+        const getSubjectID = await Subject.getIdBySubjectName(req.body.subject);
+        if (getSubjectID.code != '000') return res.json(getSubjectID);
+        curriculumUpdates.subject_id = getSubjectID.data.id;
     }
 
     if (req.body.last_update) curriculumUpdates.last_update = req.body.last_update;
@@ -224,7 +224,7 @@ const deleteCurriculum = async (req, res) => {
 module.exports = {
     getCurricula,
     getCurriculumByHome,
-    getCurriculumByType,
+    getCurriculumBySubject,
     getCurriculumBySemester,
     getCurriculumByKeyword,
     getCurriculumByID,

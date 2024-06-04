@@ -33,7 +33,7 @@ function ShowCurrirula() {
       if (isFetching) return;
 
       const home = new URLSearchParams(location.search).get('home');
-      const type = new URLSearchParams(location.search).get('type');
+      const subject = new URLSearchParams(location.search).get('subject');
       const semester = new URLSearchParams(location.search).get('semester');
       const keyword = new URLSearchParams(location.search).get('keyword');
 
@@ -41,8 +41,8 @@ function ShowCurrirula() {
         if (home) {
           return api.getCurriculaByHome(home);
         }
-        if (type) {
-          return api.getCurriculaByType(type);
+        if (subject) {
+          return api.getCurriculaBySubject(subject);
         }
         if (semester) {
           return api.getCurriculaBySemester(semester);

@@ -45,7 +45,7 @@ const CurriculumCard = ( { curriculum } ) => {
             >
             <Meta
                 avatar={<AvatarWithText array={curriculum.author}/>}
-                title={`${curriculum.home} / ${curriculum.semester} / ${curriculum.type}`}
+                title={`${curriculum.home} / ${curriculum.semester} / ${curriculum.subject}`}
                 description={curriculum.title}
             /> 
             </Card>
