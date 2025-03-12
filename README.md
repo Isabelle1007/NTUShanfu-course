@@ -95,7 +95,6 @@ Only listing the main package:
 - [Chen-Syuan (Isabelle) Huang](https://github.com/Isabelle1007)  
   - email:
     - chensyuan.huang@gmail.com
-    - chen-syuan@wustl.edu
   - phone: 
-    - +1 (314)296-8317 (USA)
+    - +1 314-296-8317 (USA)
     - +886 921-438-836 (Taiwan)
